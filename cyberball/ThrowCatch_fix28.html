@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<!-- Throw & Catch — fix28 (30.9.2026): FINAL-CHECK build for Roy = fix27 + consent page says "About 30–35 minutes" (Roy, 30.9). fix27: fix26 unchanged (texts of the consent page, the game page and the debrief approved 30.9). fix26: consent page says "questionnaires + group game"; the game is presented after the four questionnaires; connection to the other players only after sentences and avatar; status item "value my opinions and ideas" removed; debrief with a comprehension check that insists the players were not real. fix25: pass limit 10 s; HUD throw counter removed (the left board shows Throws: n of 60); PANAS 40 s and counterbalanced item order; time limits also on the between-games text page, the Game-3 questionnaire intro and the two "Game N" screens; own low success 2 of 9; "Good passer" column; Game-3 connecting page removed. fix24: trait questionnaires split — social anxiety (SPIN), mood (BDI-II), relationships (B-PNI) and fear of positive evaluation (FPES) BEFORE the task; NPI-16, sense of absence (Efrati & Potenza 2026) and LSAS (fear) at the end; participant-facing titles instead of "Questionnaire k of n"; questionnaire pages use the full page width; FPES shows all ten columns 0–9 with anchor labels. fix23: every page between the games has a time limit (countdown at the top; at zero the page moves on with what was answered and the timeout is logged), framed as questions the whole group answers so that the game can continue. fix21: BDI-II laid out like the printed/online form (one titled block per item, statements listed vertically with their score numbers). fix20: the staircase with everyone's desired steps removed from "Everyone's answers" (the table stays; the participant's own staircase choice stays). fix19: practice subtitle removed; the two side boards laid out identically (a pill at the top of each: throws so far / group's successful passes). fix18: ratings of the others and the reveal removed; questionnaires laid out like the lab's Qualtrics matrices; LSAS fear only; shorter texts and larger small text throughout; sad added to the emotions. fix17: larger page subtitles everywhere; shorter sentence-page instructions. fix16: shorter two-screen game presentation, no pills under the players, outcome thumb top-right, no goal line in the HUD, lighter passes section, larger slider labels, second throwing-range choice must be a different player, ring sizes back to fix11, meta-perceptions and BFNE removed, ethnicity and orientation removed, LSAS as per-item cards, a progress bar, Computer and AI as separate options. fix15: new opening order (study → game presentation with an example picture → practice → your presentation: sentences, avatar → what the others chose), 'Choose your avatar' with a prominent note, bigger other avatars, success board back to bars with counts, desired passing rank chosen on the staircase and everyone's choices shown. fix14: the emotion list is Roy's 12 items (upset, strong, guilty, proud, ashamed, active, attentive, afraid, happy, humiliated, angry, lonely). fix13: Roy's corrections on fix11/12 (bot sentences with natural slips, random arena sentence, PANAS anger instead of disgust, reveal only after Game 2, group goal + group counter, questionnaire order, demographics additions, throwing-range change = visual only with a bigger black area). fix12: PANAS + lonely; the avatar figure (CyberStatus avatar.js + avatar_cb.js) placed after the sentences before each game and used as every player's figure in the arena and on the cards. fix11: Roy's 23-point round (both boards in Game 2, staircase for passing rank, goal + counts, big centre outcome, 20-s idle auto-pass, distress face, PANAS+3, meta-perceptions, clearer feedback reveal, 0–100 everywhere, look-back in %, timed sentences from Game 2, representative sentence shown in the arena, no sentence screen before Game 3, participation before Game 1, stronger adjustments, colour reminder, full trait battery + demographics as in CyberStatus). fix10: explicit time on the intro, practice, rules and transition screens (screen_continue rows). fix9: Condition B Game 2 = 45% of the passes to the participant (was 25%). fix8: self-rated passing skill + wish to receive passes (everyone's answers shown), look-back ratings (received / how good, 1–100), explicit timing per page and per turn, visibility log. fix7: three NEW sentences each game (none used before), short entries allowed; the other players' sentences are all new each game (Roy). fix6 = three different sentences; fix5 = the other players' wishes 78–88. Otherwise identical to fix4 (27.9.2026). Base: Dan's CyberCatch (ConditionA/B, 25.9.2026) + fix1 schedules + fix2/fix3 flow.
+     One file for both conditions: ?cond=A (status increased) | ?cond=B (affiliation increased); random if absent.
+     Test switches: ?fast=1 (short waits), ?debug=1 (window.S = state, condition tag). See README_final_check_2026-09-30.md -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Colors and Social Choices</title>
+<style>
+:root{
+  --bg:#f4f6fa;--card:#fff;--ink:#181c24;--muted:#7b8494;--line:#e3e8ef;
+  --blue:#4285f4;--orange:#ff8b3d;--purple:#8b5cf6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.4}
+.hidden{display:none!important}
+
+.app{max-width:980px;margin:0 auto;padding:14px}
+.shell{background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 14px 40px rgba(18,24,35,.08)}
+.topbar{height:58px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand{font-size:15px;font-weight:900}
+.small-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:11px;font-weight:800;color:var(--muted)}
+.screen{padding:24px}
+.centered{max-width:720px;margin:8px auto 18px}
+.hero-title{font-size:30px;letter-spacing:-.04em;text-align:center;margin:0 0 6px}
+.hero-sub{font-size:16px;color:#3f4754;text-align:center;margin:0 0 24px}
+.primary{border:0;background:var(--ink);color:#fff;border-radius:15px;padding:13px 18px;font-weight:900}
+.secondary{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:15px;padding:13px 18px;font-weight:800}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+
+/* setup */
+.preview-row{display:flex;justify-content:center;margin:12px 0 20px}
+.preview-dot{width:84px;height:84px;border-radius:50%;border:6px solid #fff;box-shadow:0 0 0 1px var(--line),0 14px 26px rgba(0,0,0,.10)}
+.preview-label{text-align:center;font-size:22px;font-weight:900;margin-top:12px}
+.color-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.color-card{border:1px solid var(--line);background:#fff;border-radius:18px;padding:12px;text-align:center}
+.color-card.selected{box-shadow:0 0 0 3px rgba(24,28,36,.11);border-color:#bcc6d3;transform:translateY(-1px)}
+.swatch{width:54px;height:54px;border-radius:50%;margin:0 auto 10px;border:5px solid #fff;box-shadow:0 0 0 1px #d6dde6}
+.cname{font-size:12px;font-weight:850}
+.self-field{max-width:560px;margin:22px auto 0}
+.self-label{display:block;font-size:14px;font-weight:900;margin-bottom:8px}
+.self-field textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:16px;padding:13px 14px;resize:vertical;background:#fafbfc;outline:none}
+.char-row{display:flex;justify-content:space-between;gap:12px;margin-top:7px;font-size:11px;color:var(--muted)}
+.ok{color:#16794d!important;font-weight:850}.bad{color:#a33b3b!important;font-weight:850}
+
+/* exact CuddleBunny sprite assets */
+.cb-sprite{display:block;width:106px;height:87px;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.cb-sprite.flip{transform:scaleX(-1)}
+
+.cb-training{filter:grayscale(1);opacity:.72}
+
+/* Outline-only coloring for CuddleBunny sprites: keep white fill, color only the edge/halo */
+.edge-blue{
+  filter:drop-shadow(1px 0 0 var(--blue)) drop-shadow(-1px 0 0 var(--blue)) drop-shadow(0 1px 0 var(--blue)) drop-shadow(0 -1px 0 var(--blue));
+}
+.edge-orange{
+  filter:drop-shadow(1px 0 0 var(--orange)) drop-shadow(-1px 0 0 var(--orange)) drop-shadow(0 1px 0 var(--orange)) drop-shadow(0 -1px 0 var(--orange));
+}
+.edge-purple{
+  filter:drop-shadow(1px 0 0 var(--purple)) drop-shadow(-1px 0 0 var(--purple)) drop-shadow(0 1px 0 var(--purple)) drop-shadow(0 -1px 0 var(--purple));
+}
+.edge-green{
+  filter:drop-shadow(1px 0 0 #16a34a) drop-shadow(-1px 0 0 #16a34a) drop-shadow(0 1px 0 #16a34a) drop-shadow(0 -1px 0 #16a34a);
+}
+.edge-pink{
+  filter:drop-shadow(1px 0 0 #ec4899) drop-shadow(-1px 0 0 #ec4899) drop-shadow(0 1px 0 #ec4899) drop-shadow(0 -1px 0 #ec4899);
+}
+.edge-teal{
+  filter:drop-shadow(1px 0 0 #14b8a6) drop-shadow(-1px 0 0 #14b8a6) drop-shadow(0 1px 0 #14b8a6) drop-shadow(0 -1px 0 #14b8a6);
+}
+.edge-yellow{
+  filter:drop-shadow(1px 0 0 #eab308) drop-shadow(-1px 0 0 #eab308) drop-shadow(0 1px 0 #eab308) drop-shadow(0 -1px 0 #eab308);
+}
+.edge-red{
+  filter:drop-shadow(1px 0 0 #ef4444) drop-shadow(-1px 0 0 #ef4444) drop-shadow(0 1px 0 #ef4444) drop-shadow(0 -1px 0 #ef4444);
+}
+.edge-brown{
+  filter:drop-shadow(1px 0 0 #8b5e34) drop-shadow(-1px 0 0 #8b5e34) drop-shadow(0 1px 0 #8b5e34) drop-shadow(0 -1px 0 #8b5e34);
+}
+
+.demo-sprite{width:106px;height:87px;margin:0 auto 10px;object-fit:contain}
+.sprite-wrap{width:118px;height:100px;display:grid;place-items:center;margin:0 auto;position:relative}
+
+/* practice */
+.practice-box{max-width:580px;margin:18px auto 0;border:1px solid var(--line);border-radius:24px;background:#fff;padding:22px;text-align:center}
+.practice-stage{position:relative;height:300px;margin-top:10px}
+.practice-target{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:170px;text-align:center}
+.practice-avatar-shell{width:132px;height:132px;margin:0 auto;position:relative;display:grid;place-items:center}
+.practice-btn{position:absolute;inset:0;border:0;background:transparent;border-radius:50%;touch-action:none}
+.practice-ring,.practice-target-ring{position:absolute;width:146px;height:146px;left:50%;top:-7px;right:auto;bottom:auto;transform:translateX(-50%);border-radius:50%;aspect-ratio:1/1;pointer-events:none}
+.practice-ring{background:conic-gradient(#171a21 calc(var(--p,0)*1turn),rgba(23,26,33,.10) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));opacity:0}
+.practice-target-ring{background:conic-gradient(transparent 0 var(--ts,.626turn),#28a85d var(--ts,.626turn) var(--te,.695turn),transparent var(--te,.695turn) 1turn);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px))}
+.practice-target.holding .practice-ring{opacity:1}
+.practice-feedback{min-height:24px;font-size:13px;font-weight:900;margin-top:8px}
+.practice-feedback.success{color:#19703f}.practice-feedback.failure{color:#a52d2d}
+.practice-progress{font-size:12px;font-weight:900}
+.practice-note{font-size:15px;color:#3f4754;line-height:1.5}
+
+/* meet */
+.meet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+.meet-card{border:1px solid var(--line);border-radius:22px;padding:20px 16px;text-align:center;background:#fff}
+.meet-name{font-size:16px;font-weight:900;margin:8px 0}
+.meet-description{font-size:12px;line-height:1.55;color:var(--muted)}
+
+/* rules */
+.rule-box{max-width:640px;margin:18px auto 0;border:1px solid var(--line);border-radius:24px;padding:22px;background:#fff}
+.rule-line{display:grid;grid-template-columns:40px 1fr;align-items:start;gap:14px;font-size:18px;line-height:1.55}
+.rule-line+.rule-line{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.rule-number{width:38px;height:38px;border-radius:50%;background:#f1f3f6;display:grid;place-items:center;font-size:14px;font-weight:900}
+
+/* game */
+.hud{height:76px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 18px;border-bottom:1px solid var(--line)}
+.hud-left{justify-self:start}.hud-right{justify-self:end}
+.game-title{font-size:14px;font-weight:900}.tiny{font-size:11px;color:var(--muted);margin-top:3px}
+.counter-pill{font-size:11px;font-weight:900;border-radius:999px;background:#f1f3f6;padding:7px 10px}
+.dots{display:flex;gap:4px;justify-content:center;max-width:270px;flex-wrap:wrap}.dot{width:6px;height:6px;border-radius:50%;background:#e0e4ea}.dot.done{background:var(--ink)}
+.arena{position:relative;height:650px;background:radial-gradient(circle at 50% 50%,rgba(24,28,36,.03),transparent 40%),#fff;overflow:hidden}
+.player-wrap{position:absolute;width:154px;text-align:center;z-index:5}
+.sprite-shell{width:128px;height:128px;margin:0 auto;position:relative;display:grid;place-items:center}
+.target-btn{position:absolute;inset:0;border:0;background:transparent;border-radius:50%;padding:0;touch-action:none}
+.player-name{font-size:13px;font-weight:900;margin-top:5px}
+.player-stats{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:7px;color:var(--muted);font-weight:900}
+.player-stats span{
+  min-width:66px;
+  background:#f4f6f8;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:7px 8px 6px;
+  white-space:nowrap;
+  font-size:14px;
+  line-height:1;
+  letter-spacing:-.02em;
+}
+.player-stats span::first-line{font-size:14px}
+.me-tag{display:block;font-size:10px;color:var(--muted);font-weight:800;margin-top:1px}
+
+.pos-blue{left:50%;top:6%;transform:translateX(-50%)}
+.pos-orange{right:5%;top:50%;transform:translateY(-50%)}
+.pos-purple{left:5%;top:50%;transform:translateY(-50%)}
+.pos-you{left:50%;bottom:5%;transform:translateX(-50%)}
+
+.hold-ring{position:absolute;width:142px;height:142px;left:50%;top:-7px;right:auto;bottom:auto;transform:translateX(-50%);border-radius:50%;aspect-ratio:1/1;background:conic-gradient(#171a21 calc(var(--p,0)*1turn),rgba(23,26,33,.10) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));opacity:0;pointer-events:none}
+.player-wrap.holding .hold-ring{opacity:1}
+.holder-indicator{position:absolute;inset:-4px;border:2px solid transparent;border-radius:22px;pointer-events:none}
+.player-wrap.holder .holder-indicator{border-color:transparent}
+
+.ball-img{position:absolute;width:27px;height:27px;object-fit:contain;left:0;top:0;z-index:9;transform:translate(-50%,-50%);transition:left .50s linear,top .50s linear}
+.center-message{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:240px;text-align:center;z-index:2}
+.center-title{font-size:17px;font-weight:900}.center-sub{font-size:13px;color:#3f4754;margin-top:5px}
+.fail-mark{position:absolute;left:50%;top:63%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;border:2px dashed #9aa3b2;display:grid;place-items:center;color:#7b8494;font-size:11px;font-weight:850;opacity:0;z-index:3}
+.fail-mark.show{opacity:1}
+.toast{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:11px;font-weight:900;z-index:20;box-shadow:0 8px 18px rgba(17,24,39,.08)}
+.toast.success{background:#eaf8ef;color:#17633a;border-color:#b9e4c8}.toast.failure{background:#fdecec;color:#9f2626;border-color:#f3bcbc}
+.complete{max-width:520px;margin:80px auto;text-align:center}
+
+
+.game-layout{
+  display:grid;
+  grid-template-columns:160px minmax(0,1fr) 160px;
+  align-items:stretch;
+  background:#fff;
+}
+.rank-panel{
+  padding:18px 10px;
+  border-top:0;
+  background:#fbfcfd;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+.rank-panel.left{border-right:1px solid var(--line)}
+.rank-panel.right{border-left:1px solid var(--line)}
+.rank-title{
+  font-size:13px;
+  font-weight:950;
+  text-align:center;
+  letter-spacing:-.02em;
+  margin:2px 0 4px;
+}
+.rank-sub{
+  font-size:9px;
+  line-height:1.3;
+  color:var(--muted);
+  text-align:center;
+  margin-bottom:16px;
+}
+.rank-list{
+  display:flex;
+  flex-direction:column;
+  gap:13px;
+}
+.rank-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:5px 7px;
+  align-items:center;
+  transition:order .25s ease;
+}
+.rank-row.me .rank-name,
+.rank-row.me .rank-value{
+  font-weight:1000;
+  color:var(--ink);
+}
+.rank-name{
+  font-size:11px;
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.rank-value{
+  font-size:11px;
+  font-weight:900;
+  color:var(--muted);
+}
+.rank-track{
+  grid-column:1 / 3;
+  height:10px;
+  background:#e9edf2;
+  border-radius:999px;
+  overflow:hidden;
+}
+.rank-fill{
+  width:0%;
+  height:100%;
+  border-radius:inherit;
+  transition:width .55s cubic-bezier(.2,.8,.2,1);
+}
+.rank-row[data-player="blue"] .rank-fill{background:var(--blue)}
+.rank-row[data-player="orange"] .rank-fill{background:var(--orange)}
+.rank-row[data-player="purple"] .rank-fill{background:var(--purple)}
+.rank-row[data-player="you"] .rank-fill{background:var(--you-color,#16a34a)}
+.rank-row.me .rank-track{
+  outline:2px solid rgba(24,28,36,.18);
+  outline-offset:1px;
+}
+
+@media(max-width:820px){
+  .color-grid{grid-template-columns:repeat(3,1fr)}
+  .meet-grid{grid-template-columns:1fr}
+  .game-layout{grid-template-columns:1fr}
+  .rank-panel{display:none}
+}
+@media(max-width:720px){
+  .app{padding:8px}.screen{padding:16px}.arena{height:650px}.player-wrap{width:126px}
+  .pos-blue{top:5%}.pos-orange{right:1%}.pos-purple{left:1%}.pos-you{bottom:4%}
+  .rule-line{font-size:16px}.center-message{width:150px}
+}
+
+
+/* v34 additions */
+.intro-card,.measure-card,.transition-card{max-width:680px;margin:18px auto 0;border:1px solid var(--line);border-radius:24px;background:#fff;padding:24px}
+.intro-card p,.transition-card p{font-size:15px;line-height:1.65;color:#3f4754}
+.zone-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.zone-pill{border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center;font-size:14px;font-weight:900}
+.zone-dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:-1px}
+.zone-green{background:#22c55e}.zone-orange{background:#f59e0b}.zone-red{background:#ef4444}
+.practice-target-ring{background:conic-gradient(#ef4444 0 .58turn,#f59e0b .58turn .63turn,#22c55e .63turn .68turn,#f59e0b .68turn .73turn,#ef4444 .73turn 1turn)!important}
+.practice-zone-caption{font-size:14px;color:#3f4754;line-height:1.5;margin-top:10px}
+.measure-kicker{text-align:center;font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.measure-title{text-align:center;font-size:26px;letter-spacing:-.03em;margin:0 0 7px}
+.measure-sub{text-align:center;color:#3f4754;font-size:16px;line-height:1.6;margin:0 0 22px}
+.slider-row{margin:18px 0 22px}
+.slider-label{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;font-weight:900;font-size:16px;margin-bottom:8px}
+.slider-value{font-variant-numeric:tabular-nums;color:#3f4754;font-size:14px;min-width:44px;text-align:right}
+.slider-row input[type=range]{width:100%;accent-color:#222}
+.slider-ends{display:flex;justify-content:space-between;color:#3f4754;font-size:14px;font-weight:800;margin-top:6px}
+.player-mini{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin:6px 0 18px;text-align:center}
+.player-mini img{width:92px;height:76px;object-fit:contain}
+.player-mini .who{font-size:18px;font-weight:950}
+.mini-description{max-width:460px;font-size:12px;line-height:1.55;color:var(--muted);margin-top:3px}
+.choice-stack{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:660px;margin:18px auto 0}
+.choice-btn{border:1px solid var(--line);background:#fff;border-radius:16px;padding:16px 18px;font-weight:900;text-align:center;min-height:76px}
+.choice-btn:hover{border-color:#aeb8c5;background:#fafbfc}
+.adjust-grid{display:grid;gap:18px}
+.adjust-card{border:1px solid var(--line);border-radius:18px;padding:16px}
+.adjust-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.adjust-name{font-weight:950}
+.adjust-readout{font-size:12px;color:var(--muted);font-weight:900}
+.adjust-card input[type=range]{width:100%;accent-color:#222}
+.heart-pop{position:absolute;left:50%;bottom:18%;transform:translateX(-50%) scale(.6);font-size:42px;z-index:30;opacity:0;pointer-events:none}
+.heart-pop.show{animation:heartPop .85s ease-out forwards}
+@keyframes heartPop{0%{opacity:0;transform:translateX(-50%) scale(.5)}25%{opacity:1;transform:translateX(-50%) scale(1.15)}70%{opacity:1;transform:translateX(-50%) translateY(-24px) scale(1)}100%{opacity:0;transform:translateX(-50%) translateY(-42px) scale(.85)}}
+.hidden-panel{visibility:hidden!important;pointer-events:none!important}
+.round-banner{font-size:11px;font-weight:950;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.complete-data{font-size:12px;color:var(--muted);line-height:1.5}
+@media(max-width:620px){.zone-legend{grid-template-columns:1fr}.intro-card,.measure-card,.transition-card{padding:18px}.measure-title{font-size:23px}}
+/* visual adjustment tasks */
+.success-adjust-visual{display:grid;place-items:center;margin:10px 0 20px}
+.adjust-ring-shell{position:relative;width:190px;height:190px;display:grid;place-items:center}
+.adjust-success-ring{position:absolute;width:174px;height:174px;border-radius:50%;background:conic-gradient(#ef4444 0 58%,#f59e0b 58% 63%,#22c55e 63% 68%,#f59e0b 68% 73%,#ef4444 73% 100%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px));mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px));transition:background .08s linear}
+.adjust-ring-shell img{width:112px;height:92px;object-fit:contain}
+.adjust-readout.big{font-size:14px;color:var(--ink);margin-top:8px}
+.distance-stage{position:relative;height:210px;margin:8px auto 20px;max-width:620px;border:1px solid var(--line);border-radius:22px;background:#fafbfc;overflow:hidden}
+.distance-avatar{position:absolute;top:52%;transform:translate(-50%,-50%);text-align:center;z-index:2;transition:left .06s linear}
+.distance-avatar.me{left:18%}
+.distance-avatar.other{left:72%}
+.distance-avatar img{width:100px;height:82px;object-fit:contain}
+.distance-avatar .distance-name{font-size:12px;font-weight:950;margin-top:2px}
+.distance-line{position:absolute;left:18%;top:52%;height:0;border-top:2px dashed #c3cad4;z-index:1;transition:width .06s linear}
+.distance-readout{text-align:center;font-size:12px;font-weight:900;color:var(--muted);margin-top:-6px;margin-bottom:12px}
+.outcome-pop{position:absolute;left:50%;top:67%;transform:translate(-50%,-50%) scale(.55);font-size:46px;z-index:31;opacity:0;pointer-events:none;filter:drop-shadow(0 5px 10px rgba(0,0,0,.12))}
+.outcome-pop.show{animation:outcomePop .8s ease-out forwards}
+@keyframes outcomePop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}22%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}70%{opacity:1;transform:translate(-50%,-62%) scale(1)}100%{opacity:0;transform:translate(-50%,-78%) scale(.9)}}
+@media(max-width:620px){.choice-stack{grid-template-columns:1fr}.distance-stage{height:190px}.distance-avatar img{width:82px;height:68px}}
+
+
+
+/* ===== fix2 additions (27.9.2026) ===== */
+.page-card{max-width:760px;margin:18px auto 0;border:1px solid var(--line);border-radius:24px;background:#fff;padding:24px}
+.page-card p{font-size:16px;line-height:1.65;color:#3f4754}
+.page-card p.small{font-size:14px;color:#3f4754}
+.page-err{color:#a33b3b;font-weight:850;font-size:13px;min-height:18px;text-align:center;margin-top:8px}
+.text-input{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fafbfc;outline:none;font-size:15px}
+.iam-grid{display:grid;gap:10px;margin-top:14px}
+.iam-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center}
+.iam-row .lbl{font-weight:900;font-size:14px;white-space:nowrap}
+.sent-list{display:grid;gap:10px;margin-top:14px}
+.sent-row{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff}
+.sent-row.sel{border-color:#16a34a;box-shadow:0 0 0 2px rgba(22,163,74,.15)}
+.sent-row input[type=checkbox]{width:20px;height:20px;accent-color:#16a34a}
+.sent-row .lbl{font-weight:900;font-size:14px;white-space:nowrap;color:var(--muted)}
+.sent-row input[type=text]{border:0;background:transparent;font-size:15px;width:100%;outline:none}
+.sent-row input[type=text]:focus{background:#fafbfc}
+.sent-row .static{font-size:15px}
+.sel-count{font-size:14px;font-weight:900;color:#3f4754;margin-top:10px;text-align:center}
+.mx{width:100%;border-collapse:collapse;margin-top:6px}
+.mx th{font-size:11px;font-weight:900;color:var(--muted);padding:6px 4px;text-align:center;line-height:1.25;vertical-align:bottom}
+.mx td{padding:9px 4px;border-top:1px solid var(--line);font-size:14px}
+.mx td:first-child{font-weight:800;padding-right:8px}
+.mx td.c{text-align:center}
+.mx input[type=radio]{width:19px;height:19px;accent-color:#181c24}
+.mx tr.miss td{background:#fff7f7}
+.cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.pcard{border:1px solid var(--line);border-radius:18px;padding:14px 10px;text-align:center;background:#fff;cursor:pointer;user-select:none}
+.pcard img{width:84px;height:70px;object-fit:contain;display:block;margin:0 auto 6px}
+.pcard .who{font-weight:950;font-size:15px}
+.pcard .sub{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+.pcard.sel{border-color:#181c24;box-shadow:0 0 0 2px rgba(24,28,36,.18)}
+.pcard.none{grid-column:1 / -1;padding:12px}
+.pcard.dis{opacity:.45;cursor:default}
+.meet-sent{font-size:14px;line-height:1.55;color:#3f4754;text-align:left;margin-top:8px}
+.meet-sent div{padding:3px 0;border-top:1px dashed var(--line)}
+.meet-sent div:first-child{border-top:0}
+.conn-legend{text-align:center;font-size:11px;color:var(--muted);margin-top:6px}
+.conn-summary{font-size:15px;line-height:1.7;margin-top:12px;text-align:center}
+.spin{width:38px;height:38px;border:4px solid #e3e8ef;border-top-color:#181c24;border-radius:50%;margin:22px auto;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wait-text{text-align:center;font-weight:900;font-size:15px}
+.reveal{margin-top:18px;border:1px solid var(--line);border-radius:18px;padding:18px;background:#fafbfc;text-align:center}
+.reveal .big{font-size:30px;font-weight:950;letter-spacing:-.03em}
+.reveal .words{font-size:15px;font-weight:900;margin-top:4px}
+.reveal .bar{height:12px;background:#e9edf2;border-radius:999px;overflow:hidden;max-width:320px;margin:12px auto 0}
+.reveal .bar div{height:100%;border-radius:inherit;background:#16a34a}
+.boost-block{border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:14px}
+.boost-title{font-weight:950;margin-bottom:6px}
+.boost-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;margin-top:10px}
+.boost-row .lbl{font-size:12px;font-weight:900;color:var(--muted);white-space:nowrap;min-width:52px}
+.opt-row{display:flex;gap:8px;flex-wrap:wrap}
+.opt{border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-weight:900;font-size:13px;cursor:pointer;background:#fff;user-select:none}
+.opt.sel{background:#181c24;color:#fff;border-color:#181c24}
+.opt .hint{display:block;font-size:10px;font-weight:700;opacity:.75}
+select.sel-input{border:1px solid var(--line);border-radius:12px;padding:9px 12px;background:#fff;font-size:14px}
+.aw-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.aw-row:first-child{border-top:0}
+.db-opt{display:block;padding:9px 12px;border:1px solid var(--line);border-radius:12px;margin:6px 0;cursor:pointer;font-weight:700;font-size:15px}.db-opt input{margin-right:8px}
+.db-again{background:#fff3f3;border:1px solid #f0b4b4;border-radius:12px;padding:10px 12px;margin:10px 0;color:#7a1f1f;font-size:15px;line-height:1.5}
+.db-ack{display:block;margin-top:12px;font-weight:800;font-size:15px;line-height:1.5}.db-ack input{margin-right:8px}
+.cond-tag{font-size:10px;color:#c5ccd6;text-align:right;padding:0 18px 6px}
+@media(max-width:720px){.cards4{grid-template-columns:repeat(2,1fr)}.cards3{grid-template-columns:1fr}.mx th{font-size:9px}.mx td{font-size:12px}}
+/* ===== fix4: grayscale timing ring, own-color progress rings, ranking tables, wish bars ===== */
+.zone-green{background:#181c24}.zone-orange{background:#8a94a6}.zone-red{background:#d9dee6;border:1px solid #b8c0cc}
+.practice-target-ring{background:conic-gradient(#d9dee6 0 .58turn,#8a94a6 .58turn .63turn,#181c24 .63turn .68turn,#8a94a6 .68turn .73turn,#d9dee6 .73turn 1turn)!important}
+.practice-ring{background:conic-gradient(var(--you-color,#171a21) calc(var(--p,0)*1turn),rgba(23,26,33,.10) 0)}
+.hold-ring{background:conic-gradient(var(--you-color,#171a21) calc(var(--p,0)*1turn),rgba(23,26,33,.10) 0)}
+.adjust-success-ring{background:conic-gradient(#d9dee6 0 58%,#8a94a6 58% 63%,#181c24 63% 68%,#8a94a6 68% 73%,#d9dee6 73% 100%)}
+.meet-grid.four{grid-template-columns:repeat(4,1fr)}
+.rank-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rank-box{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fff}
+.rank-box-title{font-weight:950;font-size:14px}.rank-box-sub{font-size:11px;color:var(--muted);margin-bottom:8px}
+table.rk{width:100%;border-collapse:collapse}table.rk td{padding:6px 4px;border-top:1px solid var(--line);font-size:14px;font-weight:800}table.rk tr.me td{background:#f4f6f8}table.rk td:last-child{text-align:right}
+.wish-row{display:grid;grid-template-columns:170px 1fr 40px;gap:10px;align-items:center;padding:6px 0}
+.ans-block{padding:10px 0;border-top:1px solid var(--line)}.ans-block:first-child{border-top:0}.ans-name{font-weight:950;font-size:15px;margin-bottom:2px}
+.wish-name{font-weight:950;font-size:14px}.wish-track{height:12px;background:#e9edf2;border-radius:999px;overflow:hidden}.wish-fill{height:100%;border-radius:inherit}.wish-val{font-weight:900;font-size:13px;text-align:right;color:var(--muted)}
+@media(max-width:820px){.meet-grid.four{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.meet-grid.four{grid-template-columns:1fr}.rank-grid{grid-template-columns:1fr}}
+/* ===== fix12: vector figures ===== */
+.fig{display:block;margin:0 auto}.fig svg{width:100%;height:100%;display:block}
+.sprite-shell .fig{width:128px;height:128px}
+.practice-avatar-shell .fig{width:118px;height:118px}
+.ball-img svg{width:27px;height:27px;display:block}
+.avf-wrap .avf{margin:10px auto 4px}
+.avf-wrap h2{display:none}
+.avf-wrap p{font-size:14px;line-height:1.55;color:#3f4754}
+/* ===== fix11 ===== */
+.stairsvg{width:100%;height:auto;display:block;max-width:420px;margin:0 auto}
+.step.clickable{cursor:pointer}.step.clickable:hover rect.front{filter:brightness(1.12)}.step.sel rect.front{stroke:#1a6fbf;stroke-width:3}
+.big-note{font-size:15px;padding:12px 16px}
+.example-arena{display:grid;grid-template-columns:96px 1fr 96px;gap:8px;align-items:stretch;margin:12px 0 4px}
+.ex-board{background:#fbfcfd;border:1px solid var(--line);border-radius:14px;padding:8px 6px;font-size:9px}
+.ex-board-title{font-weight:950;font-size:10px;text-align:center;margin-bottom:6px}
+.ex-group{text-align:center;font-weight:900;background:#eaf8ef;color:#17633a;border:1px solid #b9e4c8;border-radius:999px;padding:2px 4px;margin-bottom:6px}
+.ex-row{display:grid;grid-template-columns:1fr;gap:2px;margin:4px 0;font-weight:800}
+.ex-bar{display:block;height:6px;background:#e9edf2;border-radius:999px;overflow:hidden}.ex-bar i{display:block;height:100%;background:#8a94a6;border-radius:inherit}
+.ex-arena{position:relative;height:300px;background:radial-gradient(circle at 50% 50%,rgba(24,28,36,.04),transparent 40%),#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.ex-player{position:absolute;width:90px;text-align:center}
+.ex-fig{width:70px;height:70px;margin:0 auto}.ex-fig svg{width:100%;height:100%;display:block}
+.ex-name{font-size:11px;font-weight:900}
+.ex-player.pos-blue{left:50%;top:4%;transform:translateX(-50%)}.ex-player.pos-orange{right:3%;top:50%;transform:translateY(-50%)}.ex-player.pos-purple{left:3%;top:50%;transform:translateY(-50%)}.ex-player.pos-you{left:50%;bottom:4%;transform:translateX(-50%)}
+.example-caption{font-size:14px;color:#3f4754;line-height:1.5;margin:4px 0 12px}
+@media(max-width:620px){.example-arena{grid-template-columns:1fr}.ex-board{display:none}}
+.rank-count{font-size:10px;color:var(--muted);font-weight:800}
+.board-pill{text-align:center;font-size:13px;font-weight:950;background:#f1f3f6;color:#181c24;border:1px solid var(--line);border-radius:999px;padding:6px 8px;margin:0 0 10px}
+.player-sent{font-size:11px;line-height:1.3;color:#3f4754;font-style:italic;margin-top:4px;min-height:14px;max-width:154px;margin-left:auto;margin-right:auto}
+.outcome-big{position:absolute;right:14px;top:12px;z-index:40;text-align:center;pointer-events:none;opacity:0;transition:opacity .12s}
+.outcome-big.show{opacity:1}
+.outcome-big .thumb{font-size:44px;line-height:1;filter:drop-shadow(0 6px 12px rgba(0,0,0,.18))}
+.outcome-big .txt{margin-top:4px;font-size:14px;font-weight:950;padding:5px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:0 8px 18px rgba(17,24,39,.10)}
+.outcome-big.ok .txt{color:#17633a;background:#eaf8ef;border-color:#b9e4c8}
+.outcome-big.bad .txt{color:#9f2626;background:#fdecec;border-color:#f3bcbc}
+.warn-banner{position:absolute;left:50%;top:70px;transform:translateX(-50%);z-index:45;background:#fff7e6;border:2px solid #f0b429;color:#7a4b00;border-radius:16px;padding:12px 18px;font-weight:900;font-size:14px;max-width:420px;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,.12)}
+.hud-goal{font-size:11px;color:var(--muted);margin-top:3px;font-weight:800}
+.timer-pill{display:inline-block;background:#eef5fc;color:#1a4f7f;border:1px solid #c9dcf0;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:900;font-variant-numeric:tabular-nums;margin-bottom:8px}
+.timer-pill.warn{background:#fff3cd;border-color:#f1d27a;color:#7a5a00}
+.emoji-face{font-size:64px;text-align:center;margin:6px 0 2px;line-height:1}
+.reveal-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.reveal-card{border:2px solid var(--line);border-radius:20px;padding:18px 14px;text-align:center;background:#fff;cursor:pointer;min-height:170px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.reveal-card:hover{border-color:#aeb8c5;background:#fafbfc}
+.reveal-card .q{font-weight:900;font-size:14px}
+.reveal-card .qm{font-size:54px;font-weight:950;color:#8a94a6;line-height:1}
+.reveal-card .hint{font-size:11px;color:var(--muted);font-weight:800}
+.reveal-card.revealed{border-color:#16a34a;cursor:default}
+.reveal-card.locked{opacity:.55;cursor:default}
+.reveal-card .big{font-size:30px;font-weight:950;letter-spacing:-.03em}
+.reveal-card .bar{height:12px;background:#e9edf2;border-radius:999px;overflow:hidden;margin:6px auto 0;max-width:220px}
+.reveal-card .bar div{height:100%;background:#16a34a;border-radius:inherit}
+.shown-note{background:#eef5fc;border:1px solid #c9dcf0;color:#1a4f7f;border-radius:14px;padding:10px 14px;font-weight:900;font-size:15px;margin-bottom:12px;text-align:center}
+.mx td.stem{text-align:left;font-weight:800;width:46%}
+.mx tbody tr:nth-child(even) td{background:#f7f9fb}
+.mx thead th{position:sticky;top:0;background:#fff;z-index:2;font-size:12px;padding:8px 4px}
+.mx td{padding:11px 4px;font-size:15px}
+.mx input[type=radio]{width:21px;height:21px}
+.lsas-list{display:grid;gap:12px}
+.lsas-item{border:1px solid var(--line);border-radius:16px;padding:12px 14px;background:#fff}
+.lsas-item.missing{outline:2px solid #f3c2c2}
+.lsas-stem{font-weight:900;font-size:15px;margin-bottom:8px}
+.lsas-row{display:grid;grid-template-columns:118px 1fr;gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line)}
+.lsas-lab{font-size:12px;font-weight:900;color:var(--muted)}
+.lopts{display:flex;flex-wrap:wrap;gap:6px}
+.lopt{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:13px;font-weight:800;cursor:pointer;background:#fff}
+.lopt input{width:16px;height:16px;accent-color:#181c24;margin:0}
+.lopt:has(input:checked){background:#181c24;color:#fff;border-color:#181c24}
+.q-instr{font-size:16px;line-height:1.6;color:#3f4754;background:#f7f9fb;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+#measureScreen.wide{max-width:1100px}#measureScreen.wide .measure-card{max-width:none}
+table.qx.many{min-width:600px}table.qx.many thead th{padding:8px 2px;font-size:14px;vertical-align:top}table.qx.many th.stem-h{width:36%}table.qx.many label.cell{padding:12px 2px}
+table.qx th .anchor{display:block;font-size:11px;font-weight:800;color:var(--muted);margin-top:3px;white-space:normal;max-width:72px;margin-left:auto;margin-right:auto;line-height:1.2}
+.q-sub{font-weight:950;font-size:15px;margin:6px 0}
+.mx-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table.qx{width:100%;min-width:640px;border-collapse:separate;border-spacing:0}
+table.qx thead th{position:sticky;top:0;background:#fff;z-index:2;font-size:13px;font-weight:900;color:#3f4754;padding:10px 6px;text-align:center;vertical-align:bottom;border-bottom:2px solid var(--line);line-height:1.3}
+table.qx th.stem-h{width:44%}
+table.qx td{padding:0;border-top:1px solid var(--line);font-size:15px;vertical-align:middle}
+table.qx td.stem{padding:12px 12px;font-weight:700;text-align:left;line-height:1.4}
+table.qx td.c{text-align:center;cursor:pointer}
+table.qx td.c:hover{background:#eef3f8}
+table.qx label.cell{display:block;padding:12px 4px;cursor:pointer}
+table.qx tbody tr:nth-child(even) td{background:#f7f9fb}
+table.qx tbody tr.miss td{background:#fff3f3}
+table.qx input[type=radio]{width:20px;height:20px;accent-color:#181c24;margin:0;cursor:pointer}
+.bdi-list{display:grid;gap:16px}
+.bdi-item{border:1px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px 8px}
+.bdi-item.missing{outline:2px solid #f3c2c2}
+.bdi-head{font-weight:950;font-size:16px;margin-bottom:8px}
+.bdi-opt{display:grid;grid-template-columns:24px 34px 1fr;gap:8px;align-items:center;padding:9px 8px;border-top:1px solid var(--line);cursor:pointer;font-size:15px;line-height:1.4}
+.bdi-opt:first-of-type{border-top:0}
+.bdi-opt:hover{background:#f7f9fb}
+.bdi-opt input{width:18px;height:18px;accent-color:#181c24;margin:0}
+.bdi-score{font-weight:950;color:#3f4754;text-align:center}
+.bdi-opt:has(input:checked){background:#eef5fc}
+table.ans{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:12px}table.ans th{font-size:12px;color:var(--muted);text-align:left;padding:6px 4px}table.ans td{padding:8px 4px;border-top:1px solid var(--line);font-weight:800}table.ans tr.me td{background:#f4f6f8}
+.pcard .sub{font-size:11px;color:var(--muted);margin-top:4px}
+.progress-wrap{height:6px;background:#eef1f5}.progress-fill{height:100%;background:#181c24;width:0%;transition:width .4s ease}
+.pairs{display:grid;gap:8px;margin-top:10px}
+.pair{display:grid;grid-template-columns:34px 1fr 1fr;gap:8px;align-items:stretch}
+.pair .pairname{font-weight:900;font-size:13px;display:flex;align-items:center}
+.pair .opt{border-radius:14px;text-align:left;font-weight:700;font-size:14px;padding:10px 12px;white-space:normal}
+.pair.missing,.group.missing{outline:2px solid #f3c2c2;border-radius:14px}
+.group{display:grid;grid-template-columns:34px 1fr;gap:8px;margin-top:12px}
+.group .pairname{font-weight:900;font-size:13px;padding-top:10px}
+.group .opts{display:grid;gap:6px}
+.group .opt{border-radius:12px;text-align:left;font-weight:700;font-size:14px;padding:9px 12px;white-space:normal}
+.demog p{margin:10px 0 4px;font-weight:900;font-size:14px}
+.demog input[type=text]{max-width:220px}
+.color-remind{text-align:center;font-weight:900;margin-bottom:10px}
+@media(max-width:820px){.game-layout{grid-template-columns:1fr}.rank-panel{display:none}}
+@media(max-width:620px){.reveal-cards{grid-template-columns:1fr}.pair{grid-template-columns:34px 1fr}.pair .opt:last-child{grid-column:2}}
+</style>
+</head>
+<body>
+<div class="app"><div class="shell">
+<div class="progress-wrap" aria-hidden="true"><div id="progressFill" class="progress-fill"></div></div>
+<div class="topbar"><div class="brand">Colors &amp; Social Choices</div><div><button id="downloadBtn" class="small-btn" disabled>CSV</button> <button id="jsonBtn" class="small-btn" disabled>JSON</button> <button id="restartBtn" class="small-btn">Restart</button></div></div>
+
+<section id="measureScreen" class="screen centered hidden">
+  <div class="measure-card">
+    <div id="measureKicker" class="measure-kicker"></div>
+    <h1 id="measureTitle" class="measure-title"></h1>
+    <p id="measureSub" class="measure-sub"></p>
+    <div id="measureBody"></div>
+    <div id="pageErr" class="page-err"></div>
+    <div class="actions"><button id="measureContinueBtn" class="primary">Continue</button></div>
+  </div>
+</section>
+
+<section id="introScreen" class="screen centered hidden">
+  <h1 class="hero-title">The game</h1>
+  <div class="intro-card">
+    <div id="introExample" class="example-arena"></div>
+    <p>When you have the ball, press and hold the player you want to throw to, then release to make the throw. <strong>The goal of the group is to make as many successful passes as possible.</strong></p>
+  </div>
+  <div class="actions"><button class="primary" id="toIntro2Btn">Continue</button></div>
+</section>
+
+<section id="intro2Screen" class="screen centered hidden">
+  <h1 class="hero-title">Before you begin</h1>
+  <div class="intro-card">
+    <p>After each game, you will make a few choices and answer brief questions about how you feel and about the other players.</p>
+  </div>
+  <div class="actions"><button class="primary" id="toPracticeBtn">Start practice</button></div>
+</section>
+
+<section id="practiceScreen" class="screen centered hidden">
+  <h1 class="hero-title">Practice the throw</h1>
+  <div class="practice-box">
+    <div class="practice-note">Press and hold the Practice Player; release when the moving border reaches the area you want. In the real games you have <span class="idle-secs">10</span> seconds per pass.</div>
+    <div class="zone-legend">
+      <div class="zone-pill"><span class="zone-dot zone-green"></span>Black = 90%</div>
+      <div class="zone-pill"><span class="zone-dot zone-orange"></span>Dark gray = 50%</div>
+      <div class="zone-pill"><span class="zone-dot zone-red"></span>Light gray = 10%</div>
+    </div>
+    <div class="practice-stage">
+      <div id="practiceTarget" class="practice-target">
+        <div id="practiceTargetRing" class="practice-target-ring"></div>
+        <div id="practiceRing" class="practice-ring"></div>
+        <div class="practice-avatar-shell">
+          <div id="practiceFig" class="fig cb-training"></div>
+          <button id="practiceBtn" class="practice-btn" type="button" aria-label="Practice throw"></button>
+        </div>
+        <div class="player-name">Practice Player</div>
+      </div>
+    </div>
+    <div id="practiceProgress" class="practice-progress">0 / 7 practice throws</div>
+    <div id="practiceFeedback" class="practice-feedback"></div>
+    <div class="practice-zone-caption">The shaded areas are shown only in practice.</div>
+    <div class="actions"><button class="primary hidden" id="toMeetBtn">Continue</button></div>
+  </div>
+</section>
+
+<section id="meetScreen" class="screen centered hidden">
+  <h1 class="hero-title">What the other players chose</h1>
+  <p class="hero-sub">The other players' avatars and sentences, and your own.</p>
+  <div id="meetGrid" class="meet-grid"></div>
+  <div id="meetGate" class="sel-count"></div>
+  <div class="actions"><button class="primary" id="toRulesBtn">Continue</button></div>
+</section>
+
+<section id="transitionScreen" class="screen centered hidden">
+  <h1 id="transitionTitle" class="hero-title">Next game</h1>
+  <div class="transition-card"><div id="transitionTimer" class="timer-pill hidden"></div><p id="transitionText"></p></div>
+  <div class="actions"><button id="transitionBtn" class="primary">Continue</button></div>
+</section>
+
+<section id="gameScreen" class="hidden">
+  <div class="hud">
+    <div class="hud-left"><div id="roundBanner" class="round-banner">Game 1 of 3</div><div class="game-title">Throw &amp; Catch</div><div class="tiny">60 throws</div></div>
+    <div id="dots" class="dots"></div>
+    <div class="hud-right"></div>
+  </div>
+  <div class="game-layout">
+    <aside id="inclusionPanel" class="rank-panel left" aria-label="Inclusion ranking">
+      <div id="throwPill" class="board-pill">Throws: 0 of 60</div>
+      <div class="rank-title">Most included</div>
+      <div class="rank-sub">Share of all throws received</div>
+      <div id="inclusionRank" class="rank-list">
+        <div class="rank-row" data-player="blue"><span class="rank-name" data-name="blue">Blue</span><span class="rank-value">0%</span><div class="rank-track"><div class="rank-fill"></div></div><span class="rank-count"></span></div>
+        <div class="rank-row" data-player="orange"><span class="rank-name" data-name="orange">Orange</span><span class="rank-value">0%</span><div class="rank-track"><div class="rank-fill"></div></div><span class="rank-count"></span></div>
+        <div class="rank-row" data-player="purple"><span class="rank-name" data-name="purple">Purple</span><span class="rank-value">0%</span><div class="rank-track"><div class="rank-fill"></div></div><span class="rank-count"></span></div>
+        <div class="rank-row me" data-player="you"><span class="rank-name" id="inclYouName">Me</span><span class="rank-value">0%</span><div class="rank-track"><div class="rank-fill"></div></div><span class="rank-count"></span></div>
+      </div>
+    </aside>
+
+    <div id="arena" class="arena">
+      <div class="player-wrap pos-blue" data-player="blue">
+        <div class="hold-ring"></div><div class="sprite-shell"><div class="holder-indicator"></div><div class="fig edge-blue" data-player-fig="blue"></div><button class="target-btn" data-target="blue"></button></div>
+        <div class="player-name" style="color:#2f6dcc" data-name="blue">Blue</div><div class="player-sent" id="sent-blue"></div>
+      </div>
+      <div class="player-wrap pos-orange" data-player="orange">
+        <div class="hold-ring"></div><div class="sprite-shell"><div class="holder-indicator"></div><div class="fig edge-orange" data-player-fig="orange"></div><button class="target-btn" data-target="orange"></button></div>
+        <div class="player-name" style="color:#d96c20" data-name="orange">Orange</div><div class="player-sent" id="sent-orange"></div>
+      </div>
+      <div class="player-wrap pos-purple" data-player="purple">
+        <div class="hold-ring"></div><div class="sprite-shell"><div class="holder-indicator"></div><div class="fig edge-purple" data-player-fig="purple"></div><button class="target-btn" data-target="purple"></button></div>
+        <div class="player-name" style="color:#7546cf" data-name="purple">Purple</div><div class="player-sent" id="sent-purple"></div>
+      </div>
+      <div class="player-wrap pos-you" data-player="you">
+        <div class="hold-ring"></div><div class="sprite-shell"><div class="holder-indicator"></div><div class="fig" data-player-fig="you"></div></div>
+        <div id="youName" class="player-name">Me</div><span class="me-tag">(Me)</span><div class="player-sent" id="sent-you"></div>
+      </div>
+      <div class="center-message"><div id="turnTitle" class="center-title">Game starting…</div><div id="turnSub" class="center-sub"></div></div>
+      <div id="heartPop" class="heart-pop">♥</div>
+      <div id="outcomeBig" class="outcome-big"><div class="thumb" id="outcomeThumb">👍</div><div class="txt" id="outcomeTxt"></div></div>
+      <div id="warnBanner" class="warn-banner hidden"></div>
+      <div id="ballFly" class="ball-img"></div>
+    </div>
+
+    <aside id="successPanel" class="rank-panel right" aria-label="Success ranking">
+      <div id="groupCount" class="board-pill">Group: 0 of 0</div>
+      <div class="rank-title">Successful passes</div>
+      <div class="rank-sub">Each player's successful passes</div>
+      <div id="successRank" class="rank-list">
+        <div class="rank-row" data-player="blue"><span class="rank-name" data-name="blue">Blue</span><span class="rank-value">0%</span><div class="rank-track"><div class="rank-fill"></div></div><span class="rank-count"></span></div>
+        <div class="rank-row" data-player="orange"><span class="rank-name" data-name="orange">Orange</span><span class="rank-value">0%</span><div class="rank-track"><div class="rank-fill"></div></div><span class="rank-count"></span></div>
+        <div class="rank-row me" data-player="you"><span class="rank-name" id="succYouName">Me</span><span class="rank-value">0%</span><div class="rank-track"><div class="rank-fill"></div></div><span class="rank-count"></span></div>
+        <div class="rank-row" data-player="purple"><span class="rank-name" data-name="purple">Purple</span><span class="rank-value">0%</span><div class="rank-track"><div class="rank-fill"></div></div><span class="rank-count"></span></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section id="completeStudyScreen" class="screen centered hidden">
+  <div class="complete">
+    <h1 class="hero-title">Thank you</h1>
+    <p id="completeText">You have completed the study.</p>
+    <p class="complete-data">Your responses and game events have been recorded.</p>
+    <div class="actions"><button id="finalDownloadBtn" class="secondary">Download CSV</button><button id="finalJsonBtn" class="secondary">Download JSON</button></div>
+  </div>
+</section>
+<div id="condTag" class="cond-tag hidden"></div>
+</div></div>
+
+<script src="avatar.js"></script>
+<script src="avatar_cb.js"></script>
+<script>
+(()=>{
+"use strict";
+
+/* ================= configuration ================= */
+const CONFIG={
+  endpoint:'',                     // data receiver (POST JSON at the end). Empty = nothing is sent (local testing); the last screen offers downloads.
+  completionUrl:'',                // Prolific completion URL. Empty = "you may close this window".
+  contactEmail:'Cyberstatusegs@gmail.com',
+  timeScale:1,                     // multiplies every waiting delay (?fast=1 sets 0.15 for testing)
+  hideUnchangedBoardInGame2:false, // Roy 29.9: both boards visible in every game (true = Dan's design, hide the unchanged one in Game 2)
+  traitsPre:['spin','bdi','bpni','fpes'],   // BEFORE the task (Roy, 30.9): social anxiety, mood, relationships, fear of positive evaluation
+  traitsPost:['npi16','soas','lsas'],       // at the END: NPI-16, sense of absence (Efrati & Potenza 2026), LSAS (fear only); items identical to CyberStatus v3
+  idleMs:10000,                    // (Roy, 30.9: 10 s) a turn without a pass after this many ms is passed automatically and counted as unsuccessful
+  sentenceTimerMs:60000,           // time limit for the three sentences before Games 2 and 3 (none before Game 1)
+  pageTimers:{distress:20000,panas:40000,status:45000,belonging:50000,participation:20000,range_choice:20000,range_adjust:20000,passes:30000,wish_rank:20000,others_wish:20000,lookback:30000,color:20000,rep_sentence:20000,avatar:30000,sentences_show:20000,text:20000,traits_intro:20000}, // time limits between the games (Roy, 30.9): at zero the page moves on; text = the "Questions for the whole group" page
+  transitionTimerMs:15000,         // (Roy, 30.9) the "Game 1" / "Game 2" screens continue by themselves after this long
+  forceCondition:null,             // 'A' (status increased) | 'B' (affiliation increased) | null = random. ?cond=A|B overrides.
+  version:'fix28_2026-09-30'
+};
+const q=new URLSearchParams(location.search);
+if(q.get('fast')){const f=Number(q.get('fast'));CONFIG.timeScale=(f>0&&f<1)?f:0.15}
+const COND=String(q.get('cond')||CONFIG.forceCondition||(Math.random()<.5?'A':'B')).toUpperCase()==='B'?'B':'A';
+const DEBUG=!!q.get('debug');
+const META={pid:q.get('PROLIFIC_PID')||'',study:q.get('STUDY_ID')||'',session:q.get('SESSION_ID')||'',condition:COND,version:CONFIG.version,start:new Date().toISOString(),ua:navigator.userAgent};
+const T=ms=>Math.round(ms*CONFIG.timeScale);
+
+/* ================= players ================= */
+/* figures: the CyberStatus avatar (avatar.js) drawn as the Throw & Catch character (avatar_cb.js); no image assets */
+const AV=()=>window.AvatarField.renderers.cyberball;
+const BOT_POS={blue:[62,94],purple:[44,68],orange:[80,74]};   // the other players' avatars, x = approachability, y = size: Tom very big, Emma and Taylor fairly big (Roy, 29.9)
+const OTHERS_WISH_RANK={blue:1,orange:1,purple:2};             // the other players' displayed desired step in the passing ranking (DRAFT)
+const AVATAR_TEXT="Drag the figure: right = more approachable, left = more reserved; up = bigger, down = smaller.";
+const COLORS=[
+  {name:"Green",hex:"#16a34a"},{name:"Pink",hex:"#ec4899"},{name:"Teal",hex:"#14b8a6"},
+  {name:"Yellow",hex:"#eab308"},{name:"Red",hex:"#ef4444"},{name:"Brown",hex:"#8b5e34"}
+];
+const BOTS=["blue","orange","purple"];
+const ALL=["blue","orange","purple","you"];
+const NAME={blue:"Tom",orange:"Emma",purple:"Taylor"};          // one man, one woman, one gender-neutral name (Roy, 27.9)
+const HEX={blue:"#2f6dcc",orange:"#d96c20",purple:"#7546cf"};
+const LABEL={blue:NAME.blue,orange:NAME.orange,purple:NAME.purple,you:"Me"};
+const BOT_SENTENCES={                                            // three "I am …" sentences per player per game, all new each game; a few natural slips on purpose (Roy, 29.9). DRAFT for approval.
+  blue:{1:["usually the one who organizes things","into football and podcasts","not great at small talk tbh"],
+        2:["a fast learner","not a morning person","into road trips"],
+        3:["pretty direct","defintely a coffee person","into strategy games"]},
+  orange:{1:["easygoing and enjoy meeting new people","a big fan of cooking for friends","happiest outdoors"],
+          2:["always up for a game","a bit of a dreamer","into yoga"],
+          3:["a dog person","curious about people","a good cook (or so my freinds say)"]},
+  purple:{1:["a bit quiet at first, then i open up","into music and board games","someone who notices how other people play"],
+          2:["a good listener","into photography","a night owl"],
+          3:["a careful planner","into hiking","someone who likes to help"]}
+};
+const OTHERS_PASS_WISH={blue:82,orange:88,purple:78};            // shown wish to receive passes (1–100)
+const OTHERS_SELF_SKILL={blue:80,orange:76,purple:78};           // shown self-rated passing skill (1–100)            // the other players' displayed answers to "how much do you want to receive passes" (0–100)
+const FEEDBACK={blue:82,orange:88,purple:80};                    // the revealed rating (0–100, the same scale the participant used) — always positive, identical in both areas
+const fbWords=(area,v)=>area==="passer"?(v>=85?"a very good passer":"a good passer"):(v>=85?"very nice":"nice");
+const ADJ={selfMaxSuccesses:0,botMaxPoints:0};                    // Roy 29.9: the throwing-range change is a measure only; it must not affect the game (set >0 to make it real)
+
+/* ================= schedules (fix1, 25.9) ================= */
+const EXCLUSION_SLOTS=[7,13,20,26,33,39,46,52,59];                    // 9 of 60 = 15% of the passes reach the participant
+const INCLUSION_SLOTS=[3,5,7,9,12,14,16,18,20,22,25,27,29,31,33,35,37,40,42,44,46,48,50,53,55,57,59];   // 27 of 60 = 45% (Roy, 29.9: a sharper rise); the others get about 18% each
+const LOW9=[false,false,true,false,false,false,false,true,false];      // 2 of 9 own throws succeed (22%) — Roy, 30.9 (was 3 of 9)
+const HIGH9=[true,true,true,true,false,true,true,true,true];           // 8 of 9 (89%); running display never below 80%
+const LOW27=[false,false,true,false,false,false,false,true,false,false,false,true,false,false,false,false,true,false,false,false,true,false,false,false,false,true,false]; // 6 of 27 (22%) — Roy, 30.9 (was 9 of 27)
+const LOW_LOW={code:"LA_LS",botSuccess:.80,userReceiveSlots:EXCLUSION_SLOTS,participantBag:LOW9,showInclusion:true,showSuccess:true};
+const CONDITIONS={
+  A:{label:"status_increased",
+     games:{1:LOW_LOW,2:{code:"LA_HS",botSuccess:.50,userReceiveSlots:EXCLUSION_SLOTS,participantBag:HIGH9,showInclusion:false,showSuccess:true}}},
+  B:{label:"affiliation_increased",
+     games:{1:LOW_LOW,2:{code:"HA_LS",botSuccess:.80,userReceiveSlots:INCLUSION_SLOTS,participantBag:LOW27,showInclusion:true,showSuccess:false}}}
+};
+const G=r=>CONDITIONS[COND].games[r];
+/* throwing-range adjustments chosen before Game 2 take effect in Game 2 (small, real effects; see CHANGES note):
+   self: |adjustment| ≥ 25 changes one scheduled throw (+1 success or −1 success); another player: success rate ± adjustment/500 (±10 points at ±50) */
+const ZONE={best:"#181c24",mid:"#8a94a6",outer:"#d9dee6"};
+const READ_GATE_MS=10000;
+
+/* ================= questionnaires ================= */
+const PANAS={key:"panas",title:"How do you feel right now?",sub:"This scale consists of a number of words that describe different feelings and emotions. Read each item and indicate to what extent you feel this way right now, at the present moment.",
+  scale:["Very slightly or not at all","A little","Moderately","Quite a bit","Extremely"],
+  items:["Upset","Strong","Guilty","Proud","Ashamed","Active","Attentive","Afraid","Happy","Humiliated","Angry","Lonely","Sad"]}; // Roy's list (29.9): eight PANAS items + happy, humiliated, angry, lonely, sad
+const METAPERC={key:"metaperc",title:"How the other players saw you",sub:"To what extent did the other players perceive you as:",items:["Competent","Likable","Skilled","Nice","Strong","Trustworthy","Confident","Cooperative","A leader","A friend"]};
+const STATUS={key:"status",title:"About the other players",sub:"For each statement, please indicate how much you agree, thinking about the other players:",
+  scale:["Strongly disagree","Disagree","Neither agree nor disagree","Agree","Strongly agree"],
+  items:["I feel that they respect my achievements","I feel that they think highly of my abilities and talents","I feel that they admire me","I feel that they consider me a success","I feel that they look up to me","I feel that they see me as an important person","I feel that they consider me a high-status individual"]};
+const BELONG={key:"belonging",title:"About the group",sub:"Please indicate how much you agree or disagree with the following statements regarding the other players:",
+  scale:["Strongly disagree","Somewhat disagree","Neither agree nor disagree","Somewhat agree","Strongly agree"],
+  items:["I felt included","I had close bonds with the other players","I felt like an outsider","I felt as if people do not care about me","I felt accepted by others","I felt distant","I felt isolated","I felt like a stranger","I had a place in the game with the other players","The other players did not involve me"]};
+
+const ITEMS={ // trait questionnaires, verbatim copy of CyberStatus v3 items.js (29.9.2026)
+  spin: { title: 'Please indicate how much the following problems have bothered you during the past week. Mark only one box for each problem, and be sure to answer all items.',
+    scale: ['Not at all','A little bit','Somewhat','Very much','Extremely'], values: [0,1,2,3,4],
+    items: ['I am afraid of people in authority.','I am bothered by blushing in front of people.','Parties and social events scare me.','I avoid talking to people I don’t know.','Being criticized scares me a lot.','I avoid doing things or speaking to people for fear of embarrassment.','Sweating in front of people causes me distress.','I avoid going to parties.','I avoid activities in which I am the center of attention.','Talking to strangers scares me.','I avoid having to give speeches.','I would do anything to avoid being criticized.','Heart palpitations bother me when I am around people.','I am afraid of doing things when people might be watching.','Being embarrassed or looking stupid are among my worst fears.','I avoid speaking to anyone in authority.','Trembling or shaking in front of others is distressing to me.'] },
+  npi16: { title: 'Read each pair of statements below and select the one that comes closest to describing your feelings and beliefs about yourself. You may feel that neither statement describes you well, but pick the one that comes closest. Please complete all pairs.',
+    // key = index (0 = left statement, 1 = right statement) of the narcissism-consistent statement (Ames et al., 2006); score = number of keyed choices, 0–16
+    pairs: [['I really like to be the center of attention','It makes me uncomfortable to be the center of attention'],
+            ['I am no better or no worse than most people','I think I am a special person'],
+            ['Everybody likes to hear my stories','Sometimes I tell good stories'],
+            ['I usually get the respect that I deserve','I insist upon getting the respect that is due me'],
+            ['I don\'t mind following orders','I like having authority over people'],
+            ['I am going to be a great person','I hope I am going to be successful'],
+            ['People sometimes believe what I tell them','I can make anybody believe anything I want them to'],
+            ['I expect a great deal from other people','I like to do things for other people'],
+            ['I like to be the center of attention','I prefer to blend in with the crowd'],
+            ['I am much like everybody else','I am an extraordinary person'],
+            ['I always know what I am doing','Sometimes I am not sure of what I am doing'],
+            ['I don\'t like it when I find myself manipulating people','I find it easy to manipulate people'],
+            ['Being an authority doesn\'t mean that much to me','People always seem to recognize my authority'],
+            ['I know that I am good because everybody keeps telling me so','When people compliment me I sometimes get embarrassed'],
+            ['I try not to be a show off','I am apt to show off if I get the chance'],
+            ['I am more capable than other people','There is a lot that I can learn from other people']],
+    key: [0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,0] },
+  fpes: { title: 'Read each of the following statements carefully and answer the degree to which you feel the statement is characteristic of you, using the scale from 0 (not at all true) to 9 (very true). For each statement, respond as though it involves people that you do not know very well.',
+    scale: ['0','1','2','3','4','5','6','7','8','9'], values: [0,1,2,3,4,5,6,7,8,9], anchors: ['Not at all true','Very true'],
+    items: ['I am uncomfortable exhibiting my talents to others, even if I think my talents will impress them.','It would make me anxious to receive a compliment from someone that I am attracted to.','I try to choose clothes that will give people little impression of what I am like.','I feel uneasy when I receive praise from authority figures.','If I have something to say that I think a group will find interesting, I typically say it.','I would rather receive a compliment from someone when that person and I were alone than when in the presence of others.','If I was doing something well in front of others, I would wonder whether I was doing “too well”.','I generally feel uncomfortable when people give me compliments.','I don’t like to be noticed when I am in public places, even if I feel as though I am being admired.','I often feel under-appreciated, and wish people would comment more on my positive qualities.'] },
+  // BDI-II (Beck, Steer & Brown, 1996) as administered in CyberStatus Study 1 (20 groups; the suicidality group is omitted, per the lab's
+  // practice and Roy's instruction of 29.9.2026). Copyrighted instrument: use under the lab's own licence. Groups 15 (sleep) and 17
+  // (appetite) have seven statements scored 0,1,1,2,2,3,3. Total 0–60.
+  bdi: { title: 'This questionnaire consists of 20 groups of statements. Please read each group of statements carefully, and then pick out the one statement in each group that best describes the way you have been feeling during the past two weeks, including today. If several statements in a group seem to apply equally well, pick the one with the highest number. Be sure that you do not choose more than one statement for any group, including Item 15 (Changes in Sleeping Pattern) and Item 17 (Changes in Appetite).',
+    groups: [["I do not feel sad.", "I feel sad much of the time.", "I am sad all the time.", "I am so sad or unhappy that I can't stand it."], ["I am not discouraged about my future.", "I feel more discouraged about my future than I used to be.", "I do not expect things to work out for me.", "I feel my future is hopeless and will only get worse."], ["I do not feel like a failure.", "I have failed more than I should have.", "As I look back, I see a lot of failures.", "I feel I am a total failure as a person."], ["I get as much pleasure as I ever did from the things I enjoy.", "I don't enjoy things as much as I used to.", "I get very little pleasure from the things that I used to enjoy.", "I can't get any pleasure from the things I used to enjoy."], ["I don't feel particularly guilty.", "I feel guilty over many things I have done or should have done.", "I feel quite guilty most of the time.", "I feel guilty all of the time."], ["I don't feel I am being punished.", "I feel I may be punished.", "I expect to be punished.", "I feel I am being punished."], ["I feel the same about myself as ever.", "I have lost confidence in myself.", "I am disappointed in myself.", "I dislike myself."], ["I don't criticize or blame myself more than usual.", "I am more critical of myself than I used to be.", "I criticize myself for all of my faults.", "I blame myself for everything bad that happens."], ["I don't cry anymore than I used to.", "I cry more than I used to.", "I cry over every little thing.", "I feel like crying, but I can't."], ["I am no more restless or wound up than usual.", "I feel more restless or wound up than usual.", "I am so restless or agitated that it's hard to stay still.", "I am so restless or agitated that I have to keep moving or doing something."], ["I have not lost interest in other people or activities.", "I am less interested in other people or things than before.", "I have lost most of my interest in other people or things.", "It's hard to get interested in anything."], ["I make decisions about as well as ever.", "I find it more difficult to make decisions than usual.", "I have much greater difficulty in making decisions than I used to.", "I have trouble making any decisions."], ["I do not feel I am worthless.", "I don't consider myself as worthwhile and useful as I used to.", "I feel more worthless as compared to other people.", "I feel utterly worthless."], ["I have as much energy as ever.", "I have less energy than I used to have.", "I don't have enough energy to do very much.", "I don't have enough energy to do anything."], ["I have not experienced any change in my sleeping pattern.", "I sleep somewhat more than usual.", "I sleep somewhat less than usual.", "I sleep a lot more than usual.", "I sleep a lot less than usual.", "I sleep most of the day.", "I wake up 1-2 hours early and can't get back to sleep."], ["I am no more irritable than usual.", "I am more irritable than usual.", "I am much more irritable than usual.", "I am irritable all the time."], ["I have not experienced any change in my appetite.", "My appetite is somewhat less than usual.", "My appetite is somewhat greater than usual.", "My appetite is much less than before.", "My appetite is much greater than usual.", "I have no appetite at all.", "I crave food all the time."], ["I can concentrate as well as ever.", "I can't concentrate as well as usual.", "It's hard to keep my mind on anything for very long.", "I find I can't concentrate on anything."], ["I am no more tired or fatigued than usual.", "I get more tired or fatigued more easily than usual.", "I am too tired or fatigued to do a lot of the things I used to do.", "I am too tired or fatigued to do most of the things I used to do."], ["I have not noticed any recent change in my interest in sex.", "I am less interested in sex than I used to be.", "I am much less interested in sex now.", "I have lost interest in sex completely."]],
+    scores: [[0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 1, 2, 2, 3, 3], [0, 1, 2, 3], [0, 1, 1, 2, 2, 3, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]] },
+  // Sense of Absence Scale (SoAS; Efrati & Potenza, 2026, Journal of Behavioral Addictions, 15(1), 230–244, doi 10.1556/2006.2025.00373), 14 items,
+  // 1 = do not agree … 7 = agree very much; single factor; item wording from Table 2 of the paper.
+  soas: { title: 'Please indicate how much you agree with each of the following statements.',
+    scale: ['Do not agree 1','2','3','4','5','6','Agree very much 7'], values: [1,2,3,4,5,6,7],
+    items: ['My heart aches, because it seems that no one truly loves me','Sometimes I think it would have been better if I didn\'t exist at all','At the end of the day, I feel like I\'ve wasted another day for nothing','I feel alone in the world, as if no one understands me','It\'s hard for me to feel loved or to love others, even though I try','Almost nothing interests me, everything seems boring','Even when I\'m with family and friends, I still feel lonely','It\'s hard for me to get up in the morning because I can\'t find a good reason','I struggle to remember the last time I truly felt happy or full of life','It\'s hard for me to find someone who truly understands me','I feel like I\'m watching my life from the outside, unable to truly participate','I feel like I don\'t belong anywhere, and it hurts','There\'s a hole in my heart that I can\'t fill, no matter what I do','I feel transparent, as if no one really sees me'] },
+  // PHQ-9 kept for reference; not administered in the pilot (Roy, 29.9.2026: BDI-II instead).
+  phq9: { title: 'Over the last two weeks, how often have you been bothered by any of the following problems?',
+    scale: ['Not at all','Several days','More than half the days','Nearly every day'], values: [0,1,2,3],
+    items: ['Little interest or pleasure in doing things','Feeling down, depressed, or hopeless','Trouble falling or staying asleep, or sleeping too much','Feeling tired or having little energy','Poor appetite or overeating','Feeling bad about yourself — or that you are a failure or have let yourself or your family down','Trouble concentrating on things, such as reading the newspaper or watching television','Moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual','Thoughts that you would be better off dead or of hurting yourself in some way'] },
+  bfne: { title: 'Read each of the following statements carefully and indicate how characteristic it is of you:',
+    scale: ['Not at all characteristic of me','A little characteristic of me','Somewhat characteristic of me','Very characteristic of me','Extremely characteristic of me'], values: [1,2,3,4,5],
+    items: ['I worry about what other people will think of me even when I know it doesn\'t make any difference.','It bothers me when people form an unfavourable impression of me.','I am frequently afraid of other people noticing my shortcomings.','I rarely worry about what kind of impression I am making on someone.','I am afraid that others will not approve of me.','I am afraid that other people will find fault with me.','Other people\'s opinions of me do not bother me.','When I am talking to someone, I worry about what they may be thinking about me.','I am usually worried about what kind of impression I make.','If I know someone is judging me, it has little effect on me.','Sometimes I think I am too concerned with what other people think of me.','I often worry that I will say or do wrong things.'] },
+  bpni: { title: 'A number of statements which people have used to describe themselves are given below. Read each statement and indicate how much it describes you (0 = not at all like me, 5 = very much like me).',
+    scale: ['0','1','2','3','4','5'], values: [0,1,2,3,4,5],
+    items: ['I can usually talk my way out of anything.','When people don’t notice me, I start to feel bad about myself.','I often hide my needs for fear that others will see me as needy and desperate.','I can make anyone believe anything I want them to.','I get annoyed by people who are not interested in what I say or do.','I find it easy to manipulate people.','Sometimes I avoid people because I’m concerned that they’ll disappoint me.','I typically get very angry when I’m unable to get what I want from others.','When others don’t meet my expectations, I often feel ashamed about what I wanted.','I feel important when others rely on me.','I can read people like a book.','Sacrificing for others makes me the better person.','I often fantasize about accomplishing things that are probably beyond my means.','Sometimes I avoid people because I’m afraid they won’t do what I want them to do.','It’s hard to show others the weaknesses I feel inside.','It’s hard to feel good about myself unless I know other people admire me.','I often fantasize about being rewarded for my efforts.','I am preoccupied with thoughts and concerns that most people are not interested in me.','I like to have friends who rely on me because it makes me feel important.','Sometimes I avoid people because I’m concerned they won’t acknowledge what I do for them.','It’s hard for me to feel good about myself unless I know other people like me.','It irritates me when people don’t notice how good a person I am.','I will never be satisfied until I get all that I deserve.','I try to show what a good person I am through my sacrifices.','I often fantasize about performing heroic deeds.','I often fantasize about being recognized for my accomplishments.','I can’t stand relying on other people because it makes me feel weak.','When others get a glimpse of my needs, I feel anxious and ashamed.'] },
+  lsas: { title: 'The items below describe different situations. For each item, please rate the level of fear or anxiety you felt, based on the past week (including today). If one of the situations did not happen during the last week, imagine what would happen if you were faced with that situation, and rate it according to how you think you would feel.',
+    scaleA: ['None','Mild','Moderate','Severe'], scaleB: ['Never (0%)','Occasionally (1–33%)','Often (34–67%)','Usually (68–100%)'], values: [0,1,2,3],
+    items: ['Telephoning in public.','Participating in small groups.','Eating in public places.','Drinking with others in public places.','Talking to people in authority.','Acting, performing or giving a talk in front of an audience.','Going to a party.','Working while being observed.','Writing while being observed.','Calling someone you don’t know very well.','Talking with people you don’t know very well.','Meeting strangers.','Urinating in a public bathroom.','Entering a room when others are already seated.','Being the center of attention.','Speaking up at a meeting.','Taking a test.','Expressing disagreement or disapproval to people you don’t know very well.','Looking at people you don’t know very well in the eyes.','Giving a report to a group.','Trying to pick up someone.','Returning goods to a store.','Giving a party.','Resisting a high pressure salesperson.'] },
+  // State emotions: the lab's 13-emotion list from CyberStatus Study 1 (JAD 2024 build), 'Right now, I feel…', 1–7. Chosen over the
+  // short PANAS on 29.9.2026 (Roy: the I-PANAS-SF has no sadness and no anger). Same wording and scale as the N=571 data.
+  emotions: { title: 'Right now, I feel...', scale: ['Not at all 1','2','3','4','5','6','Very much 7'], values: [1,2,3,4,5,6,7],
+    items: ['Enthusiastic','Sad','Happy','Angry','Strong','Anxious','Proud','Lonely','Calm','Distressed','Ashamed','Humiliated','Embarrassed'],
+    positive: [0,2,4,6,8], negative: [1,3,5,7,9,10,11,12], selfConscious: [10,11,12] },
+  // State check after rounds 1 and 5 (order randomized per participant; stored in the order below): items 1–3 = perceived standing (respect, value, influence), items 4–6 = perceived acceptance (wanted, included, welcomed)
+  state: { title: 'Right now, how much do you feel…', scale: ['Not at all 1','2','3','4','5','6','Very much 7'], values: [1,2,3,4,5,6,7],
+    items: ['…respected by the team','…valued by the team','…influential in the team','…wanted by the team','…included in the team','…welcomed by the team'] },
+  // pstatus = the status questionnaire, administered right before the inclusion (belonging) questionnaire (Roy, 29.9.2026)
+  pstatus: { title: 'For each statement, please indicate how much you agree, thinking about the other members of the team:',
+    scale: ['Strongly disagree 1','2','3','4','Strongly agree 5'], values: [1,2,3,4,5],
+    items: ['I feel that they respect my achievements','I feel that they value my opinions and ideas','I feel that they think highly of my abilities and talents','I feel that they admire me','I feel that they consider me a success','I feel that they look up to me','I feel that they see me as an important person','I feel that they consider me a high-status individual'] },
+  inclusion: { title: 'Please indicate how much you agree/disagree with the following statements regarding the team:',
+    scale: ['Strongly disagree','Somewhat disagree','Neither agree nor disagree','Somewhat agree','Strongly agree'], values: [1,2,3,4,5],
+    items: ['I felt included','I had close bonds with the other members','I felt like an outsider','I felt as if people do not care about me','I felt accepted by others','I felt distant','I felt isolated','I felt like a stranger','I had a place at the table with the other members.','The other members did not involve me.'] },
+  value: { title: 'During the ranking process, how much did you value that you had each of the following?', items: ['Status','Influence','Respect','Prestige'] },
+  metaperc: { title: 'To what extent did the other team members perceive you as:', items: ['Competent','Likable','Skilled','Nice','Strong','Trustworthy','Confident','Cooperative','A leader','A friend'] },
+  satisfaction: { title: 'How satisfied are you with…', items: ['…your position in the ranking?','…your connections in the team?'] },
+  // Expectations for the mission: items 1–2 = performance demands, items 3–4 = social expectations (Roy, 29.9.2026)
+  expect: { title: 'Thinking about the mission that is about to start:', scale: ['Not at all 1','2','3','4','5','6','Very much 7'], values: [1,2,3,4,5,6,7],
+    items: ['How much does the team expect you to perform well in the mission?','How much will you have to prove your ability during the mission?','How pleasant will it be for the others to work with you?','How much room will you give to the others during the mission?'] },
+  // The lab's humiliation-reaction items (Qualtrics 'Humiliation and autobiographic memories' surveys), 0–100 sliders
+  desires: { title: 'Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:', items: ['I wanted to disappear','I wanted to take revenge','I wanted to regain my dignity','I wanted to regain the appreciation of others','I wanted to share my feelings with someone','I wanted to "undo" the situation','I wanted to be comforted by a friend'] }
+};
+const BDI_TITLES=["Sadness","Pessimism","Past Failure","Loss of Pleasure","Guilty Feelings","Punishment Feelings","Self-Dislike","Self-Criticalness","Crying","Agitation","Loss of Interest","Indecisiveness","Worthlessness","Loss of Energy","Changes in Sleeping Pattern","Irritability","Changes in Appetite","Concentration Difficulty","Tiredness or Fatigue","Loss of Interest in Sex"];
+const BDI_LABELS7=["0","1a","1b","2a","2b","3a","3b"];
+const DEMOG_OPTS={gender:['Man','Woman','Other'],orientation:['Heterosexual','Gay or lesbian','Bisexual','Other','Prefer not to say'],marital:['Single, never married','Romantic relationship (more than three months)','Married or domestic partnership','Divorced','Widowed'],children:['No','Yes'],attract:['Men','Women','Both',"I don't want to answer"],ethnicity:['White / Caucasian','Black / African','Hispanic / Latino','Asian','Native American','Mixed','Other'],attn:['Totally agree','Agree','Neutral','Disagree','Totally disagree']};
+/* ================= constants of the engine (Dan) ================= */
+const SWEEP_MS=1900;
+const GREEN=[0.63,0.68], ORANGE1=[0.58,0.63], ORANGE2=[0.68,0.73];
+
+const state={
+  name:"",playerColor:COLORS[0],sentences:{},phase:"setup",round:0,holder:null,throwNo:0,gameActive:false,
+  stats:{},practice:{attempts:0,max:7,active:false,started:0,raf:null,pointerId:null},
+  hold:{active:false,target:null,started:0,raf:null,pointerId:null},
+  logs:[],queue:[],onQueueDone:null,current:null,ctx:{timepoint:"setup",kicker:""},
+  userReceiveIndex:0,successBags:{},lastTiming:null,gameBag:[],gameSlots:[],botRate:{},closeBias:{},
+  adjust:{1:[],2:[]},rangeTarget:{},passesWish:{},selfSkill:{},lastStats:null,colorChoice:{},waitTimer:null,
+  pageShownAt:null,pageLog:[],turnShownAt:null,holdStartedAt:null,gameStartedAt:null,progress:0,queueTotal:0,queueProg:null,
+  repSentence:{},idleTimer:null,autoCount:0,pageTimer:null,traits:{},demog:null,avatar:{}
+};
+if(DEBUG){window.S=state;window.META=META;window.CONDITIONS=CONDITIONS;$("condTag").classList.remove("hidden");$("condTag").textContent="cond "+COND+" · "+CONFIG.version}
+
+function $(id){return document.getElementById(id)}
+const qa=s=>[...document.querySelectorAll(s)];
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x};
+const nowISO=()=>new Date().toISOString();
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dispName=p=>p==="you"?state.name:NAME[p];
+
+function showScreen(id){qa("section").forEach(s=>s.classList.add("hidden"));$(id).classList.remove("hidden");window.scrollTo(0,0);state.screenId=id;state.screenShownAt=performance.now()}
+function screenMs(){return state.screenShownAt?Math.round(performance.now()-state.screenShownAt):""}
+function posOf(player,g){if(player==="you"){const a=state.avatar[g||state.round||1]||state.avatar[Math.max(...Object.keys(state.avatar).map(Number),0)];return a?[a.x,a.y]:[50,50]}return BOT_POS[player]}
+function figSVG(player,frame,opts,g){const [x,y]=posOf(player,g);return `<svg viewBox="0 0 230 230">${AV().figure(y/100,x/100,115,115,frame||"idle",Object.assign({flip:player==="orange"},opts||{}))}</svg>`}
+function edgeOf(player){return player==="you"?`edge-${state.playerColor.name.toLowerCase()}`:`edge-${player}`}
+function figHTML(player,size,frame,g){return `<div class="fig ${edgeOf(player)}" style="width:${size}px;height:${size}px">${figSVG(player,frame||"idle",{},g)}</div>`}
+function initFigures(){ALL.forEach(p=>setSprite(p,"idle"));setPracticeSprite("idle");$("ballFly").innerHTML=`<svg viewBox="0 0 27 27">${AV().ball(13.5,13.5,11.5)}</svg>`}
+initFigures();
+qa("[data-name]").forEach(el=>el.textContent=NAME[el.dataset.name]);
+
+
+function setSprite(player,frame){const el=document.querySelector(`[data-player-fig="${player}"]`);if(el)el.innerHTML=figSVG(player,frame,{ball:frame==="active"})}
+function setPracticeSprite(frame){$("practiceFig").innerHTML=`<svg viewBox="0 0 230 230">${AV().figure(.5,.5,115,115,frame||"idle",{ball:frame==="active"})}</svg>`}
+function applyParticipantTint(){const el=document.querySelector('[data-player-fig="you"]');if(!el)return;[...el.classList].filter(c=>c.startsWith("edge-")).forEach(c=>el.classList.remove(c));el.classList.add("edge-"+state.playerColor.name.toLowerCase())}
+async function animateThrow(player){setSprite(player,"throw1");await wait(84);setSprite(player,"throw2");await wait(84);setSprite(player,"throw3");await wait(84)}
+async function animatePracticeThrow(){setPracticeSprite("throw1");await wait(84);setPracticeSprite("throw2");await wait(84);setPracticeSprite("throw3");await wait(84);setPracticeSprite("idle")}
+function animateCatch(player){setSprite(player,"catch");setTimeout(()=>setSprite(player,state.holder===player?"active":"idle"),300)}
+
+/* ================= logging ================= */
+function logRow(obj){const onPage=state.current&&!$("measureScreen").classList.contains("hidden")&&state.pageShownAt!==null;const row={timestamp:nowISO(),ms_since_start:Math.round(performance.now()-T0),condition:COND,condition_label:CONDITIONS[COND].label,pid:META.pid,participant_name:state.name,participant_color:state.playerColor.name,...obj};if(onPage&&row.page_ms===undefined)row.page_ms=Math.round(performance.now()-state.pageShownAt);state.logs.push(row);$("downloadBtn").disabled=false;$("jsonBtn").disabled=false}
+const T0=performance.now();
+document.addEventListener("visibilitychange",()=>logRow({phase:"system",event:"visibility",state:document.visibilityState,screen:qa("section").filter(s=>!s.classList.contains("hidden")).map(s=>s.id).join("|"),page_type:state.current?state.current.type:""}));
+function makeCSV(){const cols=[...new Set(state.logs.flatMap(r=>Object.keys(r)))],e=v=>`"${String(v??"").replace(/"/g,'""')}"`;return [cols.join(","),...state.logs.map(r=>cols.map(c=>e(r[c])).join(","))].join("\n")}
+const TRAIT_TITLE={spin:"Social Anxiety Questionnaire",bdi:"Mood Questionnaire",bpni:"Relationships Questionnaire",fpes:"Fear of Positive Evaluation Questionnaire",npi16:"Social Behaviour Questionnaire",soas:"Feelings in the World Questionnaire",lsas:"Social Situations Questionnaire"}; // participant-facing titles (Roy, 30.9); the LSAS title is a draft — Roy gave none
+function makeJSON(){return JSON.stringify({meta:META,config:{timeScale:CONFIG.timeScale,panasOrder:state.panasOrder,idleMs:CONFIG.idleMs,pageTimers:CONFIG.pageTimers,transitionTimerMs:CONFIG.transitionTimerMs,botPositions:BOT_POS,othersWishRank:OTHERS_WISH_RANK,hideUnchangedBoardInGame2:CONFIG.hideUnchangedBoardInGame2,traitsPre:CONFIG.traitsPre,traitsPost:CONFIG.traitsPost,idleMs:CONFIG.idleMs,sentenceTimerMs:CONFIG.sentenceTimerMs,adj:ADJ,games:CONDITIONS[COND].games,feedback:FEEDBACK,othersPassWish:OTHERS_PASS_WISH,othersSelfSkill:OTHERS_SELF_SKILL},participant:{name:state.name,finalColor:state.playerColor.name,avatar:state.avatar,sentences:state.sentences,repSentence:state.repSentence,adjustments:state.adjust,passesWish:state.passesWish,selfSkill:state.selfSkill,autoPasses:state.autoCount,demog:state.demog},traits:state.traits,pages:state.pageLog,rows:state.logs},null,1)}
+function download(text,type,name){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
+const fileStem=()=>`throw_catch_${COND}_${META.pid||"test"}`;
+$("downloadBtn").addEventListener("click",()=>download(makeCSV(),"text/csv;charset=utf-8",fileStem()+".csv"));
+$("jsonBtn").addEventListener("click",()=>download(makeJSON(),"application/json",fileStem()+".json"));
+$("finalDownloadBtn").addEventListener("click",()=>download(makeCSV(),"text/csv;charset=utf-8",fileStem()+".csv"));
+$("finalJsonBtn").addEventListener("click",()=>download(makeJSON(),"application/json",fileStem()+".json"));
+$("restartBtn").addEventListener("click",()=>location.reload());
+
+/* ================= generic page engine ================= */
+function setProgress(pct){state.progress=Math.max(state.progress||0,Math.min(100,pct));$("progressFill").style.width=state.progress+"%"}
+function runQueue(pages,onDone,prog){state.queue=pages.slice();state.queueTotal=pages.length;state.queueProg=prog||null;state.onQueueDone=onDone;showScreen("measureScreen");nextPage()}
+function clearPageTimer(){if(state.pageTimer){clearInterval(state.pageTimer.iv);clearTimeout(state.pageTimer.to);state.pageTimer=null}}
+function startPageTimer(ms,onTimeout){clearPageTimer();const pill=document.createElement("div");pill.className="timer-pill";pill.id="pageTimerPill";$("measureBody").prepend(pill);const total=T(ms),t0=performance.now();const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");const tick=()=>{const left=Math.max(0,Math.ceil((total-(performance.now()-t0))/1000));pill.textContent="Time left "+fmt(left);pill.classList.toggle("warn",left<=10)};tick();const iv=setInterval(tick,250);const to=setTimeout(()=>{clearPageTimer();onTimeout()},total);state.pageTimer={iv,to}}
+function nextPage(){clearPageTimer();if(state.waitTimer){clearTimeout(state.waitTimer);state.waitTimer=null}if(state.current&&state.pageShownAt!==null)state.pageLog.push({type:state.current.type,timepoint:state.ctx.timepoint,title:$("measureTitle").textContent,ms:Math.round(performance.now()-state.pageShownAt)});if(!state.queue.length){const f=state.onQueueDone;state.onQueueDone=null;state.current=null;if(f)f();return}state.current=state.queue.shift();state.pageShownAt=performance.now();if(state.queueProg){const [a,b]=state.queueProg,idx=state.queueTotal-state.queue.length-1;setProgress(a+(b-a)*idx/Math.max(1,state.queueTotal))}if(DEBUG)window.__page=state.current;renderPage(state.current);armPageTimer(state.current)}
+function armPageTimer(p){if(!p||!p.timed||state.pageTimer)return;const key=p.type==="matrix"?p.def.key:p.type,ms=CONFIG.pageTimers[key];if(!ms)return;startPageTimer(ms,()=>{const ok=p.validate?p.validate()===null:true;if(ok){if(p.commit)p.commit()}else if(p.commitPartial){p.commitPartial()}logRow({phase:"measurement",event:"page_timeout",...tp({page_type:p.type,page_key:key,title:$("measureTitle").textContent,answered:ok})});nextPage()})}
+function header(title,sub,opts={}){$("measureScreen").classList.remove("wide");$("measureKicker").textContent=opts.kicker!==undefined?opts.kicker:state.ctx.kicker;$("measureTitle").textContent=title;$("measureSub").textContent=sub||"";{const mb=$("measureBody"),fresh=mb.cloneNode(false);mb.parentNode.replaceChild(fresh,mb)}$("pageErr").textContent="";const b=$("measureContinueBtn");b.classList.toggle("hidden",!!opts.noContinue);b.disabled=!!opts.disabled;window.scrollTo(0,0)}
+$("measureContinueBtn").addEventListener("click",()=>{const p=state.current;if(!p)return;const err=p.validate?p.validate():null;if(err){$("pageErr").textContent=err;return}$("pageErr").textContent="";if(p.commit)p.commit();nextPage()});
+function tp(extra){return {timepoint:state.ctx.timepoint,round:state.round,...extra}}
+function sliderHTML(id,label,left,right,min=0,max=100,value=50){return `<div class="slider-row"><div class="slider-label"><span>${label}</span><span id="${id}-value" class="slider-value">—</span></div><input id="${id}" type="range" min="${min}" max="${max}" value="${value}" data-touched="0"><div class="slider-ends"><span>${left}</span><span>${right}</span></div></div>`}
+function bindRequiredSliders(ids){$("measureContinueBtn").disabled=true;if(state.current&&!state.current.validate)state.current.validate=()=>ids.every(x=>$(x)&&$(x).dataset.touched==="1")?null:"Please click or move every slider.";ids.forEach(id=>{const el=$(id),v=$(id+"-value");const update=()=>{el.dataset.touched="1";v.textContent=el.value;$("measureContinueBtn").disabled=!ids.every(x=>$(x).dataset.touched==="1")};el.addEventListener("input",update);el.addEventListener("change",update)})}
+function playerMini(player){return `<div class="player-mini">${figHTML(player,92)}<div class="who" style="color:${player==="you"?state.playerColor.hex:HEX[player]}">${esc(dispName(player))}${player==="you"?" (Me)":""}</div></div>`}
+function pcard(player,extra=""){return `<div class="pcard" data-p="${player}">${figHTML(player,84)}<div class="who" style="color:${player==="you"?state.playerColor.hex:HEX[player]}">${esc(dispName(player))}${player==="you"?" (Me)":""}</div>${extra}</div>`}
+function colorGridHTML(selectedName){return `<div class="preview-row"><div><div id="previewDot" class="preview-dot" style="background:${state.playerColor.hex}"></div><div id="previewLabel" class="preview-label">${state.playerColor.name}</div></div></div><div id="colorGrid" class="color-grid">${COLORS.map(c=>`<button type="button" class="color-card${c.name===selectedName?" selected":""}" data-color="${c.name}"><div class="swatch" style="background:${c.hex}"></div><div class="cname">${c.name}</div></button>`).join("")}</div>`}
+function bindColorGrid(onPick){qa(".color-card").forEach(b=>b.addEventListener("click",()=>{const c=COLORS.find(x=>x.name===b.dataset.color);qa(".color-card").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");$("previewDot").style.background=c.hex;$("previewLabel").textContent=c.name;onPick(c)}))}
+function matrixHTML(def){const order=def.order||def.items.map((_,i)=>i);return `<table class="mx"><thead><tr><th></th>${def.scale.map((s,j)=>`<th>${esc(s)}<br><span style="font-weight:700">${j+1}</span></th>`).join("")}</tr></thead><tbody>${order.map(i=>{const it=def.items[i];return `<tr data-row="${i}"><td>${esc(it)}</td>${def.scale.map((s,j)=>`<td class="c"><input type="radio" name="${def.key}_${i}" value="${j+1}" aria-label="${esc(s)}"></td>`).join("")}</tr>`}).join("")}</tbody></table>`}
+
+function successRingGradient(adjustment){const center=.655,baseBest=.05,best=Math.max(.02,Math.min(.10,baseBest*(1+adjustment/100))),mid=.05;const g0=center-best/2,g1=center+best/2,o0=Math.max(0,g0-mid),o1=Math.min(1,g1+mid);const pc=x=>(x*100).toFixed(2)+"%";return `conic-gradient(${ZONE.outer} 0 ${pc(o0)},${ZONE.mid} ${pc(o0)} ${pc(g0)},${ZONE.best} ${pc(g0)} ${pc(g1)},${ZONE.mid} ${pc(g1)} ${pc(o1)},${ZONE.outer} ${pc(o1)} 100%)`}
+function readGate(ms,btn,noteEl){const b=btn||$("measureContinueBtn");const note=noteEl||(()=>{const d=document.createElement("div");d.className="sel-count";$("measureBody").appendChild(d);return d})();b.disabled=true;let left=Math.max(1,Math.ceil(T(ms)/1000));note.textContent=`You can continue in ${left} s`;const iv=setInterval(()=>{left--;if(left<=0){clearInterval(iv);note.textContent="";b.disabled=false}else note.textContent=`You can continue in ${left} s`},1000)}
+/* ================= pages ================= */
+function renderPage(p){
+  if(p.kicker!==undefined)state.ctx.kicker=p.kicker;
+  const kick=state.ctx.kicker;
+  if(p.type==="welcome"){
+    header("Colors and Social Choices","",{kicker:""});
+    $("measureBody").innerHTML=`<div class="page-card"><p><strong>Thank you for taking part.</strong> This study combines questionnaires and an online group game about colors and social choices.</p><p>First you will complete four short questionnaires about yourself. Then you will join a group of three other participants for an online game, with short questions between the games.</p><p>About 30–35 minutes. Participation is voluntary; you may stop at any time. All data are anonymous. Questions: ${esc(CONFIG.contactEmail)}</p><p><strong>By pressing Continue you confirm that you have read the above and consent to participate.</strong></p></div>`;
+    p.commit=()=>logRow({phase:"setup",event:"consent"});
+  }
+  else if(p.type==="text"){
+    header(p.title,"",{kicker:p.kicker!==undefined?p.kicker:""});
+    $("measureBody").innerHTML=`<div class="page-card"><p>${p.text}</p></div>`;
+    p.commit=()=>logRow({phase:"setup",event:"text_seen",title:p.title});
+  }
+  else if(p.type==="name"){
+    header("Your name","The other players will see you by this name.",{kicker:""});
+    $("measureBody").innerHTML=`<div class="page-card"><label class="self-label" for="nameInput">Please write your first name or a nickname</label><input id="nameInput" class="text-input" maxlength="20" autocomplete="off"></div>`;
+    setTimeout(()=>$("nameInput").focus(),50);
+    p.validate=()=>{const v=$("nameInput").value.trim();if(!v)return "Please write a name or a nickname.";state.name=v;LABEL.you=v;return null};
+    p.commit=()=>logRow({phase:"setup",event:"name",value:state.name});
+  }
+  else if(p.type==="color"){
+    const titles={setup:["Choose your color","Blue, Orange, and Purple are already taken by the other players."],next:[`Your color for Game ${p.game}`,`Would you like to keep your color or choose a different one for Game ${p.game}?`]};
+    const [t,s]=titles[p.when];header(t,s,{kicker:p.when==="setup"?"":kick});
+    let chosen=state.playerColor;$("measureBody").innerHTML=(p.when==="setup"?"":`<div class="color-remind">In Game ${p.game-1} your color was <span style="color:${state.playerColor.hex}">${esc(state.playerColor.name)}</span>. Keep it, or choose another.</div>`)+colorGridHTML(chosen.name);bindColorGrid(c=>chosen=c);
+    p.commit=()=>{const prev=state.playerColor;logRow({phase:p.when==="setup"?"setup":"measurement",event:"color_choice",...tp({when:p.when,for_game:p.game||1,previous:prev.name,chosen:chosen.name,changed:prev.name!==chosen.name})});state.playerColor=chosen;LABEL.you=state.name||LABEL.you;document.documentElement.style.setProperty("--you-color",state.playerColor.hex)};
+  }
+  else if(p.type==="sentences3"){
+    const g=p.game;
+    const titles={1:["Introduce yourself","Complete three short sentences about who you are. They will be shown to the other players next to your name."],
+                  2:["Your three sentences for Game 2","Three new sentences about yourself, not used before. Short ones are fine. You have one minute."],
+                  3:["Your three sentences for Game 3","Three new sentences about yourself, not used before. Short ones are fine. You have one minute."]};
+    const [tt,ss]=titles[g];header(tt,ss);
+    $("measureBody").innerHTML=`<div class="page-card"><div class="iam-grid">${[0,1,2].map(i=>`<div class="iam-row"><span class="lbl">${i+1}. I am</span><input type="text" class="text-input" id="iam${i}" maxlength="80" autocomplete="off"></div>`).join("")}</div></div>`;
+    setTimeout(()=>$("iam0").focus(),50);
+    const nz=x=>x.toLowerCase().replace(/\s+/g," ").replace(/[.!,;:]+$/,"").trim();
+    const used=new Set(Object.keys(state.sentences).filter(k=>Number(k)<g).flatMap(k=>state.sentences[k].map(nz)));
+    p.validate=()=>{const v=[0,1,2].map(i=>$("iam"+i).value.trim());if(v.some(x=>!x))return "Please complete all three sentences.";if(v.some(x=>!/[\p{L}\p{N}]/u.test(x)))return "Please write something in each field.";const norm=v.map(nz);if(new Set(norm).size<3)return "Please write three different sentences.";if(norm.some(x=>used.has(x)))return "Please write three new sentences that you have not used before.";p._v=v;p._timeout=false;return null};
+    p.commit=()=>{state.sentences[g]=p._v;logRow({phase:"measurement",event:"sentences",...tp({for_game:g,sentence_1:p._v[0],sentence_2:p._v[1],sentence_3:p._v[2],timeout:!!p._timeout,n_written:p._v.filter(x=>x&&x!=="—").length})})};
+    if(g>=2){startPageTimer(CONFIG.sentenceTimerMs,()=>{const v=[0,1,2].map(i=>$("iam"+i).value.trim()).map(x=>x&&/[\p{L}\p{N}]/u.test(x)?x:"—");p._v=v;p._timeout=true;p.commit();nextPage()})}
+  }
+  else if(p.type==="avatar"){
+    const g=p.game,prev=g>1?(state.avatar[g-1]||null):null;
+    header(g===1?"Choose your avatar":`Choose your avatar for Game ${g}`,g===1?"Show the other players how you see yourself right now.":`Your avatar from Game ${g-1} is shown. Leave it or move it.`);
+    const w=window.AvatarField.create({id:"avf_g"+g,title:"",text:AVATAR_TEXT,small:"Click or drag the figure, then press Continue.",renderer:AV(),start:prev?{x:prev.x,y:prev.y}:{x:50,y:50},requireTouch:g===1});
+    $("measureBody").innerHTML=`<div class="page-card avf-wrap"><div class="shown-note big-note">This avatar will be your player in the game, and the other players' avatars will be theirs.</div>${w.html}</div>`;w.setup();
+    p.validate=()=>w.validate();
+    p.commit=()=>{const v=w.value();state.avatar[g]=v;logRow({phase:"measurement",event:"avatar",...tp({for_game:g,x:v.x,y:v.y,touched:v.touched,drags:v.drags,seconds:v.seconds,move_seconds:v.moveSeconds,changed_from_previous:prev?(prev.x!==v.x||prev.y!==v.y):""})})};
+    p.commitPartial=()=>{const v=w.value();state.avatar[g]=v;logRow({phase:"measurement",event:"avatar",...tp({for_game:g,x:v.x,y:v.y,touched:v.touched,drags:v.drags,seconds:v.seconds,move_seconds:v.moveSeconds,changed_from_previous:prev?(prev.x!==v.x||prev.y!==v.y):"",timeout:true})})};
+  }
+  else if(p.type==="rep_sentence"){
+    const g=p.game,sents=(state.sentences[g]||[]).filter(x=>x&&x!=="—");
+    header("Your representative sentence",`Choose the sentence that represents you best. It will be shown next to your name during Game ${g}${g===1?"":", together with the other players' sentences"}.`);
+    if(!sents.length){state.repSentence[g]="";logRow({phase:"measurement",event:"rep_sentence",...tp({for_game:g,sentence:"",index:""})});setTimeout(nextPage,0);return}
+    $("measureBody").innerHTML=`<div class="cards3" style="grid-template-columns:1fr">${sents.map((s,i)=>`<div class="pcard" data-i="${i}"><div class="who">I am ${esc(s)}</div></div>`).join("")}</div>`;
+    const cards=qa(".pcard");cards.forEach(c=>c.addEventListener("click",()=>{cards.forEach(x=>x.classList.remove("sel"));c.classList.add("sel")}));
+    p.validate=()=>{const s=document.querySelector(".pcard.sel");if(!s)return "Please choose one sentence.";p._i=Number(s.dataset.i);return null};
+    p.commit=()=>{state.repSentence[g]=sents[p._i];logRow({phase:"measurement",event:"rep_sentence",...tp({for_game:g,sentence:sents[p._i],index:p._i+1})})};
+    p.commitPartial=()=>{state.repSentence[g]=sents[0];logRow({phase:"measurement",event:"rep_sentence",...tp({for_game:g,sentence:sents[0],index:1,timeout:true})})};
+  }
+  else if(p.type==="wait"){
+    header("Please wait","",{kicker:"",noContinue:true});
+    $("measureBody").innerHTML=`<div class="spin"></div><div class="wait-text">${esc(p.text)}</div>`;
+    state.waitTimer=setTimeout(()=>{state.waitTimer=null;nextPage()},T(p.ms));
+  }
+  else if(p.type==="matrix"){
+    const d=p.def;header(d.title,d.sub,{disabled:true});
+    $("measureBody").innerHTML=matrixHTML(d);
+    const check=()=>{const ok=d.items.every((_,i)=>document.querySelector(`input[name="${d.key}_${i}"]:checked`));$("measureContinueBtn").disabled=!ok;return ok};
+    $("measureBody").addEventListener("change",check);
+    p.validate=()=>{if(!check()){qa(".mx tr[data-row]").forEach(r=>r.classList.toggle("miss",!r.querySelector("input:checked")));return "Please answer every item."}return null};
+    p.commit=()=>{const vals=d.items.map((_,i)=>Number(document.querySelector(`input[name="${d.key}_${i}"]:checked`).value));logRow({phase:"measurement",event:d.key,...tp(Object.fromEntries(vals.map((v,i)=>[`${d.key}_${i+1}`,v]))),items:d.items.join("|"),display_order:(d.order||[]).map(i=>i+1).join("|")})};
+    p.commitPartial=()=>{const vals=d.items.map((_,i)=>{const r=document.querySelector(`input[name="${d.key}_${i}"]:checked`);return r?Number(r.value):""});logRow({phase:"measurement",event:d.key,...tp(Object.fromEntries(vals.map((v,i)=>[`${d.key}_${i+1}`,v]))),items:d.items.join("|"),display_order:(d.order||[]).map(i=>i+1).join("|"),n_answered:vals.filter(v=>v!=="").length,timeout:true})};
+  }
+  else if(p.type==="rating"){
+    header(`About ${NAME[p.player]}`,"Please give your current impression of this player.");
+    $("measureBody").innerHTML=playerMini(p.player)+`<p class="small" style="text-align:center;color:var(--muted)">0 = not at all, 100 = very much. Every player answers these questions about every other player.</p>`+sliderHTML("passerRating",`How good a passer is ${esc(NAME[p.player])}?`,"0 = not at all good","100 = very good")+sliderHTML("niceRating",`How nice is ${esc(NAME[p.player])}?`,"0 = not at all nice","100 = very nice");
+    bindRequiredSliders(["passerRating","niceRating"]);
+    p.commit=()=>logRow({phase:"measurement",event:"player_rating",...tp({player:NAME[p.player],passer:Number($("passerRating").value),nice:Number($("niceRating").value)})});
+  }
+  else if(p.type==="feedback"){
+    const n=NAME[p.player],v=FEEDBACK[p.player],reveal=!!p.reveal;
+    header(`${n} rated you`,reveal?`${n} answered the same two questions about you, on the same 0–100 scale. You can reveal one of the two ratings: click the card you want to see.`:`${n} answered the same two questions about you, on the same 0–100 scale. Which of the two ratings would you like to see? Click the card. (The rating itself will be shown later in the study.)`,{noContinue:true});
+    const card=area=>`<div class="reveal-card" data-area="${area}"><div class="q">${area==="passer"?`How good a passer ${esc(n)} thinks you are`:`How nice ${esc(n)} thinks you are`}</div><div class="qm">?</div><div class="hint">${reveal?"Click to reveal":"Click to choose"}</div></div>`;
+    $("measureBody").innerHTML=playerMini(p.player)+`<div class="reveal-cards">${card("passer")}${card("nice")}</div>`;
+    qa(".reveal-card").forEach(c=>c.addEventListener("click",()=>{if(document.querySelector(".reveal-card.revealed"))return;const area=c.dataset.area;logRow({phase:"measurement",event:"information_choice",...tp({player:n,choice:area,revealed:reveal})});
+      c.classList.add("revealed");
+      if(reveal){const words=fbWords(area,v);c.innerHTML=`<div class="q">${area==="passer"?`How good a passer ${esc(n)} thinks you are`:`How nice ${esc(n)} thinks you are`}</div><div class="big">${v} / 100</div><div class="hint">${esc(n)} thinks you are ${esc(words)}</div><div class="bar"><div style="width:${v}%"></div></div>`;logRow({phase:"measurement",event:"feedback_revealed",...tp({player:n,area,value:v,words})})}
+      else{c.querySelector(".hint").textContent="Chosen — shown later";c.querySelector(".qm").textContent="✓"}
+      qa(".reveal-card:not(.revealed)").forEach(o=>{o.classList.add("locked");o.querySelector(".hint").textContent=reveal?"Not revealed":"Not chosen"});
+      $("measureContinueBtn").classList.remove("hidden")}));
+  }
+  else if(p.type==="participation"){
+    header(`Game ${p.game}`,`Before Game ${p.game}, one question.`);
+    $("measureBody").innerHTML=`<div class="page-card">${sliderHTML("partWish",`How much would you like to take part in Game ${p.game} with these players?`,"Not at all","Very much")}</div>`;
+    bindRequiredSliders(["partWish"]);
+    p.commit=()=>logRow({phase:"measurement",event:"participation_wish",...tp({for_game:p.game,value:Number($("partWish").value)})});p.commitPartial=()=>logRow({phase:"measurement",event:"participation_wish",...tp({for_game:p.game,value:"",timeout:true})});
+  }
+  else if(p.type==="range_choice"){
+    const k=p.k;
+    const first=k===2?state.rangeTarget[1]:null;
+    header(`Change a player's throwing range (${k} of 2)`,k===1?`Make the high-success area larger or smaller for two players. Whose first? You can choose yourself.`:`Now a second, different player.`);
+    $("measureBody").innerHTML=`<div class="cards4">${["you",...BOTS].map(x=>pcard(x)).join("")}</div>`;
+    const cards=qa(".pcard");cards.forEach(c=>{if(c.dataset.p===first){c.classList.add("dis");c.insertAdjacentHTML("beforeend",'<div class="sub">already chosen</div>');return}c.addEventListener("click",()=>{cards.forEach(x=>x.classList.remove("sel"));c.classList.add("sel")})});
+    p.validate=()=>{const s=document.querySelector(".pcard.sel");if(!s)return "Please choose a player.";if(s.dataset.p===first)return "Please choose a different player.";p._t=s.dataset.p;return null};
+    p.commit=()=>{state.rangeTarget[k]=p._t;logRow({phase:"measurement",event:"range_choice",...tp({for_game:p.game,k,target:p._t==="you"?"Me":NAME[p._t],is_self:p._t==="you"})})};
+    p.commitPartial=()=>{state.rangeTarget[k]=null;logRow({phase:"measurement",event:"range_choice",...tp({for_game:p.game,k,target:"none",is_self:"",timeout:true})})};
+  }
+  else if(p.type==="range_adjust"){
+    const k=p.k,tgt=state.rangeTarget[k];if(!tgt){logRow({phase:"measurement",event:"range_adjust",...tp({for_game:p.game,k,target:"none",is_self:"",adjustment:"",skipped:true})});setTimeout(nextPage,0);return}const self=tgt==="you",who=self?"Your":`${NAME[tgt]}'s`,whose=self?"your":`${NAME[tgt]}'s`;
+    header(`${who} throwing range (${k} of 2)`,`Move the slider to make ${whose} high-success area larger or smaller. This applies in Game ${p.game}.`);
+    $("measureBody").innerHTML=`<div class="success-adjust-visual"><div class="adjust-ring-shell"><div id="successAdjustRing" class="adjust-success-ring"></div>${figHTML(tgt,104)}</div><div style="font-weight:950;color:${self?state.playerColor.hex:HEX[tgt]}">${esc(self?state.name:NAME[tgt])}${self?" (Me)":""}</div><div id="successAdjustRead" class="adjust-readout big">No change</div></div><div class="slider-row"><input id="successAdjust" type="range" min="-50" max="50" value="0"><div class="slider-ends"><span>Smaller high-success area</span><span>Larger high-success area</span></div></div>`;
+    const el=$("successAdjust"),ring=$("successAdjustRing"),read=$("successAdjustRead");ring.style.background=successRingGradient(0);
+    el.addEventListener("input",()=>{const n=Number(el.value);ring.style.background=successRingGradient(n);read.textContent=n===0?"No change":`${n>0?"Larger":"Smaller"} by ${Math.abs(n)}%`});
+    p.commit=()=>{const n=Number($("successAdjust").value);state.adjust[p.round].push({target:tgt,adj:n});logRow({phase:"measurement",event:"range_adjust",...tp({for_game:p.game,k,target:self?"Me":NAME[tgt],is_self:self,adjustment:n})})};
+  }
+  else if(p.type==="passes"){
+    header(`Passing and passes`,`Two questions before Game ${p.game}.`);
+    $("measureBody").innerHTML=`<div class="page-card"><div class="shown-note">Your answers will be shown to the other players.</div>${sliderHTML("selfSkill","How good a passer are you?","0 = very poor","100 = excellent",0,100,50)}${sliderHTML("passWish",`How much would you like the other players to pass to you in Game ${p.game}?`,"0 = not at all","100 = very much",0,100,50)}</div>`;
+    bindRequiredSliders(["selfSkill","passWish"]);
+    p.commit=()=>{const s=Number($("selfSkill").value),w=Number($("passWish").value);state.selfSkill[p.round]=s;state.passesWish[p.round]=w;logRow({phase:"measurement",event:"self_skill_and_wish",...tp({for_game:p.game,self_skill:s,pass_wish:w})})};
+    p.commitPartial=()=>{const t1=$("selfSkill").dataset.touched==="1",t2=$("passWish").dataset.touched==="1";const s=t1?Number($("selfSkill").value):"",w=t2?Number($("passWish").value):"";state.selfSkill[p.round]=s===""?50:s;state.passesWish[p.round]=w===""?50:w;logRow({phase:"measurement",event:"self_skill_and_wish",...tp({for_game:p.game,self_skill:s,pass_wish:w,timeout:true})})};
+  }
+  else if(p.type==="wish_rank"){
+    header(`Where would you like to be in Game ${p.game}?`,`Click a step of the passing ranking. Your choice will be shown to the other players.`,{disabled:true});
+    let sel=null;const render=()=>{const per=[[],[],[],[]];if(sel!==null)per[sel]=["you"];$("stairBox").innerHTML=stairsSVG(per,{clickable:true,selected:sel});qa("#stairBox .step.clickable").forEach(g=>g.addEventListener("click",()=>{sel=Number(g.dataset.i);render();$("measureContinueBtn").disabled=false;$("stairTxt").textContent=`You chose step ${sel+1} (${STEP_LABEL[sel]}).`}))};
+    $("measureBody").innerHTML=`<div class="page-card"><div id="stairBox"></div><div id="stairTxt" class="sel-count">No step chosen yet.</div></div>`;render();
+    p.validate=()=>sel===null?"Please click a step.":null;
+    p.commit=()=>{state.wishRank=state.wishRank||{};state.wishRank[p.round]=sel+1;logRow({phase:"measurement",event:"wish_rank",...tp({for_game:p.game,step:sel+1,label:STEP_LABEL[sel]})})};
+    p.commitPartial=()=>{state.wishRank=state.wishRank||{};state.wishRank[p.round]=null;logRow({phase:"measurement",event:"wish_rank",...tp({for_game:p.game,step:"",label:"",timeout:true})})};
+  }
+  else if(p.type==="others_wish"){
+    const mine={skill:state.selfSkill[p.round]??0,wish:state.passesWish[p.round]??0};
+    const myStep=(state.wishRank||{})[p.round]||null;const per=[[],[],[],[]];BOTS.forEach(b=>per[OTHERS_WISH_RANK[b]-1].push(b));if(myStep)per[myStep-1].push("you");
+    header(`Everyone's answers`,`Before Game ${p.game}: each player's answers and desired step.`);
+    const col=x=>x==="you"?state.playerColor.hex:HEX[x];
+    const row=(x,skill,wish,step)=>`<tr class="${x==="you"?"me":""}"><td style="color:${col(x)};font-weight:950">${esc(dispName(x))}${x==="you"?" (Me)":""}</td><td>${skill}</td><td>${wish}</td><td>${step?`step ${step}`:"–"}</td></tr>`;
+    $("measureBody").innerHTML=`<div class="page-card"><table class="ans"><thead><tr><th></th><th>Good passer</th><th>Wants passes</th><th>Wants to be</th></tr></thead><tbody>${row("you",mine.skill,mine.wish,myStep)}${BOTS.map(b=>row(b,OTHERS_SELF_SKILL[b],OTHERS_PASS_WISH[b],OTHERS_WISH_RANK[b])).join("")}</tbody></table></div>`;
+    p.commit=()=>logRow({phase:"measurement",event:"others_answers_shown",...tp({for_game:p.game,my_skill:mine.skill,my_wish:mine.wish,my_step:myStep,...Object.fromEntries(BOTS.flatMap(b=>[["skill_"+NAME[b].toLowerCase(),OTHERS_SELF_SKILL[b]],["wish_"+NAME[b].toLowerCase(),OTHERS_PASS_WISH[b]],["step_"+NAME[b].toLowerCase(),OTHERS_WISH_RANK[b]]]))})});
+  }
+  else if(p.type==="lookback"){
+    header(`Looking back at Game ${p.round}`,"Two estimates, in percentages.");
+    $("measureBody").innerHTML=`<div class="page-card">${sliderHTML("lbReceived",`Of the 60 throws in Game ${p.round}, about what percentage were passed to you?`,"0%","100%",0,100,50)}${sliderHTML("lbPassing",`Of your own passes in Game ${p.round}, about what percentage were successful?`,"0%","100%",0,100,50)}</div>`;
+    bindRequiredSliders(["lbReceived","lbPassing"]);qa("#lbReceived,#lbPassing").forEach(el=>{const v=$(el.id+"-value");const f=()=>{if(el.dataset.touched==="1")v.textContent=el.value+"%"};el.addEventListener("input",f);el.addEventListener("change",f)});
+    p.commitPartial=()=>logRow({phase:"measurement",event:"lookback",...tp({for_game:p.round,received_percent_estimate:$("lbReceived").dataset.touched==="1"?Number($("lbReceived").value):"",passing_percent_estimate:$("lbPassing").dataset.touched==="1"?Number($("lbPassing").value):"",timeout:true})});
+    p.commit=()=>logRow({phase:"measurement",event:"lookback",...tp({for_game:p.round,received_percent_estimate:Number($("lbReceived").value),passing_percent_estimate:Number($("lbPassing").value),actual_received_percent:(state.lastStats||{received:{}}).received.you,actual_success_percent:(state.lastStats||{success:{}}).success.you})});
+  }
+  else if(p.type==="sentences_show"){
+    header(`The players' sentences for Game ${p.game}`,"Take a moment to read them.");
+    const card=(x,sents)=>`<div class="meet-card">${figHTML(x,106,"idle",p.game)}<div class="meet-name" style="color:${x==="you"?state.playerColor.hex:HEX[x]}">${esc(dispName(x))}${x==="you"?" (Me)":""}</div><div class="meet-sent">${sents.map(s=>`<div>I am ${esc(s)}</div>`).join("")}</div></div>`;
+    $("measureBody").innerHTML=`<div class="meet-grid four">${BOTS.map(b=>card(b,BOT_SENTENCES[b][p.game])).join("")}${card("you",state.sentences[p.game]||[])}</div>`;
+    readGate(READ_GATE_MS);
+    p.commit=()=>logRow({phase:"measurement",event:"sentences_shown",...tp({for_game:p.game})});
+  }
+  else if(p.type==="distress"){
+    header("Right now, how much distress do you feel?","");
+    const face=v=>v<=20?"😀":v<=40?"🙂":v<=60?"😐":v<=80?"😟":"😫";
+    $("measureBody").innerHTML=`<div class="page-card"><div class="emoji-face" id="distressFace">😐</div>${sliderHTML("distress","","0 = no distress at all","100 = extreme distress")}</div>`;
+    bindRequiredSliders(["distress"]);const el=$("distress");const f=()=>{$("distressFace").textContent=face(Number(el.value))};el.addEventListener("input",f);el.addEventListener("change",f);
+    p.commit=()=>logRow({phase:"measurement",event:"distress",...tp({value:Number($("distress").value)})});p.commitPartial=()=>logRow({phase:"measurement",event:"distress",...tp({value:"",timeout:true})});
+  }
+  else if(p.type==="sliders"){
+    const d=p.def;header(d.title,d.sub||"");
+    $("measureBody").innerHTML=`<div class="page-card">${d.items.map((it,i)=>sliderHTML(`${d.key}_${i}`,esc(it),"0 = not at all","100 = very much")).join("")}</div>`;
+    bindRequiredSliders(d.items.map((_,i)=>`${d.key}_${i}`));
+    p.commit=()=>{const vals=d.items.map((_,i)=>Number($(`${d.key}_${i}`).value));logRow({phase:"measurement",event:d.key,...tp(Object.fromEntries(vals.map((v,i)=>[`${d.key}_${i+1}`,v]))),items:d.items.join("|")})};
+  }
+  else if(p.type==="trait"){
+    const key=p.key,d=ITEMS[key],list=(p.battery||CONFIG.traitsPost).filter(k=>ITEMS[k]),n=list.length,idx=list.indexOf(key)+1;
+    header(TRAIT_TITLE[key]||"Questionnaire",`Questionnaire ${idx} of ${n}`,{kicker:p.kicker!==undefined?p.kicker:"Questionnaires",disabled:true});$("measureScreen").classList.add("wide");
+    let html=`<div class="q-instr">${esc(d.title)}</div>`,validate=null,commit=null;
+    const table=(scale,name,items)=>`<div class="mx-wrap"><table class="mx qx${scale.length>=8?" many":""}"><thead><tr><th class="stem-h"></th>${scale.map((s,j)=>`<th>${esc(s)}${d.anchors&&j===0?`<span class="anchor">${esc(d.anchors[0])}</span>`:""}${d.anchors&&j===scale.length-1?`<span class="anchor">${esc(d.anchors[1])}</span>`:""}</th>`).join("")}</tr></thead><tbody>${items.map((it,i)=>`<tr data-row="${i}"><td class="stem">${i+1}. ${esc(it)}</td>${scale.map((s,j)=>`<td class="c"><label class="cell"><input type="radio" name="${name}_${i}" value="${j}"></label></td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    if(key==="lsas"){
+      html+=`<div class="q-sub">Fear or anxiety</div>`+table(d.scaleA,"lsasa",d.items);
+      validate=()=>{let miss=false;const a=[];d.items.forEach((_,i)=>{const ra=document.querySelector(`input[name="lsasa_${i}"]:checked`);const tr=document.querySelector(`tr[data-row="${i}"]`);if(!ra){miss=true;tr.classList.add("miss")}else{tr.classList.remove("miss");a.push(d.values[+ra.value])}});if(miss)return "Please answer every item.";p._a=a;return null};
+      commit=()=>{state.traits.lsas_fear=p._a;logRow({phase:"traits",event:"lsas",...Object.fromEntries(p._a.map((v,i)=>[`lsas_fear_${i+1}`,v])),lsas_fear_total:p._a.reduce((x,y)=>x+y,0)})};
+    } else if(key==="npi16"){
+      html+=`<div class="pairs">${d.pairs.map((pr,i)=>`<div class="pair" data-row="${i}"><div class="pairname">${i+1}.</div><div class="opt" data-i="0">${esc(pr[0])}</div><div class="opt" data-i="1">${esc(pr[1])}</div></div>`).join("")}</div>`;
+      validate=()=>{const raw=[];let miss=false;qa(".pair").forEach(pr=>{const s=pr.querySelector(".opt.sel");if(!s){miss=true;pr.classList.add("missing")}else{pr.classList.remove("missing");raw.push(+s.dataset.i)}});if(miss)return "Please choose one statement in every pair.";p._raw=raw;return null};
+      commit=()=>{const keyed=p._raw.map((v,i)=>v===d.key[i]?1:0);state.traits.npi16=keyed;state.traits.npi16_raw=p._raw;logRow({phase:"traits",event:"npi16",...Object.fromEntries(keyed.map((v,i)=>[`npi16_${i+1}`,v])),...Object.fromEntries(p._raw.map((v,i)=>[`npi16_raw_${i+1}`,v])),npi16_total:keyed.reduce((x,y)=>x+y,0)})};
+    } else if(key==="bdi"){
+      html+=`<div class="bdi-list">${d.groups.map((g,i)=>`<div class="bdi-item" data-g="${i}"><div class="bdi-head">${i+1}. ${esc(BDI_TITLES[i]||"")}</div>${g.map((s,j)=>`<label class="bdi-opt"><input type="radio" name="bdi_${i}" value="${j}"><span class="bdi-score">${g.length===7?BDI_LABELS7[j]:j}</span><span class="bdi-text">${esc(s)}</span></label>`).join("")}</div>`).join("")}</div>`;
+      validate=()=>{const raw=[];let miss=false;qa(".bdi-item").forEach(gr=>{const s=gr.querySelector("input:checked");if(!s){miss=true;gr.classList.add("missing")}else{gr.classList.remove("missing");raw.push(+s.value)}});if(miss)return "Please pick one statement in every group.";p._raw=raw;return null};
+      commit=()=>{const sc=p._raw.map((v,i)=>d.scores[i][v]);state.traits.bdi=sc;state.traits.bdi_raw=p._raw;logRow({phase:"traits",event:"bdi",...Object.fromEntries(sc.map((v,i)=>[`bdi_${i+1}`,v])),...Object.fromEntries(p._raw.map((v,i)=>[`bdi_raw_${i+1}`,v])),bdi_total:sc.reduce((x,y)=>x+y,0)})};
+    } else {
+      html+=table(d.scale,key,d.items);
+      validate=()=>{let miss=false;const out=[];d.items.forEach((_,i)=>{const r=document.querySelector(`input[name="${key}_${i}"]:checked`);const tr=document.querySelector(`tr[data-row="${i}"]`);if(!r){miss=true;tr.classList.add("miss")}else{tr.classList.remove("miss");out.push(d.values[+r.value])}});if(miss)return "Please answer every item.";p._out=out;return null};
+      commit=()=>{state.traits[key]=p._out;logRow({phase:"traits",event:key,...Object.fromEntries(p._out.map((v,i)=>[`${key}_${i+1}`,v])),[`${key}_total`]:p._out.reduce((x,y)=>x+y,0)})};
+    }
+    $("measureBody").innerHTML=html;$("measureContinueBtn").disabled=false;
+    qa(".pair, .group .opts").forEach(c=>{const els=[...c.querySelectorAll(".opt")];els.forEach(el=>el.addEventListener("click",()=>{els.forEach(x=>x.classList.remove("sel"));el.classList.add("sel")}))});
+    qa("td.c").forEach(td=>td.addEventListener("click",e=>{const r=td.querySelector("input");if(r&&e.target!==r){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}}));
+    p.validate=validate;p.commit=commit;
+  }
+  else if(p.type==="traits_intro"){
+    header("Before Game 3: three questionnaires","While the other players get ready, please complete three more questionnaires about yourself. There are no right or wrong answers.",{kicker:"Before Game 3"});
+    $("measureBody").innerHTML=`<div class="page-card"><p>About 8 minutes.</p></div>`;
+    p.commit=()=>logRow({phase:"traits",event:"traits_intro"});
+  }
+  else if(p.type==="demographics"){
+    header("A few details about you","",{kicker:""});
+    const mc=(id,label,opts)=>`<p>${esc(label)}</p><select class="sel-input" id="${id}"><option value="">–</option>${opts.map(o=>`<option>${esc(o)}</option>`).join("")}</select>`;
+    $("measureBody").innerHTML=`<div class="page-card demog">${mc("dg_gender","What is your gender?",DEMOG_OPTS.gender)}<p>What is your age?</p><input type="text" class="text-input" id="dg_age" maxlength="3"><p>How many years of formal education do you have (beginning with 1st grade)?</p><input type="text" class="text-input" id="dg_edu" maxlength="2">${mc("dg_marital","What is your marital status?",DEMOG_OPTS.marital)}${mc("dg_children","Do you have children?",DEMOG_OPTS.children)}<p>If yes, how many children?</p><input type="text" class="text-input" id="dg_nchildren" maxlength="2">${mc("dg_attract","I'm mostly attracted to:",DEMOG_OPTS.attract)}<p>In politics, where would you place yourself?</p>${sliderHTML("dg_politics","","0 = left","100 = right")}<p>Please specify your nationality:</p><input type="text" class="text-input" id="dg_nat" maxlength="40">${mc("dg_attn",'This is an attention check. Please select "Disagree".',DEMOG_OPTS.attn)}${META.pid?"":'<p>Please enter your Prolific ID:</p><input type="text" class="text-input" id="dg_pid" maxlength="40">'}</div>`;
+    bindRequiredSliders(["dg_politics"]);$("measureContinueBtn").disabled=false;
+    p.validate=()=>{const g=id=>($(id)||{value:""}).value.trim();if(!g("dg_gender")||!g("dg_age")||!g("dg_marital")||!g("dg_attn"))return "Please complete the required fields (gender, age, marital status, attention check).";if($("dg_politics").dataset.touched!=="1")return "Please click or move the politics slider.";p._d={gender:g("dg_gender"),age:g("dg_age"),edu:g("dg_edu"),marital:g("dg_marital"),children:g("dg_children"),n_children:g("dg_nchildren"),politics_left_right:$("dg_politics").dataset.touched==="1"?Number($("dg_politics").value):"",attract:g("dg_attract"),nationality:g("dg_nat"),attention:g("dg_attn"),attention_correct:g("dg_attn")==="Disagree"};if(!META.pid&&g("dg_pid"))META.pid=g("dg_pid");return null};
+    p.commit=()=>{state.demog=p._d;logRow({phase:"end",event:"demographics",...p._d})};
+  }
+  else if(p.type==="awareness"){
+    header("About the other players","A few questions about the study so far.",{kicker:"Before Game 3"});
+    $("measureBody").innerHTML=`<div class="page-card">${BOTS.map(b=>`<div class="aw-row"><div>According to your understanding, <b>${esc(NAME[b])}</b> was a:</div><select class="sel-input" id="aw_${b}"><option value="">–</option><option>Man</option><option>Woman</option><option>Computer</option><option>Artificial intelligence (AI)</option></select></div>`).join("")}<div class="aw-row"><div>Any comments on the study?</div></div><textarea id="cmt" class="text-input" rows="3"></textarea></div>`;
+    p.validate=()=>{for(const b of BOTS){if(!$("aw_"+b).value)return "Please answer for every player."}return null};
+    p.commit=()=>logRow({phase:"end",event:"awareness",...Object.fromEntries(BOTS.map(b=>["aware_"+NAME[b].toLowerCase(),$("aw_"+b).value])),comments:$("cmt").value.trim()});
+  }
+  else if(p.type==="debrief"){
+    header("Thank you!","",{kicker:""});
+    $("measureBody").innerHTML=`<div class="page-card"><p><strong>There is no Game 3.</strong> This study looks at how people respond to being included or left out, and to succeeding or failing, in a group game.</p><p><strong>The three other players were not real people.</strong> They were controlled by the computer. How often the ball came to you, whether your passes succeeded, and everything the others "chose" or "answered" were set in advance and assigned at random. Nothing in the game says anything about your skill or about how you come across.</p><p>Thank you for taking part. Questions: ${esc(CONFIG.contactEmail)}.</p></div>
+<div class="page-card" id="dbCheck"><p><strong>To make sure this is clear, please answer:</strong> who were the other three players?</p><label class="db-opt"><input type="radio" name="dbq" value="real"> Real people who played online at the same time as me</label><label class="db-opt"><input type="radio" name="dbq" value="computer"> Computer-controlled players whose passes and answers were set in advance</label><label class="db-opt"><input type="radio" name="dbq" value="unsure"> I am not sure</label><div id="dbAgain" class="db-again hidden"><strong>Please read again:</strong> the other three players were not real. The computer controlled them, and everything they did was set in advance. Nothing in the game reflects your skill or how you come across. Please choose the answer that says so.</div><label class="db-ack"><input type="checkbox" id="dbAck"> I understand that the other players were not real and that the results of the game say nothing about me.</label>${CONFIG.completionUrl?"<p><b>Press Continue to return to Prolific.</b></p>":""}</div>`;
+    p._attempts=0;
+    p.validate=()=>{const r=document.querySelector('input[name="dbq"]:checked');p._attempts++;if(!r)return "Please answer the question.";if(r.value!=="computer"){$("dbAgain").classList.remove("hidden");logRow({phase:"end",event:"debrief_check",answer:r.value,attempt:p._attempts,correct:false});return "Please read the explanation again and choose the answer that says the players were not real."}if(!$("dbAck").checked)return "Please tick the box to confirm that you understand.";return null};
+    p.commit=()=>logRow({phase:"end",event:"debrief_seen",debrief_check_answer:"computer",debrief_check_attempts:p._attempts,acknowledged:true});
+  }
+}
+
+/* ================= flow ================= */
+function setCtx(timepoint,kicker){state.ctx={timepoint,kicker}}
+function buildExample(){const slot=(x,name,col,pos,fig)=>`<div class="ex-player ${pos}"><div class="ex-fig">${fig}</div><div class="ex-name" style="color:${col}">${name}</div></div>`;
+  const nf=`<svg viewBox="0 0 230 230">${AV().figure(.5,.5,115,115,"idle",{})}</svg>`;
+  $("introExample").innerHTML=`<div class="ex-board ex-left"><div class="ex-board-title">Most included</div>${BOTS.concat(["you"]).map(p=>`<div class="ex-row"><span>${p==="you"?"You":NAME[p]}</span><span class="ex-bar"><i style="width:${p==="you"?30:55}%"></i></span></div>`).join("")}</div><div class="ex-arena">${slot("blue",NAME.blue,HEX.blue,"pos-blue",figSVG("blue","idle"))}${slot("purple",NAME.purple,HEX.purple,"pos-purple",figSVG("purple","idle"))}${slot("orange",NAME.orange,HEX.orange,"pos-orange",figSVG("orange","active",{ball:true}))}${slot("you","You","#181c24","pos-you",nf)}</div><div class="ex-board ex-right"><div class="ex-board-title">Successful passes</div><div class="ex-group">Group: 12 of 20</div>${BOTS.concat(["you"]).map(p=>`<div class="ex-row"><span>${p==="you"?"You":NAME[p]}</span><span class="ex-bar"><i style="width:${p==="you"?35:70}%"></i></span></div>`).join("")}</div>`}
+function buildMeet(){const card=(x,sents)=>`<div class="meet-card">${figHTML(x,106,"idle",1)}<div class="meet-name" style="color:${x==="you"?state.playerColor.hex:HEX[x]}">${esc(dispName(x))}${x==="you"?" (Me)":""}</div><div class="meet-sent">${sents.map(s=>`<div>I am ${esc(s)}</div>`).join("")}</div></div>`;$("meetGrid").innerHTML=BOTS.map(b=>card(b,BOT_SENTENCES[b][1])).join("")+card("you",state.sentences[1]||[]);$("meetGrid").classList.add("four")}
+function configureParticipantUI(){
+  $("youName").textContent=state.name;$("youName").style.color=state.playerColor.hex;applyParticipantTint();
+  const g=state.round||1;state.botRep=state.botRep||{};if(!state.botRep[g]){state.botRep[g]={};BOTS.forEach(b=>{const set=BOT_SENTENCES[b][g]||BOT_SENTENCES[b][1];state.botRep[g][b]=set[Math.floor(Math.random()*set.length)]})}
+  BOTS.forEach(b=>{$("sent-"+b).textContent="I am "+state.botRep[g][b]});$("sent-you").textContent=state.repSentence[g]?"I am "+state.repSentence[g]:"";setSprite("you","idle");
+  $("inclYouName").textContent=`${state.name} (Me)`;$("succYouName").textContent=`${state.name} (Me)`;
+  document.documentElement.style.setProperty("--you-color",state.playerColor.hex);
+}
+function postQueue(round){
+  const next=round+1,T=o=>Object.assign(o,{timed:true});
+  return [
+    T({type:"text",title:"Questions for the whole group",text:"All players now answer the same questions. Each page has a time limit, shown at the top, so that the group can continue together. If time runs out, the page moves on.",kicker:"After Game "+round}),
+    T({type:"distress"}),
+    T({type:"matrix",def:PANAS}),T({type:"matrix",def:STATUS}),T({type:"matrix",def:BELONG}),
+    T({type:"participation",game:next,kicker:"Before Game "+next}),
+    T({type:"range_choice",k:1,game:next,round}),T({type:"range_adjust",k:1,game:next,round}),
+    T({type:"range_choice",k:2,game:next,round}),T({type:"range_adjust",k:2,game:next,round}),
+    T({type:"passes",game:next,round}),
+    T({type:"wish_rank",game:next,round}),
+    {type:"wait",text:"Waiting for the other players' answers…",ms:4000},
+    T({type:"others_wish",game:next,round}),
+    T({type:"lookback",game:next,round}),
+    T({type:"color",when:"next",game:next}),
+    {type:"sentences3",game:next},
+    T({type:"rep_sentence",game:next}),
+    T({type:"avatar",game:next}),
+    {type:"wait",text:"Waiting for the other players to write their sentences…",ms:4000},
+    ...(next===2?[T({type:"sentences_show",game:next})]:[])
+  ];
+}
+function startPost(round){
+  setCtx("post_game"+round,"After Game "+round);
+  const pages=postQueue(round);
+  if(round===1) runQueue(pages,()=>showTransition("Game 2","You will now begin Game 2.",()=>startGame(2)),[32,50]);
+  else runQueue([...pages,...POST],finishStudy,[65,100]);   // fix25: no "Connecting… Game 3" page (Roy, 30.9)
+}
+function clearTransitionTimer(){if(state.transitionTimer){clearInterval(state.transitionTimer.iv);clearTimeout(state.transitionTimer.to);state.transitionTimer=null}}
+function showTransition(title,text,fn){showScreen("transitionScreen");$("transitionTitle").textContent=title;$("transitionText").textContent=text;const b=$("transitionBtn");const fresh=b.cloneNode(true);b.parentNode.replaceChild(fresh,b);clearTransitionTimer();
+  const go=how=>{clearTransitionTimer();fresh.disabled=true;if(how==="timeout")logRow({phase:"game",event:"page_timeout",page_type:"transition",page_key:"transition",title,screen_ms:screenMs(),answered:true});logRow({phase:"game",event:"screen_continue",screen:"transition",title,screen_ms:screenMs(),auto:how==="timeout"});fn()};
+  fresh.addEventListener("click",()=>go("click"),{once:true});
+  const pill=$("transitionTimer"),total=T(CONFIG.transitionTimerMs),t0=performance.now();pill.classList.remove("hidden");const tick=()=>{const left=Math.max(0,Math.ceil((total-(performance.now()-t0))/1000));pill.textContent="Time left "+Math.floor(left/60)+":"+String(left%60).padStart(2,"0");pill.classList.toggle("warn",left<=10)};tick();state.transitionTimer={iv:setInterval(tick,250),to:setTimeout(()=>go("timeout"),total)}}
+
+setCtx("setup","");
+PANAS.order=state.panasOrder=shuffle(PANAS.items.map((_,i)=>i));   // counterbalanced emotion list (Roy, 30.9): random order per participant, the same order after both games; logged values keep the item numbers of the fixed list
+qa(".idle-secs").forEach(e=>e.textContent=String(CONFIG.idleMs/1000));
+logRow({phase:"setup",event:"study_start",condition_label:CONDITIONS[COND].label,version:CONFIG.version,pid:META.pid,study:META.study,session:META.session,panas_order:state.panasOrder.map(i=>i+1).join("|"),idle_ms:CONFIG.idleMs});
+const PRE=[...CONFIG.traitsPre.filter(k=>ITEMS[k]).map(k=>({type:"trait",key:k,battery:CONFIG.traitsPre,kicker:"Before the games"}))];
+const GAME_INTRO={type:"text",title:"The group game",text:"Thank you. Now the group game. You will choose a color and an avatar and introduce yourself to three other players with three sentences. Then you will play three games of an online ball-tossing game with them. Between the games you will answer short questions.",kicker:"Part 2"};   // fix26: the game is presented after the four questionnaires (Roy, 30.9)
+const POST=[{type:"traits_intro",timed:true},...CONFIG.traitsPost.filter(k=>ITEMS[k]).map(k=>({type:"trait",key:k,battery:CONFIG.traitsPost})),{type:"demographics"},{type:"awareness"},{type:"debrief"}];
+if(q.get("jump")==="traits"){state.name="Test";LABEL.you="Test";runQueue(POST,finishStudy,[80,100])}   // test switches: ?jump=traits = the questionnaires at the end; ?jump=pre = the questionnaires before the games
+else if(q.get("jump")==="pre"){runQueue([...PRE,GAME_INTRO,{type:"name"},{type:"color",when:"setup"}],()=>{buildExample();showScreen("introScreen");setProgress(13)},[0,12])}
+else runQueue([{type:"welcome"},...PRE,GAME_INTRO,{type:"name"},{type:"color",when:"setup"}],()=>{buildExample();showScreen("introScreen");setProgress(13)},[0,12]);   // fix26: connection to the other players only after sentences and avatar
+$("toIntro2Btn").addEventListener("click",()=>{logRow({phase:"setup",event:"screen_continue",screen:"intro",screen_ms:screenMs()});showScreen("intro2Screen");setProgress(14)});
+$("toPracticeBtn").addEventListener("click",()=>{logRow({phase:"setup",event:"screen_continue",screen:"intro2",screen_ms:screenMs()});state.phase="practice";showScreen("practiceScreen");setProgress(15);setupPractice()});
+$("toMeetBtn").addEventListener("click",()=>{logRow({phase:"setup",event:"screen_continue",screen:"practice",screen_ms:screenMs(),practice_throws:state.practice.attempts});setCtx("setup","");runQueue([{type:"text",title:"Your presentation to the other players",text:"Next you introduce yourself: three sentences and your avatar. Then you will be connected with the other players and see what they chose."},{type:"sentences3",game:1,kicker:""},{type:"rep_sentence",game:1,kicker:""},{type:"avatar",game:1,kicker:""},{type:"wait",text:"Connecting you with the other players…",ms:5000}],()=>{buildMeet();showScreen("meetScreen");setProgress(20);state.meetShownAt=performance.now();readGate(READ_GATE_MS,$("toRulesBtn"),$("meetGate"))},[16,20])});
+$("toRulesBtn").addEventListener("click",()=>{logRow({phase:"setup",event:"meet_seen",page_ms:Math.round(performance.now()-(state.meetShownAt||performance.now()))});configureParticipantUI();setCtx("pre_game1","Before Game 1");runQueue([{type:"participation",game:1,kicker:"Before Game 1"},{type:"wait",text:"Waiting for the other players…",ms:3000}],()=>showTransition("Game 1","You are about to begin Game 1. This game contains 60 ball throws.",()=>startGame(1)),[20,21])});
+
+/* ================= practice (Dan) ================= */
+function setupPractice(){$("practiceProgress").textContent=`${state.practice.attempts} / ${state.practice.max} practice throws`;setPracticeSprite("idle")}
+function practiceZone(elapsed){const p=Math.min(1,Math.max(0,elapsed/SWEEP_MS));if(p>=GREEN[0]&&p<GREEN[1])return {name:"black",prob:.90,label:"Black area"};if((p>=ORANGE1[0]&&p<GREEN[0])||(p>=GREEN[1]&&p<ORANGE2[1]))return {name:"darkgray",prob:.50,label:"Dark gray area"};return {name:"lightgray",prob:.10,label:"Light gray area"}}
+$("practiceBtn").addEventListener("pointerdown",e=>{if(state.practice.active||state.practice.busy||state.practice.attempts>=state.practice.max)return;e.preventDefault();state.practice.active=true;state.practice.started=performance.now();state.practice.pointerId=e.pointerId;$("practiceTarget").classList.add("holding");$("practiceRing").style.setProperty("--p",0);setPracticeSprite("active");try{$("practiceBtn").setPointerCapture(e.pointerId)}catch(_){};const step=now=>{if(!state.practice.active)return;const elapsed=now-state.practice.started,p=Math.min(1,elapsed/SWEEP_MS);$("practiceRing").style.setProperty("--p",p.toFixed(4));if(p>=1){finishPractice(true);return}state.practice.raf=requestAnimationFrame(step)};state.practice.raf=requestAnimationFrame(step)});
+$("practiceBtn").addEventListener("pointerup",e=>{if(state.practice.active&&state.practice.pointerId===e.pointerId)finishPractice(false)});
+$("practiceBtn").addEventListener("pointercancel",e=>{if(state.practice.active&&state.practice.pointerId===e.pointerId)finishPractice(true)});
+async function finishPractice(forced){if(!state.practice.active)return;if(state.practice.raf)cancelAnimationFrame(state.practice.raf);const elapsed=forced?SWEEP_MS:performance.now()-state.practice.started;const z=practiceZone(elapsed);const ok=!forced&&Math.random()<z.prob;state.practice.active=false;state.practice.busy=true;state.practice.pointerId=null;state.practice.raf=null;state.practice.attempts++;$("practiceTarget").classList.remove("holding");$("practiceRing").style.setProperty("--p",0);await animatePracticeThrow();state.practice.busy=false;$("practiceProgress").textContent=`${state.practice.attempts} / ${state.practice.max} practice throws`;const f=$("practiceFeedback");f.textContent=forced?"Release before the border completes a full circle.":`${z.label} — ${ok?"successful throw":"unsuccessful throw"}`;f.className="practice-feedback "+(ok?"success":"failure");logRow({phase:"practice",event:"practice_throw",elapsed_ms:Math.round(elapsed),timing_zone:z.name,zone_success_probability:z.prob,success:ok});if(state.practice.attempts>=state.practice.max){$("toMeetBtn").classList.remove("hidden");f.textContent="Practice complete. The shaded timing areas will be hidden in the real games.";f.className="practice-feedback success"}}
+
+/* ================= game (Dan's engine; schedules per condition; throwing-range adjustments) ================= */
+function initStats(){return {blue:{received:0,attempts:0,successes:0},orange:{received:0,attempts:0,successes:0},purple:{received:0,attempts:0,successes:0},you:{received:0,attempts:0,successes:0}}}
+function makeSuccessBag(rate){if(rate===.80){let arr=[];for(let i=0;i<20;i++)arr.push(true,true,true,true,false);return arr}let block=[2,4,5,10].find(n=>Math.abs(n*rate-Math.round(n*rate))<1e-9)||10,successes=Math.round(block*rate),arr=[];for(let i=0;i<Math.ceil(100/block);i++)arr.push(...shuffle([...Array(successes).fill(true),...Array(block-successes).fill(false)]));return arr}
+function makeParticipantBag(){return [...state.gameBag]}
+function nextControlledSuccess(player){if(!state.successBags[player]||!state.successBags[player].length)state.successBags[player]=player==="you"?makeParticipantBag():makeSuccessBag(state.botRate[player]);return state.successBags[player].shift()}
+function applyAdjustments(round){
+  const g=G(round),bag=[...g.participantBag],slots=[...g.userReceiveSlots],list=round===2?(state.adjust[1]||[]):[];
+  state.botRate={};state.closeBias={};BOTS.forEach(p=>{state.botRate[p]=g.botSuccess;state.closeBias[p]=0});
+  const applied=[];
+  list.forEach(a=>{
+    if(!ADJ.selfMaxSuccesses&&!ADJ.botMaxPoints){applied.push(`${a.target==="you"?"self":NAME[a.target]}:${a.adj}(visual only)`);return}
+    if(a.target==="you"){const d=Math.round(a.adj/50*ADJ.selfMaxSuccesses);for(let k=0;k<Math.abs(d);k++){if(d>0){const i=bag.indexOf(false);if(i>=0)bag[i]=true}else{const i=bag.lastIndexOf(true);if(i>=0)bag[i]=false}}applied.push(`self:${a.adj}(${d>0?"+":""}${d})`)}
+    else{state.botRate[a.target]=Math.min(.95,Math.max(.05,Math.round((state.botRate[a.target]+a.adj/50*ADJ.botMaxPoints/100)*100)/100));applied.push(`${NAME[a.target]}:${a.adj}`)}
+  });
+  state.gameBag=bag;state.gameSlots=slots;return applied;
+}
+function startGame(round){
+  state.round=round;state.phase=`game_${round}`;state.gameActive=true;state.throwNo=0;state.userReceiveIndex=0;state.stats=initStats();
+  state.gameStartedAt=performance.now();state.autoCountGame=0;const applied=applyAdjustments(round);state.successBags={you:makeParticipantBag()};BOTS.forEach(p=>state.successBags[p]=makeSuccessBag(state.botRate[p]));
+  configureParticipantUI();
+  const g=G(round),hide=CONFIG.hideUnchangedBoardInGame2,showIncl=hide?g.showInclusion:true,showSucc=hide?g.showSuccess:true;
+  showScreen("gameScreen");$("roundBanner").textContent=`Game ${round} of 3`;$("inclusionPanel").classList.toggle("hidden-panel",!showIncl);$("successPanel").classList.toggle("hidden-panel",!showSucc);
+  buildDots();updateCounter();updateStats();$("turnTitle").textContent="Game starting…";$("turnSub").textContent="";ALL.forEach(p=>setSprite(p,"idle"));state.holder=pick(BOTS);setHolder(state.holder);positionBall(state.holder,false);
+  logRow({phase:"game",event:"game_start",round,condition_code:g.code,scheduled_receive_slots:state.gameSlots.join("|"),scheduled_success_bag:state.gameBag.map(x=>x?1:0).join(""),bot_success_rates:BOTS.map(p=>`${NAME[p]}=${state.botRate[p]}`).join("|"),adjustments_applied:applied.join("|"),arena_sentences:BOTS.map(b=>`${NAME[b]}: ${state.botRep[round][b]}`).join(" | "),inclusion_board_shown:showIncl,success_board_shown:showSucc});
+  setTimeout(beginTurn,T(700))
+}
+function setHolder(p){state.holder=p;qa(".player-wrap").forEach(w=>w.classList.toggle("holder",w.dataset.player===p));ALL.forEach(k=>setSprite(k,k===p?"active":"idle"))}
+function beginTurn(){if(!state.gameActive)return;if(state.throwNo>=60){finishGame();return}if(state.holder==="you"){state.turnShownAt=performance.now();state.holdStartedAt=null;enableTargets(true);$("turnTitle").textContent=`Your turn`;$("turnSub").textContent="Press and hold a player, then release using the timing you learned.";clearTimeout(state.idleTimer);state.idleTimer=setTimeout(autoPass,T(CONFIG.idleMs))}else{enableTargets(false);$("turnTitle").textContent=`${LABEL[state.holder]}'s turn`;$("turnSub").textContent="Waiting for the next throw…";setTimeout(computerThrow,T(800+Math.random()*850))}}
+function enableTargets(on){qa(".target-btn").forEach(b=>b.disabled=!on)}
+function chooseComputerReceiver(sender){
+  const nextThrow=state.throwNo+1,slots=state.gameSlots;
+  if(state.userReceiveIndex<slots.length && nextThrow>=slots[state.userReceiveIndex]){state.userReceiveIndex++;return "you"}
+  const eligible=BOTS.filter(p=>p!==sender);return [...eligible].sort((a,b)=>(state.stats[a].received-state.closeBias[a])-(state.stats[b].received-state.closeBias[b]))[0]
+}
+async function computerThrow(){
+  if(!state.gameActive||state.holder==="you")return;const sender=state.holder,receiver=chooseComputerReceiver(sender),success=nextControlledSuccess(sender);state.stats[sender].attempts++;if(success)state.stats[sender].successes++;await resolveThrow(sender,receiver,success,"computer")
+}
+qa(".target-btn").forEach(btn=>{
+  btn.addEventListener("pointerdown",e=>{if(!state.gameActive||state.holder!=="you"||state.hold.active)return;e.preventDefault();state.hold.active=true;state.hold.target=btn.dataset.target;state.hold.started=performance.now();state.holdStartedAt=state.hold.started;state.hold.pointerId=e.pointerId;const wrap=document.querySelector(`.player-wrap[data-player="${state.hold.target}"]`);wrap.classList.add("holding");wrap.querySelector(".hold-ring").style.setProperty("--p",0);try{btn.setPointerCapture(e.pointerId)}catch(_){};const step=now=>{if(!state.hold.active)return;const elapsed=now-state.hold.started,p=Math.min(1,elapsed/SWEEP_MS);wrap.querySelector(".hold-ring").style.setProperty("--p",p.toFixed(4));if(p>=1){releaseHold(true);return}state.hold.raf=requestAnimationFrame(step)};state.hold.raf=requestAnimationFrame(step)});
+  btn.addEventListener("pointerup",e=>{if(state.hold.active&&state.hold.pointerId===e.pointerId)releaseHold(false)});
+  btn.addEventListener("pointercancel",e=>{if(state.hold.active&&state.hold.pointerId===e.pointerId)releaseHold(true)});
+});
+function clearHold(){if(state.hold.raf)cancelAnimationFrame(state.hold.raf);if(state.hold.target){const w=document.querySelector(`.player-wrap[data-player="${state.hold.target}"]`);if(w){w.classList.remove("holding");w.querySelector(".hold-ring").style.setProperty("--p",0)}}}
+async function releaseHold(forced){
+  if(!state.hold.active)return;clearTimeout(state.idleTimer);state.idleTimer=null;const target=state.hold.target,elapsed=forced?SWEEP_MS:performance.now()-state.hold.started,zone=practiceZone(elapsed);clearHold();state.hold.active=false;state.hold.target=null;state.hold.pointerId=null;enableTargets(false);state.stats.you.attempts++;
+  const success=nextControlledSuccess("you");if(success)state.stats.you.successes++;
+  const sched=state.gameBag.filter(Boolean).length/state.gameBag.length;
+  const now=performance.now();state.lastTiming={elapsed_ms:Math.round(elapsed),timing_zone:zone.name,practice_zone_probability:zone.prob,forced_release:forced,manipulated_success_probability:Math.round(sched*100)/100,throw_success:success,react_ms:state.turnShownAt?Math.round((state.holdStartedAt||now)-state.turnShownAt):"",turn_ms:state.turnShownAt?Math.round(now-state.turnShownAt):""};
+  await resolveThrow("you",target,success,"participant")
+}
+async function resolveThrow(sender,receiver,success,source){
+  await animateThrow(sender);
+  if(success){
+    await animateBall(sender,receiver);showOutcome(sender,true);
+  }else{
+    await animateBallToCenter();showOutcome(sender,false);await wait(260);
+    await animateBallFromCenter(receiver);
+  }
+  state.throwNo++;state.stats[receiver].received++;setHolder(receiver);animateCatch(receiver);if(receiver==="you"&&sender!=="you")showHeart(sender);
+  const t=sender==="you"&&state.lastTiming?state.lastTiming:{};
+  logRow({phase:"game",event:"throw",round:state.round,condition_code:G(state.round).code,throw_number:state.throwNo,sender:LABEL[sender],receiver:LABEL[receiver],source,success,participant_inclusion_received:state.stats.you.received,participant_inclusion_percent:pct(state.stats.you.received,state.throwNo),participant_successes:state.stats.you.successes,participant_attempts:state.stats.you.attempts,participant_success_percent:pct(state.stats.you.successes,state.stats.you.attempts),timing_elapsed_ms:t.elapsed_ms??"",timing_zone:t.timing_zone??"",practice_zone_probability:t.practice_zone_probability??"",forced_release:t.forced_release??"",manipulated_success_probability:t.manipulated_success_probability??"",react_ms:t.react_ms??"",turn_ms:t.turn_ms??""});
+  if(sender==="you")state.lastTiming=null;updateCounter();updateStats();buildDots();setProgress((state.round===1?21:50)+12*state.throwNo/60);setTimeout(()=>state.throwNo>=60?finishGame():beginTurn(),T(source==="computer"?620:900))
+}
+function showOutcome(sender,success){const e=$("outcomeBig");$("outcomeThumb").textContent=success?"👍":"👎";$("outcomeTxt").textContent=`${sender==="you"?"You":LABEL[sender]}: ${success?"successful pass":"unsuccessful pass"}`;e.classList.remove("ok","bad");e.classList.add(success?"ok":"bad");e.classList.add("show");clearTimeout(state.outcomeTimer);state.outcomeTimer=setTimeout(()=>e.classList.remove("show"),Math.max(350,T(900)))}
+function showWarning(text,ms){const w=$("warnBanner");w.textContent=text;w.classList.remove("hidden");clearTimeout(state.warnTimer);state.warnTimer=setTimeout(()=>w.classList.add("hidden"),ms)}
+async function autoPass(){
+  if(!state.gameActive||state.holder!=="you"||state.hold.active)return;
+  enableTargets(false);state.autoCount++;state.autoCountGame++;const target=pick(BOTS);state.stats.you.attempts++;
+  const nth=state.autoCount;const secs=CONFIG.idleMs/1000,msg=nth===1?`You did not pass within ${secs} seconds, so the ball was passed for you and counted as an unsuccessful pass. Please stay focused: pass within ${secs} seconds.`:`This is the ${nth===2?"second":nth===3?"third":nth+"th"} time you did not pass in time. The ball was passed for you and counted as an unsuccessful pass. Please stay focused.`;
+  showWarning(msg,T(6000));$("turnTitle").textContent="You did not pass in time";$("turnSub").textContent="The ball was passed for you.";
+  logRow({phase:"game",event:"auto_pass",round:state.round,throw_number:state.throwNo+1,target:LABEL[target],auto_pass_count_total:nth,auto_pass_count_game:state.autoCountGame,idle_ms:CONFIG.idleMs});
+  state.lastTiming={elapsed_ms:"",timing_zone:"none",practice_zone_probability:"",forced_release:"",manipulated_success_probability:"",throw_success:false,react_ms:"",turn_ms:Math.round(performance.now()-(state.turnShownAt||performance.now()))};
+  await wait(T(1200));await resolveThrow("you",target,false,"auto");
+}
+function showHeart(sender){const h=$("heartPop");h.textContent="♥";h.style.color=HEX[sender];h.classList.remove("show");void h.offsetWidth;h.classList.add("show")}
+function finishGame(){state.gameActive=false;enableTargets(false);clearTimeout(state.idleTimer);state.idleTimer=null;state.lastStats={round:state.round,throws:state.throwNo,received:Object.fromEntries(ALL.map(p=>[p,pct(state.stats[p].received,state.throwNo)])),success:Object.fromEntries(ALL.map(p=>[p,pct(state.stats[p].successes,state.stats[p].attempts)]))};$("turnTitle").textContent=`Game ${state.round} complete`;$("turnSub").textContent="60 throws completed.";logRow({phase:"game",event:"game_end",round:state.round,condition_code:G(state.round).code,final_inclusion_percent:pct(state.stats.you.received,state.throwNo),final_success_percent:pct(state.stats.you.successes,state.stats.you.attempts),final_received:state.stats.you.received,final_attempts:state.stats.you.attempts,final_successes:state.stats.you.successes,group_successes:ALL.reduce((a,p)=>a+state.stats[p].successes,0),game_ms:Math.round(performance.now()-(state.gameStartedAt||performance.now())),bot_final:BOTS.map(p=>`${NAME[p]}:rec${state.stats[p].received}/succ${state.stats[p].successes}of${state.stats[p].attempts}`).join("|")});setTimeout(()=>startPost(state.round),T(700))}
+
+/* ================= motion + displays (Dan) ================= */
+function centerOf(p){const ar=$("arena").getBoundingClientRect(),r=document.querySelector(`.player-wrap[data-player="${p}"] .sprite-shell`).getBoundingClientRect();return{x:r.left-ar.left+r.width/2,y:r.top-ar.top+r.height/2}}
+function arenaCenter(){const r=$("arena").getBoundingClientRect();return{x:r.width/2,y:r.height/2}}
+function positionBall(p,animate=true){const q=centerOf(p),b=$("ballFly");if(!animate)b.style.transition="none";b.style.left=q.x+"px";b.style.top=q.y+"px";if(!animate){void b.offsetWidth;b.style.transition="left .50s linear,top .50s linear"}}
+function animateBall(a,b){return new Promise(res=>{const ball=$("ballFly"),p=centerOf(a),q=centerOf(b),mx=(p.x+q.x)/2,my=(p.y+q.y)/2-55;ball.style.transition="none";ball.style.left=p.x+"px";ball.style.top=p.y+"px";void ball.offsetWidth;ball.style.transition="left .25s ease-out,top .25s ease-out";ball.style.left=mx+"px";ball.style.top=my+"px";setTimeout(()=>{ball.style.transition="left .27s ease-in,top .27s ease-in";ball.style.left=q.x+"px";ball.style.top=q.y+"px"},250);setTimeout(res,540)})}
+function animateBallToCenter(){return new Promise(res=>{const q=arenaCenter(),b=$("ballFly");b.style.left=q.x+"px";b.style.top=q.y+"px";setTimeout(res,430)})}
+function animateBallFromCenter(p){return new Promise(res=>{const q=centerOf(p),b=$("ballFly");b.style.left=q.x+"px";b.style.top=q.y+"px";setTimeout(res,430)})}
+function pct(n,d){return d>0?Math.round((n/d)*100):0}
+function updateRankPanel(panelId,values){const panel=$(panelId);if(!panel)return;const sorted=[...values].sort((a,b)=>b.value-a.value),order={};sorted.forEach((x,i)=>order[x.player]=i);values.forEach(({player,value})=>{const row=panel.querySelector(`.rank-row[data-player="${player}"]`);if(!row)return;row.style.order=order[player];row.querySelector(".rank-value").textContent=`${value}%`;row.querySelector(".rank-fill").style.width=`${Math.max(0,Math.min(100,value))}%`})}
+function updateStats(){const inclusionValues=[],successValues=[];ALL.forEach(p=>{const s=state.stats[p]||{received:0,attempts:0,successes:0},i=pct(s.received,state.throwNo),h=pct(s.successes,s.attempts);inclusionValues.push({player:p,value:i,count:`${s.received}/${state.throwNo}`});successValues.push({player:p,value:h,succ:s.successes,att:s.attempts})});const gs=ALL.reduce((a,p)=>a+(state.stats[p]||{successes:0}).successes,0);$("groupCount").textContent=`Group: ${gs} of ${state.throwNo}`;$("throwPill").textContent=`Throws: ${state.throwNo} of 60`;updateRankPanel("inclusionRank",inclusionValues);inclusionValues.forEach(v=>{const row=document.querySelector(`#inclusionRank .rank-row[data-player="${v.player}"] .rank-count`);if(row)row.textContent=v.count});updateRankPanel("successRank",successValues);successValues.forEach(v=>{const row=document.querySelector(`#successRank .rank-row[data-player="${v.player}"] .rank-count`);if(row)row.textContent=`${v.succ}/${v.att}`})}
+/* ---------- staircase for the passing ranking (4 steps; adapted from the CyberStatus 3D staircase) ---------- */
+const STEP_LABEL=["Top passer","2nd","3rd","4th"];
+const STEP_COL=["#f2c14e","#ddb055","#bda87c","#9ea3a8"];
+function shade(hex,f){const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;const tt=f<0?0:255;f=Math.abs(f);r=Math.round((tt-r)*f+r);g=Math.round((tt-g)*f+g);b=Math.round((tt-b)*f+b);return "#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)}
+function stairsSVG(perStep,o={}){ // perStep: array of 4 arrays of player keys (step 1 = top passer); o.clickable, o.selected (0–3)
+  const SW=64,SDX=18,SDY=10,SRISE=44,SX0=10,maxN=Math.max(1,...perStep.map(a=>a.length)),STOP=64+52*(maxN-1),SBASE=STOP+3*SRISE+40,W=SX0*2+4*SW+SDX,H=SBASE+10;
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="stairsvg" role="img" aria-label="Passing ranking staircase"><defs><linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9fbff"/><stop offset="1" stop-color="#e6ebf2"/></linearGradient></defs><rect x="0" y="0" width="${W}" height="${H}" fill="url(#sky2)" rx="8"/><rect x="0" y="${SBASE}" width="${W}" height="${H-SBASE}" fill="#d3d9e0"/>`;
+  for(let i=0;i<4;i++){const x=SX0+i*SW,yt=STOP+i*SRISE,col=STEP_COL[i];
+    s+=`<g class="step${o.clickable?" clickable":""}${o.selected===i?" sel":""}" data-i="${i}"><polygon points="${x+SW},${yt} ${x+SW+SDX},${yt-SDY} ${x+SW+SDX},${SBASE-SDY} ${x+SW},${SBASE}" fill="${shade(col,-.38)}"/><rect class="front" x="${x}" y="${yt}" width="${SW}" height="${SBASE-yt}" fill="${shade(col,-.16)}" stroke="${shade(col,-.42)}"/><polygon points="${x},${yt} ${x+SW},${yt} ${x+SW+SDX},${yt-SDY} ${x+SDX},${yt-SDY}" fill="${shade(col,.22)}" stroke="${shade(col,-.3)}"/>`;
+    s+=`<text x="${x+SW/2}" y="${yt+22}" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff" style="pointer-events:none">${i+1}</text><text x="${x+SW/2}" y="${yt+35}" text-anchor="middle" font-size="8.5" fill="#fff" style="pointer-events:none">${STEP_LABEL[i]}</text></g>`;
+    (perStep[i]||[]).forEach((p,k)=>{const isMe=p==="you",col2=isMe?state.playerColor.hex:HEX[p],nm=dispName(p),short=nm.length>9?nm.slice(0,8)+"…":nm,cx=x+SW/2+SDX/2,cy=yt-SDY/2-24-52*((perStep[i].length-1)-k);
+      s+=`<g style="pointer-events:none"><circle cx="${cx}" cy="${cy}" r="13" fill="${isMe?col2:"#fff"}" stroke="${col2}" stroke-width="2"/><text x="${cx}" y="${cy+4.5}" text-anchor="middle" font-size="12" font-weight="bold" fill="${isMe?"#fff":"#333"}">${esc(nm[0].toUpperCase())}</text><rect x="${cx-27}" y="${cy+15}" width="54" height="12" rx="6" fill="${isMe?col2:"#fff"}" stroke="${col2}"/><text x="${cx}" y="${cy+24}" text-anchor="middle" font-size="8" font-weight="bold" fill="${isMe?"#fff":"#333"}">${esc(short)}${isMe?" (Me)":""}</text></g>`})}
+  return s+"</svg>";
+}
+function buildDots(){$("dots").innerHTML="";for(let i=0;i<60;i++){const d=document.createElement("span");d.className="dot"+(i<state.throwNo?" done":"");$("dots").appendChild(d)}}
+function updateCounter(){/* HUD "n / 60" counter removed (Roy, 30.9); the left board shows "Throws: n of 60" */}
+/* ================= end ================= */
+async function finishStudy(){
+  state.phase="complete";setProgress(100);logRow({phase:"end",event:"study_complete",duration_min:Math.round((Date.now()-new Date(META.start).getTime())/600)/100});
+  showScreen("completeStudyScreen");
+  try{window.parent.postMessage({type:"CyberCatchComplete",condition:COND,rows:state.logs},"*")}catch(_){}
+  if(CONFIG.endpoint){try{await fetch(CONFIG.endpoint,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:makeJSON()})}catch(_){}}
+  if(CONFIG.completionUrl){$("completeText").textContent="Redirecting you to Prolific…";setTimeout(()=>location.href=CONFIG.completionUrl,1200)}
+}
+window.addEventListener("resize",()=>{if(state.holder&&!$("gameScreen").classList.contains("hidden"))positionBall(state.holder,false)});
+})();
+</script>
+</body>
+</html>

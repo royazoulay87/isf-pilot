@@ -3,8 +3,17 @@
 set -e
 SRC="/Users/royazoulay/Desktop/isf 2026/Pilot_2026-09-25"
 cd "$(dirname "$0")"
-for t in scenarios cyberstatus cyberball; do
-  if [ -f "$SRC/$t/index.html" ]; then
+# usage: ./deploy.sh [task ...]   (tasks: scenarios cyberstatus cyberball; default = all that have an index.html)
+# source folders: scenarios -> Pilot_2026-09-25/scenarios ; cyberstatus -> Pilot_2026-09-25/cyberstatus ;
+#                 cyberball  -> the folder named in cyberball/SOURCE (a fix folder with the ThrowCatch build) + our index.html
+TASKS="${@:-scenarios cyberstatus cyberball}"
+for t in $TASKS; do
+  if [ "$t" = "cyberball" ]; then
+    src="$(cat cyberball/SOURCE 2>/dev/null)"
+    if [ -n "$src" ] && [ -d "$src" ]; then
+      rsync -a --exclude '*.md' --exclude '*.py' --exclude 'data*' "$src/" "./cyberball/"; echo "synced cyberball from $src"
+    else echo "skip cyberball (cyberball/SOURCE missing)"; fi
+  elif [ -f "$SRC/$t/index.html" ]; then
     rsync -a --delete --exclude '.git' --exclude 'node_modules' --exclude '*.md' --exclude '*.py' --exclude 'data*' "$SRC/$t/" "./$t/"
     echo "synced $t"
   else
@@ -12,5 +21,5 @@ for t in scenarios cyberstatus cyberball; do
   fi
 done
 git add -A
-git commit -m "${1:-deploy $(date +%Y-%m-%d_%H:%M)}" || true
+git commit -m "${COMMIT_MSG:-deploy $(date +%Y-%m-%d_%H:%M)}" || true
 git push -u origin main
