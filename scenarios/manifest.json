@@ -1,0 +1,177 @@
+{
+  "task": "scenarios",
+  "title": "Run C — matched social scenarios (ISF 2026 pilot)",
+  "version": "scenarios_v4_2026-09-30",
+  "built": "2026-09-30",
+  "entry": "index.html",
+  "files": [
+    "index.html",
+    "app.js",
+    "items.js",
+    "config.js",
+    "style.css",
+    "backend/google_apps_script.gs",
+    "backend/flatten_to_csv.py",
+    "backend/generate_items.py",
+    "README.md",
+    "manifest.json",
+    "test_runs/"
+  ],
+  "text_source": "סנריואים/settings_v15_2026-09-30.json (Roy's accepted texts of 30.9 night; second part = Option A parallel stories); freeze pending",
+  "design": {
+    "settings": 16,
+    "types": {
+      "A_workplace": [
+        "work_team",
+        "q_yearend",
+        "q_promotion",
+        "new_office"
+      ],
+      "B_structured": [
+        "seminar",
+        "volunteer",
+        "q_class",
+        "choir"
+      ],
+      "C_peer_leisure": [
+        "sports",
+        "cooking",
+        "running",
+        "residents"
+      ],
+      "D_friends": [
+        "q_dinner",
+        "island",
+        "ten_friends",
+        "q_birthday"
+      ]
+    },
+    "halves": {
+      "H1": [
+        "work_team",
+        "q_yearend",
+        "seminar",
+        "volunteer",
+        "sports",
+        "cooking",
+        "island",
+        "q_birthday"
+      ],
+      "H2": [
+        "q_promotion",
+        "new_office",
+        "q_class",
+        "choir",
+        "running",
+        "residents",
+        "q_dinner",
+        "ten_friends"
+      ]
+    },
+    "per_participant": {
+      "ambiguous_items": 8,
+      "clear_scenes": 8,
+      "no_setting_repeated": true
+    },
+    "block_order": "traits -> ambiguous block -> clear block -> demographics -> realism -> debrief",
+    "versions": [
+      "HH",
+      "HL lonely winner",
+      "LH beloved loser",
+      "LL"
+    ],
+    "acceptance_first_settings": [
+      "work_team",
+      "seminar",
+      "running",
+      "q_promotion",
+      "q_class",
+      "q_birthday"
+    ],
+    "counterbalancing": "half X/Y × order 0-3 (Williams square) × ambPattern 0/1 × levelPattern 0/1 = 32 cells, drawn at random client-side (config.force overrides)",
+    "mode_default": "all16: every participant sees all 16 settings as ambiguous items (8 A + 8 B, half high/half low), then all 16 as clear versions (each version 4 times) using the parallel stories (alt); 8+8 design still available (config allSettings=false or ?full=0)",
+    "questionnaires": {
+      "before": [
+        "spin",
+        "bdi",
+        "bpni",
+        "fpes"
+      ],
+      "after": [
+        "npi16",
+        "soas",
+        "lsas (fear only)"
+      ]
+    },
+    "block": {
+      "clear": [
+        "stressed, valued, wanted (1-7)",
+        "stay: one of three boxes (stay & persist / wait and see / leave)",
+        "submission, status enhancement, belittling, approach (How likely is it that you would react this way? 1-7)"
+      ],
+      "ambiguous": [
+        "3 statements (1-7)",
+        "stressed, valued, wanted",
+        "stay: one of three boxes"
+      ]
+    }
+  },
+  "config_keys": {
+    "endpoint": "POST receiver URL (empty = JSON download at the end)",
+    "completionUrl": "Prolific completion redirect (empty = thank-you page)",
+    "timeScale": "multiplier for the reading floors (1 = real)",
+    "minReadSeconds": "seconds before Next is enabled on a scenario page (8)",
+    "force": "{half:'X'|'Y'|null, order:0-3|null, amb:0|1|null, lvl:0|1|null}",
+    "contactEmail": "shown on consent and debrief",
+    "traitsBefore": "questionnaires right after consent; default ['spin','bdi','bpni','fpes']",
+    "traitsAfter": "questionnaires after the situations; default ['npi16','soas','lsas']",
+    "allSettings": "true = all-16 mode (default); false = 8 + 8",
+    "altSet": "'story' (Option A) | 'mild'"
+  },
+  "url_parameters": {
+    "PROLIFIC_PID, STUDY_ID, SESSION_ID": "stored as pid, study, session",
+    "debug=1": "exposes window.D; answers optional; enables auto=1, ts=, traits=, half=, order=, amb=, lvl=, full=0|1, seq=1 (fixed order 1-16), altset=story|mild; shows a version banner"
+  },
+  "receiver_contract": {
+    "top_level_keys": [
+      "task",
+      "pid",
+      "stage",
+      "cond",
+      "version",
+      "study",
+      "session",
+      "ua"
+    ],
+    "stages": [
+      "consent",
+      "traits",
+      "amb",
+      "clear",
+      "complete"
+    ]
+  },
+  "measures": [
+    "spin (17)",
+    "bdi (20, scored) + bdi_raw",
+    "bpni (28)",
+    "fpes (10)",
+    "npi16 (16 keyed) + npi16_raw",
+    "soas (14)",
+    "lsas_fear (24)",
+    "amb[16 or 8]: cog[3], block{stress,valued,wanted}, stay (choice), ms",
+    "clear[16 or 8]: block{stress,valued,wanted}, stay (choice), react{submit,status_up,belittle,approach}, ms",
+    "demog",
+    "attention",
+    "realism",
+    "comments",
+    "timings",
+    "screens"
+  ],
+  "expected_duration_min": {
+    "all16_with_seven_questionnaires": "about 45-50 (questionnaires ~14, 16 ambiguous ~14, 16 clear ~17, rest ~3)",
+    "8plus8": "about 30",
+    "screens_all16": 45
+  },
+  "verification": "30.9.2026 night: all-16 run with all seven questionnaires and 8+8 run, headless, complete, zero console issues; test_runs/v16_*.json"
+}

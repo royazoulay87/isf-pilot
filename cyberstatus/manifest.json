@@ -1,0 +1,182 @@
+{
+  "task": "cyberstatus",
+  "title": "CyberStatus v3 — standing × connections (ISF 2026 pilot, Run A)",
+  "version": "cyberstatus_v3_pilot_2026-09-30i",
+  "built": "2026-09-29",
+  "source": "copy of CyberStatus_v2/web (15.9.2026), edited; original folder and Qualtrics survey SV_a4Yz0Mg2EPoQHae untouched",
+  "entry": "index.html",
+  "files": [
+    "index.html",
+    "app.js",
+    "items.js",
+    "config.js",
+    "style.css",
+    "backend/flatten_to_csv.py",
+    "backend/google_apps_script.gs",
+    "README.md",
+    "TEXTS_FOR_APPROVAL_2026-09-27.md",
+    "manifest.json",
+    "test_runs/",
+    "avatar.js",
+    "Version1_HighAccepted.html",
+    "Version2_HighRejected.html",
+    "Version3_LowAccepted.html",
+    "Version4_LowRejected.html"
+  ],
+  "design": {
+    "factors": {
+      "standing": [
+        "high",
+        "low"
+      ],
+      "acc": [
+        1,
+        0
+      ]
+    },
+    "cells": {
+      "HH": "high/1 doubly secure",
+      "HL": "high/0 lonely winner",
+      "LH": "low/1 beloved loser",
+      "LL": "low/0 doubly deprived"
+    },
+    "randomization": "client-side 50/50 on each factor at page load; or fixed by ?v=1..4 / the four launcher files (one Prolific study per version); config.force overrides for testing",
+    "rounds": 5,
+    "rank_per_round": {
+      "high": [
+        3,
+        1,
+        2,
+        1,
+        1
+      ],
+      "low": [
+        3,
+        5,
+        5,
+        4,
+        5
+      ]
+    },
+    "picks_received_per_round": {
+      "acc": [
+        2,
+        4,
+        3,
+        4,
+        4
+      ],
+      "rej": [
+        2,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    "final": {
+      "high": "rank 1 = Leader; connections = all four",
+      "low": "rank 5 = Second Support; connections = none (separate channel)"
+    },
+    "others_stated_wishes": {
+      "Jessie": 1,
+      "Alex": 1,
+      "Taylor": 2,
+      "Jordan": 2
+    },
+    "members": "Emma (woman), Tom (man), Taylor (gender-neutral), Pixel (nickname) — DRAFT names pending Roy (30.9); personas unchanged"
+  },
+  "config_keys": {
+    "endpoint": "POST receiver URL (empty = JSON download at the end)",
+    "completionUrl": "Prolific completion redirect (empty = thank-you page)",
+    "timeScale": "multiplier for waits, reading minimums and answer timers (1 = real)",
+    "force": "{standing: 'high'|'low'|null, acc: 1|0|null}",
+    "contactEmail": "shown on consent and debrief",
+    "rankChoiceSeconds": "seconds allowed for each choice (vote, staircase picks, connections) before the system chooses and shows a red card; default 14",
+    "traitsBefore": "trait questionnaires right after consent; default ['spin','fpes','bdi','bpni']",
+    "traitsAfter": "trait questionnaires after the task, before the demographics; default ['npi16','lsas','soas'] (LSAS = fear matrix only)",
+    "gameTimers": "seconds before each screen of the task continues by itself: read 20, outcome 25, state 60, wish 20, distress 20, emotions 40, slider 20 (partial answers saved; a missing desired step = null)"
+  },
+  "url_parameters": {
+    "PROLIFIC_PID, STUDY_ID, SESSION_ID": "stored as pid, study, session",
+    "debug=1": "testing: exposes window.D; enables standing=, acc=, ts=, traits=, auto=1, stop=N,M",
+    "v=1|2|3|4": "fixed version: 1 high/accepted, 2 high/rejected (lonely winner), 3 low/accepted (beloved loser), 4 low/rejected; without it the cell is drawn at random (or from config.force)"
+  },
+  "receiver_contract": {
+    "top_level_keys": [
+      "task",
+      "pid",
+      "stage",
+      "cond",
+      "version",
+      "study",
+      "session",
+      "ua"
+    ],
+    "stages": [
+      "consent",
+      "traits_before",
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "outcome",
+      "post",
+      "traits",
+      "complete"
+    ]
+  },
+  "measures": [
+    "name",
+    "paragraph",
+    "introRead",
+    "panas_pre (13 items: 8 PANAS + happy, humiliated, angry, lonely, sad)",
+    "distress_pre (face-slider)",
+    "avatar_pre {x, y, touched, drags, seconds, moveSeconds}",
+    "rounds[1-5]{sentence, sentenceAuto, sentenceSeconds, sentenceMs, vote, voteMs, voteAuto, pickN, pickNMs, pickNAuto, position, role, winner, finalOrder, resultMs, connPicks, connMs, connAuto, connReceived, connResultMs, state (r1, r5)}",
+    "state1, state5, stateOrder",
+    "distress_pre, distress_post",
+    "wish_r1",
+    "outcome",
+    "wish_final",
+    "panas_post",
+    "pstatus",
+    "inclusion",
+    "metaperc",
+    "satisfaction",
+    "expect",
+    "avatar_post {x, y, touched, drags, seconds, moveSeconds}",
+    "desires",
+    "shouldRank",
+    "shouldParticipate",
+    "shouldWith",
+    "check",
+    "missionChoice",
+    "spin",
+    "lsas_fear",
+    "npi16",
+    "fpes",
+    "bpni",
+    "demog",
+    "awareness",
+    "comments",
+    "timings",
+    "bdi (BDI-II, 20 groups, no suicidality item)",
+    "soas (Sense of Absence Scale, 14)",
+    "screens (per-screen reaction-time log: n, title, ms, first, errors, end)",
+    "participation_pre",
+    "participation_mission",
+    "visibility (tab hidden/shown log)",
+    "autoCount",
+    "voteOrder / pickNOrder / connOrder per round (left-to-right order of the cards, randomized)",
+    "botOrder (order of the members for the introductions, the circle and the awareness check)",
+    "panasOrder (display order of the 13 emotions, drawn once per participant, same at both administrations)"
+  ],
+  "expected_duration_min": {
+    "scripted_waits_only": 4,
+    "estimated_total": "42-48 with the full trait battery at the end (BDI-II + SoAS added)",
+    "screens": "75-79"
+  },
+  "verification": "29.9.2026: all four cells end-to-end in headless Chrome at timeScale 0.05 (zero console errors, data files in test_runs/)"
+}

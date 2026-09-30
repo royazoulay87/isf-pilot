@@ -6,8 +6,8 @@ cd "$(dirname "$0")"
 # usage: ./deploy.sh [task ...]   (tasks: scenarios cyberstatus cyberball; default = all that have an index.html)
 # source folders: scenarios -> Pilot_2026-09-25/scenarios ; cyberstatus -> Pilot_2026-09-25/cyberstatus ;
 #                 cyberball  -> the folder named in cyberball/SOURCE (a fix folder with the ThrowCatch build) + our index.html
-TASKS="${@:-scenarios cyberstatus cyberball}"
-for t in $TASKS; do
+TASKS=("$@"); [ $# -eq 0 ] && TASKS=(scenarios cyberstatus cyberball)
+for t in "${TASKS[@]}"; do
   if [ "$t" = "cyberball" ]; then
     src="$(cat cyberball/SOURCE 2>/dev/null)"
     if [ -n "$src" ] && [ -d "$src" ]; then
