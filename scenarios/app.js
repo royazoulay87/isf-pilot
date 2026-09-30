@@ -41,7 +41,8 @@ const ambIds=FULL?ALL:(half==='X'?DESIGN.halves.H2:DESIGN.halves.H1);
 const W=[[0,1,3,2],[1,2,0,3],[2,3,1,0],[3,0,2,1]]; const VER=['HH','HL','LH','LL']; // Williams square: each version once per row, each position once per column
 const arrange=a=>CONFIG.fixedOrder?a.slice().sort((x,y)=>(BY[x.id].no||0)-(BY[y.id].no||0)):shuffle(a);
 const clearPlan=arrange(clearIds.map((id,k)=>({id,settingType:TYPE[id],version:VER[W[(order+Math.floor(k/4))%4][k%4]]})));
-const ambPlan=arrange(ambIds.map((id,k)=>{const variant=((Math.floor(k/4)%2===0)===(ambPattern===0))?'A':'B'; const j=k%4; const level=((j%2===0)===(levelPattern===0))?'high':'low'; return {id,settingType:TYPE[id],variant,level};}));
+// variant alternates within each pair of settings of a type (2 A + 2 B per type in all-16 mode); level pattern balanced within type and within variant
+const ambPlan=arrange(ambIds.map((id,k)=>{const variant=((k%2===0)===(ambPattern===0))?'A':'B'; const level=(((Math.floor(k/2)+Math.floor(k/8))%2===0)===(levelPattern===0))?'high':'low'; return {id,settingType:TYPE[id],variant,level};}));
 D.cond.clearPlan=clearPlan.map(x=>x.id+':'+x.version); D.cond.ambPlan=ambPlan.map(x=>x.id+':'+x.variant+':'+x.level);
 if(DEBUG){ const lbl=(DESIGN.textVersion||'').startsWith('prenotes')?'PRE-NOTES TEXTS (Word v32)':'CURRENT TEXTS (settings '+DESIGN.textVersion+')'; const b=document.createElement('div'); b.id='verbanner'; b.textContent=lbl+' · mode: '+(FULL?'all 16 ambiguous, then all 16 clear':'8 + 8')+(CONFIG.fixedOrder?' · fixed order 1–16':'')+(FULL?' · second part: '+(CONFIG.altSet==='mild'?'MILD changes':'PARALLEL STORY'):'')+' · port '+location.port; document.body.prepend(b); }
 // ---------- helpers ----------

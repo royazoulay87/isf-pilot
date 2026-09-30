@@ -2,7 +2,7 @@
 const CONFIG = {
   // Where data is sent (POST JSON; receiver contract = backend/google_apps_script_multitask.gs of the pilot hub).
   // Leave empty to skip sending and offer a JSON download at the end (local testing).
-  endpoint: '',
+  endpoint: 'https://script.google.com/macros/s/AKfycbzA9xE25wi0LRvcUIWVWDrB_oZoxA_QqXt_KDwNGB_xEyrEVTBspEBf2s_cjrVCJtI6/exec',
   // Prolific completion URL (participants are redirected here after the debrief). Leave empty to show a thank-you page instead.
   completionUrl: '',
   // Multiply every "waiting for the other members" delay, the reading minimums and the answer timers (1 = real timing; 0.1 = fast testing).

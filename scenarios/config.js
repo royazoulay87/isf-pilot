@@ -1,7 +1,7 @@
 // ---- Run C: matched social scenarios (ISF 2026 pilot) configuration ----
 const CONFIG = {
   // POST receiver URL (the hub's multitask Apps Script). Empty = no sending; a JSON download is offered on the last screen (local testing).
-  endpoint: '',
+  endpoint: 'https://script.google.com/macros/s/AKfycbzA9xE25wi0LRvcUIWVWDrB_oZoxA_QqXt_KDwNGB_xEyrEVTBspEBf2s_cjrVCJtI6/exec',
   // Prolific completion URL; empty = thank-you page instead of a redirect.
   completionUrl: '',
   // Trait questionnaires, Cyberball structure (Roy, 30.9): four BEFORE the situations, three AFTER them (before the demographics).

@@ -20,6 +20,7 @@ for t in "${TASKS[@]}"; do
     echo "skip $t (no index.html yet)"
   fi
 done
+python3 apply_deploy_config.py
 git add -A
 git commit -m "${COMMIT_MSG:-deploy $(date +%Y-%m-%d_%H:%M)}" || true
 git push -u origin main
