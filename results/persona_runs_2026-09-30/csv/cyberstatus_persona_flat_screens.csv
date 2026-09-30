@@ -1,0 +1,1446 @@
+pid,standing,acc,seq,n,title,ms,first,errors,end
+cyberstatus_dep_high_acc0,high,0,1,1,Welcome,658,,0,next
+cyberstatus_dep_high_acc0,high,0,2,2,Questionnaires,249,,0,next
+cyberstatus_dep_high_acc0,high,0,3,3,Social Anxiety Questionnaire,251,,0,next
+cyberstatus_dep_high_acc0,high,0,4,4,Fear of Positive Evaluation Questionnaire,249,,0,next
+cyberstatus_dep_high_acc0,high,0,5,5,Mood Questionnaire,252,,0,next
+cyberstatus_dep_high_acc0,high,0,6,6,Relationships Questionnaire,248,,0,next
+cyberstatus_dep_high_acc0,high,0,7,7,The team mission,249,,0,next
+cyberstatus_dep_high_acc0,high,0,8,,Please wait while we connect to the other participants. It might take ,301,,0,wait
+cyberstatus_dep_high_acc0,high,0,9,8,Please write your name or nickname (this is how the other members will,200,200,0,next
+cyberstatus_dep_high_acc0,high,0,10,9,Introduce yourself,250,249,0,next
+cyberstatus_dep_high_acc0,high,0,11,,Please wait while the other members write their introductions…,451,,0,wait
+cyberstatus_dep_high_acc0,high,0,12,10,Meet the team: Emma,547,,0,next
+cyberstatus_dep_high_acc0,high,0,13,11,Meet the team: Pixel,751,,0,next
+cyberstatus_dep_high_acc0,high,0,14,12,Meet the team: Taylor,750,,0,next
+cyberstatus_dep_high_acc0,high,0,15,13,Meet the team: Tom,750,,0,next
+cyberstatus_dep_high_acc0,high,0,16,,The other members are reading the introductions…,301,,0,wait
+cyberstatus_dep_high_acc0,high,0,17,14,Choose your avatar,198,,0,next
+cyberstatus_dep_high_acc0,high,0,18,,Waiting for the other members to place their figures…,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,19,15,How the ranking works,303,,0,next
+cyberstatus_dep_high_acc0,high,0,20,16,How the connections work,249,,0,next
+cyberstatus_dep_high_acc0,high,0,21,17,How much would you like to take part in the ranking rounds with these members?,251,251,0,next
+cyberstatus_dep_high_acc0,high,0,22,18,How do you feel right now?,251,,0,next
+cyberstatus_dep_high_acc0,high,0,23,19,"Right now, how much distress do you feel?",249,249,0,next
+cyberstatus_dep_high_acc0,high,0,24,20,Round 1 of 5,249,249,0,next
+cyberstatus_dep_high_acc0,high,0,25,21,Round 1 – vote,249,,0,next
+cyberstatus_dep_high_acc0,high,0,26,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_dep_high_acc0,high,0,27,,Round 1 – ranking,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,28,,Round 1 – ranking,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,29,22,Round 1 – ranking,246,,0,next
+cyberstatus_dep_high_acc0,high,0,30,,Round 1 – ranking,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,31,,Round 1 – ranking,201,,0,wait
+cyberstatus_dep_high_acc0,high,0,32,23,Round 1 result,47,,0,next
+cyberstatus_dep_high_acc0,high,0,33,24,Connections – round 1,703,,2,timeout
+cyberstatus_dep_high_acc0,high,0,34,,Red card,301,,0,wait
+cyberstatus_dep_high_acc0,high,0,35,,Waiting for the other members to make their choices…,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,36,25,Connections – round 1,244,,0,next
+cyberstatus_dep_high_acc0,high,0,37,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …i",250,,0,next
+cyberstatus_dep_high_acc0,high,0,38,27,After the first round,250,,0,next
+cyberstatus_dep_high_acc0,high,0,39,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,40,28,The team's choices,248,,0,next
+cyberstatus_dep_high_acc0,high,0,41,29,Round 2 of 5,249,249,0,next
+cyberstatus_dep_high_acc0,high,0,42,30,Round 2 – vote,701,,2,timeout
+cyberstatus_dep_high_acc0,high,0,43,,Red card,302,,0,wait
+cyberstatus_dep_high_acc0,high,0,44,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,45,,Round 2 – ranking,151,,0,wait
+cyberstatus_dep_high_acc0,high,0,46,31,Round 2 – ranking,95,,0,next
+cyberstatus_dep_high_acc0,high,0,47,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,48,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,49,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,50,,Round 2 – ranking,202,,0,wait
+cyberstatus_dep_high_acc0,high,0,51,32,Round 2 result,41,,0,next
+cyberstatus_dep_high_acc0,high,0,52,33,Connections – round 2,249,,0,next
+cyberstatus_dep_high_acc0,high,0,53,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,54,34,Connections – round 2,249,,0,next
+cyberstatus_dep_high_acc0,high,0,55,35,Round 3 of 5,250,250,0,next
+cyberstatus_dep_high_acc0,high,0,56,36,Round 3 – vote,250,,0,next
+cyberstatus_dep_high_acc0,high,0,57,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,58,,Round 3 – ranking,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,59,37,Round 3 – ranking,247,,0,next
+cyberstatus_dep_high_acc0,high,0,60,,Round 3 – ranking,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,61,,Round 3 – ranking,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,62,,Round 3 – ranking,202,,0,wait
+cyberstatus_dep_high_acc0,high,0,63,38,Round 3 result,43,,0,next
+cyberstatus_dep_high_acc0,high,0,64,39,Connections – round 3,251,,0,next
+cyberstatus_dep_high_acc0,high,0,65,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,66,40,Connections – round 3,249,,0,next
+cyberstatus_dep_high_acc0,high,0,67,41,Round 4 of 5,250,250,0,next
+cyberstatus_dep_high_acc0,high,0,68,42,Round 4 – vote,249,,0,next
+cyberstatus_dep_high_acc0,high,0,69,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,70,,Round 4 – ranking,152,,0,wait
+cyberstatus_dep_high_acc0,high,0,71,43,Round 4 – ranking,96,,0,next
+cyberstatus_dep_high_acc0,high,0,72,,Round 4 – ranking,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,73,,Round 4 – ranking,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,74,,Round 4 – ranking,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,75,,Round 4 – ranking,202,,0,wait
+cyberstatus_dep_high_acc0,high,0,76,44,Round 4 result,45,,0,next
+cyberstatus_dep_high_acc0,high,0,77,45,Connections – round 4,250,,0,next
+cyberstatus_dep_high_acc0,high,0,78,,Waiting for the other members to make their choices…,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,79,46,Connections – round 4,248,,0,next
+cyberstatus_dep_high_acc0,high,0,80,47,Round 5 of 5,249,249,0,next
+cyberstatus_dep_high_acc0,high,0,81,48,Round 5 – vote,250,,0,next
+cyberstatus_dep_high_acc0,high,0,82,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_dep_high_acc0,high,0,83,,Round 5 – ranking,151,,0,wait
+cyberstatus_dep_high_acc0,high,0,84,49,Round 5 – ranking,97,,0,next
+cyberstatus_dep_high_acc0,high,0,85,,Round 5 – ranking,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,86,,Round 5 – ranking,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,87,,Round 5 – ranking,252,,0,wait
+cyberstatus_dep_high_acc0,high,0,88,,Round 5 – ranking,202,,0,wait
+cyberstatus_dep_high_acc0,high,0,89,50,Round 5 result,41,,0,next
+cyberstatus_dep_high_acc0,high,0,90,51,Connections – round 5,702,,2,timeout
+cyberstatus_dep_high_acc0,high,0,91,,Red card,302,,0,wait
+cyberstatus_dep_high_acc0,high,0,92,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,93,52,Connections – round 5,245,,0,next
+cyberstatus_dep_high_acc0,high,0,94,,Computing the overall ranking…,250,,0,wait
+cyberstatus_dep_high_acc0,high,0,95,53,Overall ranking: First.,250,,0,next
+cyberstatus_dep_high_acc0,high,0,96,54,Your connections: none.,250,,0,next
+cyberstatus_dep_high_acc0,high,0,97,55,"Right now, how much distress do you feel?",249,249,0,next
+cyberstatus_dep_high_acc0,high,0,98,56,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …i",251,,0,next
+cyberstatus_dep_high_acc0,high,0,99,57,How do you feel right now?,250,,0,next
+cyberstatus_dep_high_acc0,high,0,100,58,Before the mission,251,,0,next
+cyberstatus_dep_high_acc0,high,0,101,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_dep_high_acc0,high,0,102,59,The team's choices,247,,0,next
+cyberstatus_dep_high_acc0,high,0,103,60,How much would you like to take part in the mission with this team?,249,249,0,next
+cyberstatus_dep_high_acc0,high,0,104,61,"For each statement, please indicate how much you agree, thinking about",251,,0,next
+cyberstatus_dep_high_acc0,high,0,105,62,Please indicate how much you agree/disagree with the following stateme,251,,0,next
+cyberstatus_dep_high_acc0,high,0,106,63,To what extent did the other team members perceive you as:,249,249,0,next
+cyberstatus_dep_high_acc0,high,0,107,64,How satisfied are you with…,250,250,0,next
+cyberstatus_dep_high_acc0,high,0,108,65,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,250,,0,next
+cyberstatus_dep_high_acc0,high,0,109,66,Choose your avatar,250,,0,next
+cyberstatus_dep_high_acc0,high,0,110,67,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,249,249,0,next
+cyberstatus_dep_high_acc0,high,0,111,68,In your own view,251,,0,next
+cyberstatus_dep_high_acc0,high,0,112,69,"Regardless of the connections, how do you think you should take part i",250,,0,next
+cyberstatus_dep_high_acc0,high,0,113,70,Two quick questions,250,,0,next
+cyberstatus_dep_high_acc0,high,0,114,71,The mission,250,,0,next
+cyberstatus_dep_high_acc0,high,0,115,72,Questionnaires,249,,0,next
+cyberstatus_dep_high_acc0,high,0,116,73,Social Behaviour Questionnaire,251,,0,next
+cyberstatus_dep_high_acc0,high,0,117,74,Social Situations Questionnaire,251,,0,next
+cyberstatus_dep_high_acc0,high,0,118,75,Feelings in the World Questionnaire,248,,0,next
+cyberstatus_dep_high_acc0,high,0,119,76,A few details about you,251,250,0,next
+cyberstatus_dep_high_acc0,high,0,120,77,About the other members,249,248,0,next
+cyberstatus_dep_high_acc0,high,0,121,78,Thank you!,250,,0,next
+cyberstatus_dep_high_acc1,high,1,1,1,Welcome,658,,0,next
+cyberstatus_dep_high_acc1,high,1,2,2,Questionnaires,249,,0,next
+cyberstatus_dep_high_acc1,high,1,3,3,Social Anxiety Questionnaire,251,,0,next
+cyberstatus_dep_high_acc1,high,1,4,4,Fear of Positive Evaluation Questionnaire,249,,0,next
+cyberstatus_dep_high_acc1,high,1,5,5,Mood Questionnaire,250,,0,next
+cyberstatus_dep_high_acc1,high,1,6,6,Relationships Questionnaire,250,,0,next
+cyberstatus_dep_high_acc1,high,1,7,7,The team mission,249,,0,next
+cyberstatus_dep_high_acc1,high,1,8,,Please wait while we connect to the other participants. It might take ,301,,0,wait
+cyberstatus_dep_high_acc1,high,1,9,8,Please write your name or nickname (this is how the other members will,199,199,0,next
+cyberstatus_dep_high_acc1,high,1,10,9,Introduce yourself,251,250,0,next
+cyberstatus_dep_high_acc1,high,1,11,,Please wait while the other members write their introductions…,452,,0,wait
+cyberstatus_dep_high_acc1,high,1,12,10,Meet the team: Tom,547,,0,next
+cyberstatus_dep_high_acc1,high,1,13,11,Meet the team: Emma,750,,0,next
+cyberstatus_dep_high_acc1,high,1,14,12,Meet the team: Pixel,749,,0,next
+cyberstatus_dep_high_acc1,high,1,15,13,Meet the team: Taylor,750,,0,next
+cyberstatus_dep_high_acc1,high,1,16,,The other members are reading the introductions…,301,,0,wait
+cyberstatus_dep_high_acc1,high,1,17,14,Choose your avatar,199,,0,next
+cyberstatus_dep_high_acc1,high,1,18,,Waiting for the other members to place their figures…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,19,15,How the ranking works,303,,0,next
+cyberstatus_dep_high_acc1,high,1,20,16,How the connections work,249,,0,next
+cyberstatus_dep_high_acc1,high,1,21,17,How much would you like to take part in the ranking rounds with these members?,251,251,0,next
+cyberstatus_dep_high_acc1,high,1,22,18,How do you feel right now?,251,,0,next
+cyberstatus_dep_high_acc1,high,1,23,19,"Right now, how much distress do you feel?",249,249,0,next
+cyberstatus_dep_high_acc1,high,1,24,20,Round 1 of 5,249,249,0,next
+cyberstatus_dep_high_acc1,high,1,25,21,Round 1 – vote,250,,0,next
+cyberstatus_dep_high_acc1,high,1,26,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,27,,Round 1 – ranking,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,28,,Round 1 – ranking,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,29,22,Round 1 – ranking,246,,0,next
+cyberstatus_dep_high_acc1,high,1,30,,Round 1 – ranking,252,,0,wait
+cyberstatus_dep_high_acc1,high,1,31,,Round 1 – ranking,202,,0,wait
+cyberstatus_dep_high_acc1,high,1,32,23,Round 1 result,46,,0,next
+cyberstatus_dep_high_acc1,high,1,33,24,Connections – round 1,702,,2,timeout
+cyberstatus_dep_high_acc1,high,1,34,,Red card,301,,0,wait
+cyberstatus_dep_high_acc1,high,1,35,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,36,25,Connections – round 1,246,,0,next
+cyberstatus_dep_high_acc1,high,1,37,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",250,,0,next
+cyberstatus_dep_high_acc1,high,1,38,27,After the first round,250,,0,next
+cyberstatus_dep_high_acc1,high,1,39,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,40,28,The team's choices,247,,0,next
+cyberstatus_dep_high_acc1,high,1,41,29,Round 2 of 5,250,250,0,next
+cyberstatus_dep_high_acc1,high,1,42,30,Round 2 – vote,701,,2,timeout
+cyberstatus_dep_high_acc1,high,1,43,,Red card,301,,0,wait
+cyberstatus_dep_high_acc1,high,1,44,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,45,,Round 2 – ranking,152,,0,wait
+cyberstatus_dep_high_acc1,high,1,46,31,Round 2 – ranking,94,,0,next
+cyberstatus_dep_high_acc1,high,1,47,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_high_acc1,high,1,48,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_high_acc1,high,1,49,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_high_acc1,high,1,50,,Round 2 – ranking,202,,0,wait
+cyberstatus_dep_high_acc1,high,1,51,32,Round 2 result,41,,0,next
+cyberstatus_dep_high_acc1,high,1,52,33,Connections – round 2,249,,0,next
+cyberstatus_dep_high_acc1,high,1,53,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,54,34,Connections – round 2,249,,0,next
+cyberstatus_dep_high_acc1,high,1,55,35,Round 3 of 5,250,250,0,next
+cyberstatus_dep_high_acc1,high,1,56,36,Round 3 – vote,703,,2,timeout
+cyberstatus_dep_high_acc1,high,1,57,,Red card,301,,0,wait
+cyberstatus_dep_high_acc1,high,1,58,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_dep_high_acc1,high,1,59,,Round 3 – ranking,252,,0,wait
+cyberstatus_dep_high_acc1,high,1,60,37,Round 3 – ranking,243,,0,next
+cyberstatus_dep_high_acc1,high,1,61,,Round 3 – ranking,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,62,,Round 3 – ranking,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,63,,Round 3 – ranking,202,,0,wait
+cyberstatus_dep_high_acc1,high,1,64,38,Round 3 result,45,,0,next
+cyberstatus_dep_high_acc1,high,1,65,39,Connections – round 3,250,,0,next
+cyberstatus_dep_high_acc1,high,1,66,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,67,40,Connections – round 3,249,,0,next
+cyberstatus_dep_high_acc1,high,1,68,41,Round 4 of 5,250,250,0,next
+cyberstatus_dep_high_acc1,high,1,69,42,Round 4 – vote,702,,2,timeout
+cyberstatus_dep_high_acc1,high,1,70,,Red card,302,,0,wait
+cyberstatus_dep_high_acc1,high,1,71,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,72,,Round 4 – ranking,151,,0,wait
+cyberstatus_dep_high_acc1,high,1,73,43,Round 4 – ranking,95,,0,next
+cyberstatus_dep_high_acc1,high,1,74,,Round 4 – ranking,252,,0,wait
+cyberstatus_dep_high_acc1,high,1,75,,Round 4 – ranking,252,,0,wait
+cyberstatus_dep_high_acc1,high,1,76,,Round 4 – ranking,252,,0,wait
+cyberstatus_dep_high_acc1,high,1,77,,Round 4 – ranking,203,,0,wait
+cyberstatus_dep_high_acc1,high,1,78,44,Round 4 result,40,,0,next
+cyberstatus_dep_high_acc1,high,1,79,45,Connections – round 4,249,,0,next
+cyberstatus_dep_high_acc1,high,1,80,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,81,46,Connections – round 4,249,,0,next
+cyberstatus_dep_high_acc1,high,1,82,47,Round 5 of 5,249,249,0,next
+cyberstatus_dep_high_acc1,high,1,83,48,Round 5 – vote,250,,0,next
+cyberstatus_dep_high_acc1,high,1,84,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,85,,Round 5 – ranking,152,,0,wait
+cyberstatus_dep_high_acc1,high,1,86,49,Round 5 – ranking,97,,0,next
+cyberstatus_dep_high_acc1,high,1,87,,Round 5 – ranking,253,,0,wait
+cyberstatus_dep_high_acc1,high,1,88,,Round 5 – ranking,253,,0,wait
+cyberstatus_dep_high_acc1,high,1,89,,Round 5 – ranking,252,,0,wait
+cyberstatus_dep_high_acc1,high,1,90,,Round 5 – ranking,203,,0,wait
+cyberstatus_dep_high_acc1,high,1,91,50,Round 5 result,39,,0,next
+cyberstatus_dep_high_acc1,high,1,92,51,Connections – round 5,702,,2,timeout
+cyberstatus_dep_high_acc1,high,1,93,,Red card,302,,0,wait
+cyberstatus_dep_high_acc1,high,1,94,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_dep_high_acc1,high,1,95,52,Connections – round 5,245,,0,next
+cyberstatus_dep_high_acc1,high,1,96,,Computing the overall ranking…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,97,53,Overall ranking: First.,249,,0,next
+cyberstatus_dep_high_acc1,high,1,98,54,"Your connections: Emma, Tom, Taylor, Pixel.",249,,0,next
+cyberstatus_dep_high_acc1,high,1,99,55,"Right now, how much distress do you feel?",250,250,0,next
+cyberstatus_dep_high_acc1,high,1,100,56,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",251,,0,next
+cyberstatus_dep_high_acc1,high,1,101,57,How do you feel right now?,250,,0,next
+cyberstatus_dep_high_acc1,high,1,102,58,Before the mission,250,,0,next
+cyberstatus_dep_high_acc1,high,1,103,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_dep_high_acc1,high,1,104,59,The team's choices,248,,0,next
+cyberstatus_dep_high_acc1,high,1,105,60,How much would you like to take part in the mission with this team?,251,251,0,next
+cyberstatus_dep_high_acc1,high,1,106,61,"For each statement, please indicate how much you agree, thinking about",249,,0,next
+cyberstatus_dep_high_acc1,high,1,107,62,Please indicate how much you agree/disagree with the following stateme,250,,0,next
+cyberstatus_dep_high_acc1,high,1,108,63,To what extent did the other team members perceive you as:,249,249,0,next
+cyberstatus_dep_high_acc1,high,1,109,64,How satisfied are you with…,251,250,0,next
+cyberstatus_dep_high_acc1,high,1,110,65,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,250,,0,next
+cyberstatus_dep_high_acc1,high,1,111,66,Choose your avatar,249,,0,next
+cyberstatus_dep_high_acc1,high,1,112,67,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,251,251,0,next
+cyberstatus_dep_high_acc1,high,1,113,68,In your own view,251,,0,next
+cyberstatus_dep_high_acc1,high,1,114,69,"Regardless of the connections, how do you think you should take part i",248,,0,next
+cyberstatus_dep_high_acc1,high,1,115,70,With whom? Emma Tom Taylor Pixel,250,,0,next
+cyberstatus_dep_high_acc1,high,1,116,71,Two quick questions,249,,0,next
+cyberstatus_dep_high_acc1,high,1,117,72,The mission,251,,0,next
+cyberstatus_dep_high_acc1,high,1,118,73,Questionnaires,250,,0,next
+cyberstatus_dep_high_acc1,high,1,119,74,Social Behaviour Questionnaire,250,,0,next
+cyberstatus_dep_high_acc1,high,1,120,75,Social Situations Questionnaire,250,,0,next
+cyberstatus_dep_high_acc1,high,1,121,76,Feelings in the World Questionnaire,250,,0,next
+cyberstatus_dep_high_acc1,high,1,122,77,A few details about you,250,250,0,next
+cyberstatus_dep_high_acc1,high,1,123,78,About the other members,250,249,0,next
+cyberstatus_dep_high_acc1,high,1,124,79,Thank you!,249,,0,next
+cyberstatus_dep_low_acc0,low,0,1,1,Welcome,656,,0,next
+cyberstatus_dep_low_acc0,low,0,2,2,Questionnaires,249,,0,next
+cyberstatus_dep_low_acc0,low,0,3,3,Social Anxiety Questionnaire,251,,0,next
+cyberstatus_dep_low_acc0,low,0,4,4,Fear of Positive Evaluation Questionnaire,249,,0,next
+cyberstatus_dep_low_acc0,low,0,5,5,Mood Questionnaire,250,,0,next
+cyberstatus_dep_low_acc0,low,0,6,6,Relationships Questionnaire,250,,0,next
+cyberstatus_dep_low_acc0,low,0,7,7,The team mission,249,,0,next
+cyberstatus_dep_low_acc0,low,0,8,,Please wait while we connect to the other participants. It might take ,302,,0,wait
+cyberstatus_dep_low_acc0,low,0,9,8,Please write your name or nickname (this is how the other members will,199,199,0,next
+cyberstatus_dep_low_acc0,low,0,10,9,Introduce yourself,250,250,0,next
+cyberstatus_dep_low_acc0,low,0,11,,Please wait while the other members write their introductions…,451,,0,wait
+cyberstatus_dep_low_acc0,low,0,12,10,Meet the team: Taylor,549,,0,next
+cyberstatus_dep_low_acc0,low,0,13,11,Meet the team: Emma,750,,0,next
+cyberstatus_dep_low_acc0,low,0,14,12,Meet the team: Pixel,750,,0,next
+cyberstatus_dep_low_acc0,low,0,15,13,Meet the team: Tom,750,,0,next
+cyberstatus_dep_low_acc0,low,0,16,,The other members are reading the introductions…,302,,0,wait
+cyberstatus_dep_low_acc0,low,0,17,14,Choose your avatar,198,,0,next
+cyberstatus_dep_low_acc0,low,0,18,,Waiting for the other members to place their figures…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,19,15,How the ranking works,248,,0,next
+cyberstatus_dep_low_acc0,low,0,20,16,How the connections work,249,,0,next
+cyberstatus_dep_low_acc0,low,0,21,17,How much would you like to take part in the ranking rounds with these members?,250,250,0,next
+cyberstatus_dep_low_acc0,low,0,22,18,How do you feel right now?,250,,0,next
+cyberstatus_dep_low_acc0,low,0,23,19,"Right now, how much distress do you feel?",248,248,0,next
+cyberstatus_dep_low_acc0,low,0,24,20,Round 1 of 5,250,250,0,next
+cyberstatus_dep_low_acc0,low,0,25,21,Round 1 – vote,249,,0,next
+cyberstatus_dep_low_acc0,low,0,26,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_dep_low_acc0,low,0,27,,Round 1 – ranking,250,,0,wait
+cyberstatus_dep_low_acc0,low,0,28,,Round 1 – ranking,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,29,22,Round 1 – ranking,246,,0,next
+cyberstatus_dep_low_acc0,low,0,30,,Round 1 – ranking,250,,0,wait
+cyberstatus_dep_low_acc0,low,0,31,,Round 1 – ranking,202,,0,wait
+cyberstatus_dep_low_acc0,low,0,32,23,Round 1 result,46,,0,next
+cyberstatus_dep_low_acc0,low,0,33,24,Connections – round 1,250,,0,next
+cyberstatus_dep_low_acc0,low,0,34,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,35,25,Connections – round 1,248,,0,next
+cyberstatus_dep_low_acc0,low,0,36,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",251,,0,next
+cyberstatus_dep_low_acc0,low,0,37,27,After the first round,250,,0,next
+cyberstatus_dep_low_acc0,low,0,38,,Waiting for the other members to state their choices…,250,,0,wait
+cyberstatus_dep_low_acc0,low,0,39,28,The team's choices,249,,0,next
+cyberstatus_dep_low_acc0,low,0,40,29,Round 2 of 5,249,249,0,next
+cyberstatus_dep_low_acc0,low,0,41,30,Round 2 – vote,251,,0,next
+cyberstatus_dep_low_acc0,low,0,42,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,43,,Round 2 – ranking,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,44,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,45,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,46,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,47,,Round 2 – ranking,202,,0,wait
+cyberstatus_dep_low_acc0,low,0,48,31,Round 2 result,39,,0,next
+cyberstatus_dep_low_acc0,low,0,49,32,Connections – round 2,250,,0,next
+cyberstatus_dep_low_acc0,low,0,50,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_dep_low_acc0,low,0,51,33,Connections – round 2,250,,0,next
+cyberstatus_dep_low_acc0,low,0,52,34,Round 3 of 5,249,249,0,next
+cyberstatus_dep_low_acc0,low,0,53,35,Round 3 – vote,250,,0,next
+cyberstatus_dep_low_acc0,low,0,54,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,55,,Round 3 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,56,,Round 3 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,57,,Round 3 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,58,,Round 3 – ranking,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,59,,Round 3 – ranking,202,,0,wait
+cyberstatus_dep_low_acc0,low,0,60,36,Round 3 result,38,,0,next
+cyberstatus_dep_low_acc0,low,0,61,37,Connections – round 3,703,,2,timeout
+cyberstatus_dep_low_acc0,low,0,62,,Red card,302,,0,wait
+cyberstatus_dep_low_acc0,low,0,63,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,64,38,Connections – round 3,245,,0,next
+cyberstatus_dep_low_acc0,low,0,65,39,Round 4 of 5,249,249,0,next
+cyberstatus_dep_low_acc0,low,0,66,40,Round 4 – vote,251,,0,next
+cyberstatus_dep_low_acc0,low,0,67,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,68,,Round 4 – ranking,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,69,,Round 4 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,70,,Round 4 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,71,41,Round 4 – ranking,244,,0,next
+cyberstatus_dep_low_acc0,low,0,72,,Round 4 – ranking,202,,0,wait
+cyberstatus_dep_low_acc0,low,0,73,42,Round 4 result,48,,0,next
+cyberstatus_dep_low_acc0,low,0,74,43,Connections – round 4,249,,0,next
+cyberstatus_dep_low_acc0,low,0,75,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,76,44,Connections – round 4,249,,0,next
+cyberstatus_dep_low_acc0,low,0,77,45,Round 5 of 5,250,250,0,next
+cyberstatus_dep_low_acc0,low,0,78,46,Round 5 – vote,250,,0,next
+cyberstatus_dep_low_acc0,low,0,79,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,80,,Round 5 – ranking,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,81,,Round 5 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,82,,Round 5 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,83,,Round 5 – ranking,252,,0,wait
+cyberstatus_dep_low_acc0,low,0,84,,Round 5 – ranking,202,,0,wait
+cyberstatus_dep_low_acc0,low,0,85,47,Round 5 result,39,,0,next
+cyberstatus_dep_low_acc0,low,0,86,48,Connections – round 5,251,,0,next
+cyberstatus_dep_low_acc0,low,0,87,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,88,49,Connections – round 5,249,,0,next
+cyberstatus_dep_low_acc0,low,0,89,,Computing the overall ranking…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,90,50,Overall ranking: Last.,247,,0,next
+cyberstatus_dep_low_acc0,low,0,91,51,Your connections: none.,249,,0,next
+cyberstatus_dep_low_acc0,low,0,92,52,"Right now, how much distress do you feel?",251,251,0,next
+cyberstatus_dep_low_acc0,low,0,93,53,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",250,,0,next
+cyberstatus_dep_low_acc0,low,0,94,54,How do you feel right now?,250,,0,next
+cyberstatus_dep_low_acc0,low,0,95,55,Before the mission,250,,0,next
+cyberstatus_dep_low_acc0,low,0,96,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_dep_low_acc0,low,0,97,56,The team's choices,249,,0,next
+cyberstatus_dep_low_acc0,low,0,98,57,How much would you like to take part in the mission with this team?,250,250,0,next
+cyberstatus_dep_low_acc0,low,0,99,58,"For each statement, please indicate how much you agree, thinking about",250,,0,next
+cyberstatus_dep_low_acc0,low,0,100,59,Please indicate how much you agree/disagree with the following stateme,250,,0,next
+cyberstatus_dep_low_acc0,low,0,101,60,To what extent did the other team members perceive you as:,250,249,0,next
+cyberstatus_dep_low_acc0,low,0,102,61,How satisfied are you with…,248,248,0,next
+cyberstatus_dep_low_acc0,low,0,103,62,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,251,,0,next
+cyberstatus_dep_low_acc0,low,0,104,63,Choose your avatar,250,,0,next
+cyberstatus_dep_low_acc0,low,0,105,64,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,249,248,0,next
+cyberstatus_dep_low_acc0,low,0,106,65,In your own view,251,,0,next
+cyberstatus_dep_low_acc0,low,0,107,66,"Regardless of the connections, how do you think you should take part i",249,,0,next
+cyberstatus_dep_low_acc0,low,0,108,67,Two quick questions,251,,0,next
+cyberstatus_dep_low_acc0,low,0,109,68,The mission,248,,0,next
+cyberstatus_dep_low_acc0,low,0,110,69,Questionnaires,251,,0,next
+cyberstatus_dep_low_acc0,low,0,111,70,Social Behaviour Questionnaire,249,,0,next
+cyberstatus_dep_low_acc0,low,0,112,71,Social Situations Questionnaire,250,,0,next
+cyberstatus_dep_low_acc0,low,0,113,72,Feelings in the World Questionnaire,251,,0,next
+cyberstatus_dep_low_acc0,low,0,114,73,A few details about you,249,248,0,next
+cyberstatus_dep_low_acc0,low,0,115,74,About the other members,250,249,0,next
+cyberstatus_dep_low_acc0,low,0,116,75,Thank you!,249,,0,next
+cyberstatus_dep_low_acc1,low,1,1,1,Welcome,661,,0,next
+cyberstatus_dep_low_acc1,low,1,2,2,Questionnaires,248,,0,next
+cyberstatus_dep_low_acc1,low,1,3,3,Social Anxiety Questionnaire,251,,0,next
+cyberstatus_dep_low_acc1,low,1,4,4,Fear of Positive Evaluation Questionnaire,250,,0,next
+cyberstatus_dep_low_acc1,low,1,5,5,Mood Questionnaire,251,,0,next
+cyberstatus_dep_low_acc1,low,1,6,6,Relationships Questionnaire,248,,0,next
+cyberstatus_dep_low_acc1,low,1,7,7,The team mission,249,,0,next
+cyberstatus_dep_low_acc1,low,1,8,,Please wait while we connect to the other participants. It might take ,301,,0,wait
+cyberstatus_dep_low_acc1,low,1,9,8,Please write your name or nickname (this is how the other members will,198,198,0,next
+cyberstatus_dep_low_acc1,low,1,10,9,Introduce yourself,251,251,0,next
+cyberstatus_dep_low_acc1,low,1,11,,Please wait while the other members write their introductions…,452,,0,wait
+cyberstatus_dep_low_acc1,low,1,12,10,Meet the team: Taylor,547,,0,next
+cyberstatus_dep_low_acc1,low,1,13,11,Meet the team: Pixel,750,,0,next
+cyberstatus_dep_low_acc1,low,1,14,12,Meet the team: Emma,750,,0,next
+cyberstatus_dep_low_acc1,low,1,15,13,Meet the team: Tom,751,,0,next
+cyberstatus_dep_low_acc1,low,1,16,,The other members are reading the introductions…,301,,0,wait
+cyberstatus_dep_low_acc1,low,1,17,14,Choose your avatar,197,,0,next
+cyberstatus_dep_low_acc1,low,1,18,,Waiting for the other members to place their figures…,250,,0,wait
+cyberstatus_dep_low_acc1,low,1,19,15,How the ranking works,250,,0,next
+cyberstatus_dep_low_acc1,low,1,20,16,How the connections work,249,,0,next
+cyberstatus_dep_low_acc1,low,1,21,17,How much would you like to take part in the ranking rounds with these members?,250,250,0,next
+cyberstatus_dep_low_acc1,low,1,22,18,How do you feel right now?,249,,0,next
+cyberstatus_dep_low_acc1,low,1,23,19,"Right now, how much distress do you feel?",250,249,0,next
+cyberstatus_dep_low_acc1,low,1,24,20,Round 1 of 5,249,249,0,next
+cyberstatus_dep_low_acc1,low,1,25,21,Round 1 – vote,249,,0,next
+cyberstatus_dep_low_acc1,low,1,26,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,27,,Round 1 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,28,,Round 1 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,29,22,Round 1 – ranking,245,,0,next
+cyberstatus_dep_low_acc1,low,1,30,,Round 1 – ranking,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,31,,Round 1 – ranking,202,,0,wait
+cyberstatus_dep_low_acc1,low,1,32,23,Round 1 result,47,,0,next
+cyberstatus_dep_low_acc1,low,1,33,24,Connections – round 1,702,,2,timeout
+cyberstatus_dep_low_acc1,low,1,34,,Red card,301,,0,wait
+cyberstatus_dep_low_acc1,low,1,35,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,36,25,Connections – round 1,245,,0,next
+cyberstatus_dep_low_acc1,low,1,37,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",251,,0,next
+cyberstatus_dep_low_acc1,low,1,38,27,After the first round,251,,0,next
+cyberstatus_dep_low_acc1,low,1,39,,Waiting for the other members to state their choices…,250,,0,wait
+cyberstatus_dep_low_acc1,low,1,40,28,The team's choices,247,,0,next
+cyberstatus_dep_low_acc1,low,1,41,29,Round 2 of 5,250,250,0,next
+cyberstatus_dep_low_acc1,low,1,42,30,Round 2 – vote,250,,0,next
+cyberstatus_dep_low_acc1,low,1,43,,Waiting for the other members to vote…,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,44,,Round 2 – ranking,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,45,,Round 2 – ranking,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,46,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,47,,Round 2 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,48,,Round 2 – ranking,202,,0,wait
+cyberstatus_dep_low_acc1,low,1,49,31,Round 2 result,40,,0,next
+cyberstatus_dep_low_acc1,low,1,50,32,Connections – round 2,250,,0,next
+cyberstatus_dep_low_acc1,low,1,51,,Waiting for the other members to make their choices…,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,52,33,Connections – round 2,248,,0,next
+cyberstatus_dep_low_acc1,low,1,53,34,Round 3 of 5,250,250,0,next
+cyberstatus_dep_low_acc1,low,1,54,35,Round 3 – vote,251,,0,next
+cyberstatus_dep_low_acc1,low,1,55,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,56,,Round 3 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,57,,Round 3 – ranking,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,58,,Round 3 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,59,,Round 3 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,60,,Round 3 – ranking,202,,0,wait
+cyberstatus_dep_low_acc1,low,1,61,36,Round 3 result,40,,0,next
+cyberstatus_dep_low_acc1,low,1,62,37,Connections – round 3,249,,0,next
+cyberstatus_dep_low_acc1,low,1,63,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,64,38,Connections – round 3,250,,0,next
+cyberstatus_dep_low_acc1,low,1,65,39,Round 4 of 5,250,250,0,next
+cyberstatus_dep_low_acc1,low,1,66,40,Round 4 – vote,250,,0,next
+cyberstatus_dep_low_acc1,low,1,67,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,68,,Round 4 – ranking,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,69,,Round 4 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,70,,Round 4 – ranking,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,71,41,Round 4 – ranking,245,,0,next
+cyberstatus_dep_low_acc1,low,1,72,,Round 4 – ranking,203,,0,wait
+cyberstatus_dep_low_acc1,low,1,73,42,Round 4 result,47,,0,next
+cyberstatus_dep_low_acc1,low,1,74,43,Connections – round 4,250,,0,next
+cyberstatus_dep_low_acc1,low,1,75,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,76,44,Connections – round 4,249,,0,next
+cyberstatus_dep_low_acc1,low,1,77,45,Round 5 of 5,250,250,0,next
+cyberstatus_dep_low_acc1,low,1,78,46,Round 5 – vote,250,,0,next
+cyberstatus_dep_low_acc1,low,1,79,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,80,,Round 5 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,81,,Round 5 – ranking,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,82,,Round 5 – ranking,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,83,,Round 5 – ranking,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,84,,Round 5 – ranking,202,,0,wait
+cyberstatus_dep_low_acc1,low,1,85,47,Round 5 result,41,,0,next
+cyberstatus_dep_low_acc1,low,1,86,48,Connections – round 5,250,,0,next
+cyberstatus_dep_low_acc1,low,1,87,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,88,49,Connections – round 5,249,,0,next
+cyberstatus_dep_low_acc1,low,1,89,,Computing the overall ranking…,251,,0,wait
+cyberstatus_dep_low_acc1,low,1,90,50,Overall ranking: Last.,248,,0,next
+cyberstatus_dep_low_acc1,low,1,91,51,"Your connections: Emma, Tom, Taylor, Pixel.",250,,0,next
+cyberstatus_dep_low_acc1,low,1,92,52,"Right now, how much distress do you feel?",249,249,0,next
+cyberstatus_dep_low_acc1,low,1,93,53,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",250,,0,next
+cyberstatus_dep_low_acc1,low,1,94,54,How do you feel right now?,250,,0,next
+cyberstatus_dep_low_acc1,low,1,95,55,Before the mission,250,,0,next
+cyberstatus_dep_low_acc1,low,1,96,,Waiting for the other members to state their choices…,252,,0,wait
+cyberstatus_dep_low_acc1,low,1,97,56,The team's choices,247,,0,next
+cyberstatus_dep_low_acc1,low,1,98,57,How much would you like to take part in the mission with this team?,250,250,0,next
+cyberstatus_dep_low_acc1,low,1,99,58,"For each statement, please indicate how much you agree, thinking about",250,,0,next
+cyberstatus_dep_low_acc1,low,1,100,59,Please indicate how much you agree/disagree with the following stateme,251,,0,next
+cyberstatus_dep_low_acc1,low,1,101,60,To what extent did the other team members perceive you as:,248,247,0,next
+cyberstatus_dep_low_acc1,low,1,102,61,How satisfied are you with…,250,250,0,next
+cyberstatus_dep_low_acc1,low,1,103,62,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,248,,0,next
+cyberstatus_dep_low_acc1,low,1,104,63,Choose your avatar,251,,0,next
+cyberstatus_dep_low_acc1,low,1,105,64,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,250,250,0,next
+cyberstatus_dep_low_acc1,low,1,106,65,In your own view,250,,0,next
+cyberstatus_dep_low_acc1,low,1,107,66,"Regardless of the connections, how do you think you should take part i",249,,0,next
+cyberstatus_dep_low_acc1,low,1,108,67,With whom? Emma Tom Taylor Pixel,249,,0,next
+cyberstatus_dep_low_acc1,low,1,109,68,Two quick questions,250,,0,next
+cyberstatus_dep_low_acc1,low,1,110,69,The mission,250,,0,next
+cyberstatus_dep_low_acc1,low,1,111,70,Questionnaires,250,,0,next
+cyberstatus_dep_low_acc1,low,1,112,71,Social Behaviour Questionnaire,250,,0,next
+cyberstatus_dep_low_acc1,low,1,113,72,Social Situations Questionnaire,251,,0,next
+cyberstatus_dep_low_acc1,low,1,114,73,Feelings in the World Questionnaire,251,,0,next
+cyberstatus_dep_low_acc1,low,1,115,74,A few details about you,248,247,0,next
+cyberstatus_dep_low_acc1,low,1,116,75,About the other members,250,250,0,next
+cyberstatus_dep_low_acc1,low,1,117,76,Thank you!,249,,0,next
+cyberstatus_narc_high_acc0,high,0,1,1,Welcome,662,,0,next
+cyberstatus_narc_high_acc0,high,0,2,2,Questionnaires,248,,0,next
+cyberstatus_narc_high_acc0,high,0,3,3,Social Anxiety Questionnaire,250,,0,next
+cyberstatus_narc_high_acc0,high,0,4,4,Fear of Positive Evaluation Questionnaire,248,,0,next
+cyberstatus_narc_high_acc0,high,0,5,5,Mood Questionnaire,251,,0,next
+cyberstatus_narc_high_acc0,high,0,6,6,Relationships Questionnaire,249,,0,next
+cyberstatus_narc_high_acc0,high,0,7,7,The team mission,249,,0,next
+cyberstatus_narc_high_acc0,high,0,8,,Please wait while we connect to the other participants. It might take ,301,,0,wait
+cyberstatus_narc_high_acc0,high,0,9,8,Please write your name or nickname (this is how the other members will,200,200,0,next
+cyberstatus_narc_high_acc0,high,0,10,9,Introduce yourself,249,249,0,next
+cyberstatus_narc_high_acc0,high,0,11,,Please wait while the other members write their introductions…,451,,0,wait
+cyberstatus_narc_high_acc0,high,0,12,10,Meet the team: Tom,548,,0,next
+cyberstatus_narc_high_acc0,high,0,13,11,Meet the team: Pixel,750,,0,next
+cyberstatus_narc_high_acc0,high,0,14,12,Meet the team: Emma,750,,0,next
+cyberstatus_narc_high_acc0,high,0,15,13,Meet the team: Taylor,751,,0,next
+cyberstatus_narc_high_acc0,high,0,16,,The other members are reading the introductions…,301,,0,wait
+cyberstatus_narc_high_acc0,high,0,17,14,Choose your avatar,199,,0,next
+cyberstatus_narc_high_acc0,high,0,18,,Waiting for the other members to place their figures…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,19,15,How the ranking works,246,,0,next
+cyberstatus_narc_high_acc0,high,0,20,16,How the connections work,251,,0,next
+cyberstatus_narc_high_acc0,high,0,21,17,How much would you like to take part in the ranking rounds with these members?,250,250,0,next
+cyberstatus_narc_high_acc0,high,0,22,18,How do you feel right now?,249,,0,next
+cyberstatus_narc_high_acc0,high,0,23,19,"Right now, how much distress do you feel?",251,251,0,next
+cyberstatus_narc_high_acc0,high,0,24,20,Round 1 of 5,249,249,0,next
+cyberstatus_narc_high_acc0,high,0,25,21,Round 1 – vote,250,,0,next
+cyberstatus_narc_high_acc0,high,0,26,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,27,,Round 1 – ranking,252,,0,wait
+cyberstatus_narc_high_acc0,high,0,28,,Round 1 – ranking,252,,0,wait
+cyberstatus_narc_high_acc0,high,0,29,22,Round 1 – ranking,243,,0,next
+cyberstatus_narc_high_acc0,high,0,30,,Round 1 – ranking,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,31,,Round 1 – ranking,202,,0,wait
+cyberstatus_narc_high_acc0,high,0,32,23,Round 1 result,45,,0,next
+cyberstatus_narc_high_acc0,high,0,33,24,Connections – round 1,251,,0,next
+cyberstatus_narc_high_acc0,high,0,34,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,35,25,Connections – round 1,248,,0,next
+cyberstatus_narc_high_acc0,high,0,36,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …r",250,,0,next
+cyberstatus_narc_high_acc0,high,0,37,27,After the first round,251,,0,next
+cyberstatus_narc_high_acc0,high,0,38,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,39,28,The team's choices,247,,0,next
+cyberstatus_narc_high_acc0,high,0,40,29,Round 2 of 5,249,249,0,next
+cyberstatus_narc_high_acc0,high,0,41,30,Round 2 – vote,251,,0,next
+cyberstatus_narc_high_acc0,high,0,42,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_narc_high_acc0,high,0,43,,Round 2 – ranking,151,,0,wait
+cyberstatus_narc_high_acc0,high,0,44,31,Round 2 – ranking,97,,0,next
+cyberstatus_narc_high_acc0,high,0,45,,Round 2 – ranking,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,46,,Round 2 – ranking,250,,0,wait
+cyberstatus_narc_high_acc0,high,0,47,,Round 2 – ranking,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,48,,Round 2 – ranking,202,,0,wait
+cyberstatus_narc_high_acc0,high,0,49,32,Round 2 result,44,,0,next
+cyberstatus_narc_high_acc0,high,0,50,33,Connections – round 2,252,,0,next
+cyberstatus_narc_high_acc0,high,0,51,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,52,34,Connections – round 2,248,,0,next
+cyberstatus_narc_high_acc0,high,0,53,35,Round 3 of 5,250,249,0,next
+cyberstatus_narc_high_acc0,high,0,54,36,Round 3 – vote,250,,0,next
+cyberstatus_narc_high_acc0,high,0,55,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,56,,Round 3 – ranking,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,57,37,Round 3 – ranking,246,,0,next
+cyberstatus_narc_high_acc0,high,0,58,,Round 3 – ranking,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,59,,Round 3 – ranking,252,,0,wait
+cyberstatus_narc_high_acc0,high,0,60,,Round 3 – ranking,201,,0,wait
+cyberstatus_narc_high_acc0,high,0,61,38,Round 3 result,44,,0,next
+cyberstatus_narc_high_acc0,high,0,62,39,Connections – round 3,701,,2,timeout
+cyberstatus_narc_high_acc0,high,0,63,,Red card,301,,0,wait
+cyberstatus_narc_high_acc0,high,0,64,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,65,40,Connections – round 3,245,,0,next
+cyberstatus_narc_high_acc0,high,0,66,41,Round 4 of 5,250,250,0,next
+cyberstatus_narc_high_acc0,high,0,67,42,Round 4 – vote,250,,0,next
+cyberstatus_narc_high_acc0,high,0,68,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,69,,Round 4 – ranking,151,,0,wait
+cyberstatus_narc_high_acc0,high,0,70,43,Round 4 – ranking,98,,0,next
+cyberstatus_narc_high_acc0,high,0,71,,Round 4 – ranking,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,72,,Round 4 – ranking,252,,0,wait
+cyberstatus_narc_high_acc0,high,0,73,,Round 4 – ranking,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,74,,Round 4 – ranking,202,,0,wait
+cyberstatus_narc_high_acc0,high,0,75,44,Round 4 result,43,,0,next
+cyberstatus_narc_high_acc0,high,0,76,45,Connections – round 4,251,,0,next
+cyberstatus_narc_high_acc0,high,0,77,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_narc_high_acc0,high,0,78,46,Connections – round 4,249,,0,next
+cyberstatus_narc_high_acc0,high,0,79,47,Round 5 of 5,248,248,0,next
+cyberstatus_narc_high_acc0,high,0,80,48,Round 5 – vote,252,,0,next
+cyberstatus_narc_high_acc0,high,0,81,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,82,,Round 5 – ranking,152,,0,wait
+cyberstatus_narc_high_acc0,high,0,83,49,Round 5 – ranking,96,,0,next
+cyberstatus_narc_high_acc0,high,0,84,,Round 5 – ranking,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,85,,Round 5 – ranking,252,,0,wait
+cyberstatus_narc_high_acc0,high,0,86,,Round 5 – ranking,253,,0,wait
+cyberstatus_narc_high_acc0,high,0,87,,Round 5 – ranking,203,,0,wait
+cyberstatus_narc_high_acc0,high,0,88,50,Round 5 result,41,,0,next
+cyberstatus_narc_high_acc0,high,0,89,51,Connections – round 5,251,,0,next
+cyberstatus_narc_high_acc0,high,0,90,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,91,52,Connections – round 5,248,,0,next
+cyberstatus_narc_high_acc0,high,0,92,,Computing the overall ranking…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,93,53,Overall ranking: First.,248,,0,next
+cyberstatus_narc_high_acc0,high,0,94,54,Your connections: none.,250,,0,next
+cyberstatus_narc_high_acc0,high,0,95,55,"Right now, how much distress do you feel?",249,249,0,next
+cyberstatus_narc_high_acc0,high,0,96,56,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …r",251,,0,next
+cyberstatus_narc_high_acc0,high,0,97,57,How do you feel right now?,250,,0,next
+cyberstatus_narc_high_acc0,high,0,98,58,Before the mission,251,,0,next
+cyberstatus_narc_high_acc0,high,0,99,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_narc_high_acc0,high,0,100,59,The team's choices,247,,0,next
+cyberstatus_narc_high_acc0,high,0,101,60,How much would you like to take part in the mission with this team?,251,251,0,next
+cyberstatus_narc_high_acc0,high,0,102,61,"For each statement, please indicate how much you agree, thinking about",250,,0,next
+cyberstatus_narc_high_acc0,high,0,103,62,Please indicate how much you agree/disagree with the following stateme,250,,0,next
+cyberstatus_narc_high_acc0,high,0,104,63,To what extent did the other team members perceive you as:,250,249,0,next
+cyberstatus_narc_high_acc0,high,0,105,64,How satisfied are you with…,250,250,0,next
+cyberstatus_narc_high_acc0,high,0,106,65,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,250,,0,next
+cyberstatus_narc_high_acc0,high,0,107,66,Choose your avatar,250,,0,next
+cyberstatus_narc_high_acc0,high,0,108,67,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,248,248,0,next
+cyberstatus_narc_high_acc0,high,0,109,68,In your own view,251,,0,next
+cyberstatus_narc_high_acc0,high,0,110,69,"Regardless of the connections, how do you think you should take part i",249,,0,next
+cyberstatus_narc_high_acc0,high,0,111,70,Two quick questions,252,,0,next
+cyberstatus_narc_high_acc0,high,0,112,71,The mission,248,,0,next
+cyberstatus_narc_high_acc0,high,0,113,72,Questionnaires,250,,0,next
+cyberstatus_narc_high_acc0,high,0,114,73,Social Behaviour Questionnaire,251,,0,next
+cyberstatus_narc_high_acc0,high,0,115,74,Social Situations Questionnaire,250,,0,next
+cyberstatus_narc_high_acc0,high,0,116,75,Feelings in the World Questionnaire,249,,0,next
+cyberstatus_narc_high_acc0,high,0,117,76,A few details about you,251,250,0,next
+cyberstatus_narc_high_acc0,high,0,118,77,About the other members,249,249,0,next
+cyberstatus_narc_high_acc0,high,0,119,78,Thank you!,250,,0,next
+cyberstatus_narc_high_acc1,high,1,1,1,Welcome,658,,0,next
+cyberstatus_narc_high_acc1,high,1,2,2,Questionnaires,248,,0,next
+cyberstatus_narc_high_acc1,high,1,3,3,Social Anxiety Questionnaire,251,,0,next
+cyberstatus_narc_high_acc1,high,1,4,4,Fear of Positive Evaluation Questionnaire,250,,0,next
+cyberstatus_narc_high_acc1,high,1,5,5,Mood Questionnaire,251,,0,next
+cyberstatus_narc_high_acc1,high,1,6,6,Relationships Questionnaire,249,,0,next
+cyberstatus_narc_high_acc1,high,1,7,7,The team mission,248,,0,next
+cyberstatus_narc_high_acc1,high,1,8,,Please wait while we connect to the other participants. It might take ,302,,0,wait
+cyberstatus_narc_high_acc1,high,1,9,8,Please write your name or nickname (this is how the other members will,199,199,0,next
+cyberstatus_narc_high_acc1,high,1,10,9,Introduce yourself,251,251,0,next
+cyberstatus_narc_high_acc1,high,1,11,,Please wait while the other members write their introductions…,452,,0,wait
+cyberstatus_narc_high_acc1,high,1,12,10,Meet the team: Emma,546,,0,next
+cyberstatus_narc_high_acc1,high,1,13,11,Meet the team: Taylor,751,,0,next
+cyberstatus_narc_high_acc1,high,1,14,12,Meet the team: Pixel,750,,0,next
+cyberstatus_narc_high_acc1,high,1,15,13,Meet the team: Tom,750,,0,next
+cyberstatus_narc_high_acc1,high,1,16,,The other members are reading the introductions…,302,,0,wait
+cyberstatus_narc_high_acc1,high,1,17,14,Choose your avatar,199,,0,next
+cyberstatus_narc_high_acc1,high,1,18,,Waiting for the other members to place their figures…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,19,15,How the ranking works,248,,0,next
+cyberstatus_narc_high_acc1,high,1,20,16,How the connections work,250,,0,next
+cyberstatus_narc_high_acc1,high,1,21,17,How much would you like to take part in the ranking rounds with these members?,252,252,0,next
+cyberstatus_narc_high_acc1,high,1,22,18,How do you feel right now?,248,,0,next
+cyberstatus_narc_high_acc1,high,1,23,19,"Right now, how much distress do you feel?",250,250,0,next
+cyberstatus_narc_high_acc1,high,1,24,20,Round 1 of 5,249,249,0,next
+cyberstatus_narc_high_acc1,high,1,25,21,Round 1 – vote,249,,0,next
+cyberstatus_narc_high_acc1,high,1,26,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,27,,Round 1 – ranking,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,28,,Round 1 – ranking,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,29,22,Round 1 – ranking,246,,0,next
+cyberstatus_narc_high_acc1,high,1,30,,Round 1 – ranking,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,31,,Round 1 – ranking,202,,0,wait
+cyberstatus_narc_high_acc1,high,1,32,23,Round 1 result,47,,0,next
+cyberstatus_narc_high_acc1,high,1,33,24,Connections – round 1,702,,2,timeout
+cyberstatus_narc_high_acc1,high,1,34,,Red card,301,,0,wait
+cyberstatus_narc_high_acc1,high,1,35,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,36,25,Connections – round 1,247,,0,next
+cyberstatus_narc_high_acc1,high,1,37,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",248,,0,next
+cyberstatus_narc_high_acc1,high,1,38,27,After the first round,252,,0,next
+cyberstatus_narc_high_acc1,high,1,39,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,40,28,The team's choices,247,,0,next
+cyberstatus_narc_high_acc1,high,1,41,29,Round 2 of 5,250,250,0,next
+cyberstatus_narc_high_acc1,high,1,42,30,Round 2 – vote,251,,0,next
+cyberstatus_narc_high_acc1,high,1,43,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,44,,Round 2 – ranking,152,,0,wait
+cyberstatus_narc_high_acc1,high,1,45,31,Round 2 – ranking,96,,0,next
+cyberstatus_narc_high_acc1,high,1,46,,Round 2 – ranking,252,,0,wait
+cyberstatus_narc_high_acc1,high,1,47,,Round 2 – ranking,252,,0,wait
+cyberstatus_narc_high_acc1,high,1,48,,Round 2 – ranking,253,,0,wait
+cyberstatus_narc_high_acc1,high,1,49,,Round 2 – ranking,203,,0,wait
+cyberstatus_narc_high_acc1,high,1,50,32,Round 2 result,39,,0,next
+cyberstatus_narc_high_acc1,high,1,51,33,Connections – round 2,250,,0,next
+cyberstatus_narc_high_acc1,high,1,52,,Waiting for the other members to make their choices…,252,,0,wait
+cyberstatus_narc_high_acc1,high,1,53,34,Connections – round 2,248,,0,next
+cyberstatus_narc_high_acc1,high,1,54,35,Round 3 of 5,248,248,0,next
+cyberstatus_narc_high_acc1,high,1,55,36,Round 3 – vote,250,,0,next
+cyberstatus_narc_high_acc1,high,1,56,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,57,,Round 3 – ranking,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,58,37,Round 3 – ranking,246,,0,next
+cyberstatus_narc_high_acc1,high,1,59,,Round 3 – ranking,252,,0,wait
+cyberstatus_narc_high_acc1,high,1,60,,Round 3 – ranking,253,,0,wait
+cyberstatus_narc_high_acc1,high,1,61,,Round 3 – ranking,202,,0,wait
+cyberstatus_narc_high_acc1,high,1,62,38,Round 3 result,42,,0,next
+cyberstatus_narc_high_acc1,high,1,63,39,Connections – round 3,703,,2,timeout
+cyberstatus_narc_high_acc1,high,1,64,,Red card,301,,0,wait
+cyberstatus_narc_high_acc1,high,1,65,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,66,40,Connections – round 3,245,,0,next
+cyberstatus_narc_high_acc1,high,1,67,41,Round 4 of 5,249,249,0,next
+cyberstatus_narc_high_acc1,high,1,68,42,Round 4 – vote,250,,0,next
+cyberstatus_narc_high_acc1,high,1,69,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_narc_high_acc1,high,1,70,,Round 4 – ranking,152,,0,wait
+cyberstatus_narc_high_acc1,high,1,71,43,Round 4 – ranking,97,,0,next
+cyberstatus_narc_high_acc1,high,1,72,,Round 4 – ranking,252,,0,wait
+cyberstatus_narc_high_acc1,high,1,73,,Round 4 – ranking,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,74,,Round 4 – ranking,253,,0,wait
+cyberstatus_narc_high_acc1,high,1,75,,Round 4 – ranking,202,,0,wait
+cyberstatus_narc_high_acc1,high,1,76,44,Round 4 result,39,,0,next
+cyberstatus_narc_high_acc1,high,1,77,45,Connections – round 4,702,,2,timeout
+cyberstatus_narc_high_acc1,high,1,78,,Red card,301,,0,wait
+cyberstatus_narc_high_acc1,high,1,79,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,80,46,Connections – round 4,246,,0,next
+cyberstatus_narc_high_acc1,high,1,81,47,Round 5 of 5,249,249,0,next
+cyberstatus_narc_high_acc1,high,1,82,48,Round 5 – vote,251,,0,next
+cyberstatus_narc_high_acc1,high,1,83,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,84,,Round 5 – ranking,152,,0,wait
+cyberstatus_narc_high_acc1,high,1,85,49,Round 5 – ranking,95,,0,next
+cyberstatus_narc_high_acc1,high,1,86,,Round 5 – ranking,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,87,,Round 5 – ranking,252,,0,wait
+cyberstatus_narc_high_acc1,high,1,88,,Round 5 – ranking,252,,0,wait
+cyberstatus_narc_high_acc1,high,1,89,,Round 5 – ranking,204,,0,wait
+cyberstatus_narc_high_acc1,high,1,90,50,Round 5 result,39,,0,next
+cyberstatus_narc_high_acc1,high,1,91,51,Connections – round 5,250,,0,next
+cyberstatus_narc_high_acc1,high,1,92,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,93,52,Connections – round 5,249,,0,next
+cyberstatus_narc_high_acc1,high,1,94,,Computing the overall ranking…,250,,0,wait
+cyberstatus_narc_high_acc1,high,1,95,53,Overall ranking: First.,249,,0,next
+cyberstatus_narc_high_acc1,high,1,96,54,"Your connections: Emma, Tom, Taylor, Pixel.",250,,0,next
+cyberstatus_narc_high_acc1,high,1,97,55,"Right now, how much distress do you feel?",250,250,0,next
+cyberstatus_narc_high_acc1,high,1,98,56,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",250,,0,next
+cyberstatus_narc_high_acc1,high,1,99,57,How do you feel right now?,250,,0,next
+cyberstatus_narc_high_acc1,high,1,100,58,Before the mission,250,,0,next
+cyberstatus_narc_high_acc1,high,1,101,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_narc_high_acc1,high,1,102,59,The team's choices,248,,0,next
+cyberstatus_narc_high_acc1,high,1,103,60,How much would you like to take part in the mission with this team?,251,251,0,next
+cyberstatus_narc_high_acc1,high,1,104,61,"For each statement, please indicate how much you agree, thinking about",250,,0,next
+cyberstatus_narc_high_acc1,high,1,105,62,Please indicate how much you agree/disagree with the following stateme,251,,0,next
+cyberstatus_narc_high_acc1,high,1,106,63,To what extent did the other team members perceive you as:,249,248,0,next
+cyberstatus_narc_high_acc1,high,1,107,64,How satisfied are you with…,250,250,0,next
+cyberstatus_narc_high_acc1,high,1,108,65,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,250,,0,next
+cyberstatus_narc_high_acc1,high,1,109,66,Choose your avatar,250,,0,next
+cyberstatus_narc_high_acc1,high,1,110,67,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,249,249,0,next
+cyberstatus_narc_high_acc1,high,1,111,68,In your own view,251,,0,next
+cyberstatus_narc_high_acc1,high,1,112,69,"Regardless of the connections, how do you think you should take part i",249,,0,next
+cyberstatus_narc_high_acc1,high,1,113,70,Two quick questions,251,,0,next
+cyberstatus_narc_high_acc1,high,1,114,71,The mission,250,,0,next
+cyberstatus_narc_high_acc1,high,1,115,72,Questionnaires,249,,0,next
+cyberstatus_narc_high_acc1,high,1,116,73,Social Behaviour Questionnaire,251,,0,next
+cyberstatus_narc_high_acc1,high,1,117,74,Social Situations Questionnaire,249,,0,next
+cyberstatus_narc_high_acc1,high,1,118,75,Feelings in the World Questionnaire,250,,0,next
+cyberstatus_narc_high_acc1,high,1,119,76,A few details about you,251,250,0,next
+cyberstatus_narc_high_acc1,high,1,120,77,About the other members,249,249,0,next
+cyberstatus_narc_high_acc1,high,1,121,78,Thank you!,250,,0,next
+cyberstatus_narc_low_acc0,low,0,1,1,Welcome,679,,0,next
+cyberstatus_narc_low_acc0,low,0,2,2,Questionnaires,248,,0,next
+cyberstatus_narc_low_acc0,low,0,3,3,Social Anxiety Questionnaire,250,,0,next
+cyberstatus_narc_low_acc0,low,0,4,4,Fear of Positive Evaluation Questionnaire,248,,0,next
+cyberstatus_narc_low_acc0,low,0,5,5,Mood Questionnaire,252,,0,next
+cyberstatus_narc_low_acc0,low,0,6,6,Relationships Questionnaire,248,,0,next
+cyberstatus_narc_low_acc0,low,0,7,7,The team mission,249,,0,next
+cyberstatus_narc_low_acc0,low,0,8,,Please wait while we connect to the other participants. It might take ,302,,0,wait
+cyberstatus_narc_low_acc0,low,0,9,8,Please write your name or nickname (this is how the other members will,199,199,0,next
+cyberstatus_narc_low_acc0,low,0,10,9,Introduce yourself,250,250,0,next
+cyberstatus_narc_low_acc0,low,0,11,,Please wait while the other members write their introductions…,452,,0,wait
+cyberstatus_narc_low_acc0,low,0,12,10,Meet the team: Taylor,548,,0,next
+cyberstatus_narc_low_acc0,low,0,13,11,Meet the team: Emma,749,,0,next
+cyberstatus_narc_low_acc0,low,0,14,12,Meet the team: Tom,750,,0,next
+cyberstatus_narc_low_acc0,low,0,15,13,Meet the team: Pixel,751,,0,next
+cyberstatus_narc_low_acc0,low,0,16,,The other members are reading the introductions…,301,,0,wait
+cyberstatus_narc_low_acc0,low,0,17,14,Choose your avatar,199,,0,next
+cyberstatus_narc_low_acc0,low,0,18,,Waiting for the other members to place their figures…,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,19,15,How the ranking works,246,,0,next
+cyberstatus_narc_low_acc0,low,0,20,16,How the connections work,249,,0,next
+cyberstatus_narc_low_acc0,low,0,21,17,How much would you like to take part in the ranking rounds with these members?,251,251,0,next
+cyberstatus_narc_low_acc0,low,0,22,18,How do you feel right now?,249,,0,next
+cyberstatus_narc_low_acc0,low,0,23,19,"Right now, how much distress do you feel?",250,250,0,next
+cyberstatus_narc_low_acc0,low,0,24,20,Round 1 of 5,250,250,0,next
+cyberstatus_narc_low_acc0,low,0,25,21,Round 1 – vote,702,,2,timeout
+cyberstatus_narc_low_acc0,low,0,26,,Red card,301,,0,wait
+cyberstatus_narc_low_acc0,low,0,27,,Waiting for the other members to vote…,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,28,,Round 1 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,29,,Round 1 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,30,22,Round 1 – ranking,239,,0,next
+cyberstatus_narc_low_acc0,low,0,31,,Round 1 – ranking,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,32,,Round 1 – ranking,202,,0,wait
+cyberstatus_narc_low_acc0,low,0,33,23,Round 1 result,45,,0,next
+cyberstatus_narc_low_acc0,low,0,34,24,Connections – round 1,702,,2,timeout
+cyberstatus_narc_low_acc0,low,0,35,,Red card,302,,0,wait
+cyberstatus_narc_low_acc0,low,0,36,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,37,25,Connections – round 1,244,,0,next
+cyberstatus_narc_low_acc0,low,0,38,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …v",250,,0,next
+cyberstatus_narc_low_acc0,low,0,39,27,After the first round,251,,0,next
+cyberstatus_narc_low_acc0,low,0,40,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,41,28,The team's choices,247,,0,next
+cyberstatus_narc_low_acc0,low,0,42,29,Round 2 of 5,250,250,0,next
+cyberstatus_narc_low_acc0,low,0,43,30,Round 2 – vote,703,,2,timeout
+cyberstatus_narc_low_acc0,low,0,44,,Red card,302,,0,wait
+cyberstatus_narc_low_acc0,low,0,45,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,46,,Round 2 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,47,,Round 2 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,48,,Round 2 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,49,,Round 2 – ranking,253,,0,wait
+cyberstatus_narc_low_acc0,low,0,50,,Round 2 – ranking,202,,0,wait
+cyberstatus_narc_low_acc0,low,0,51,31,Round 2 result,32,,0,next
+cyberstatus_narc_low_acc0,low,0,52,32,Connections – round 2,703,,2,timeout
+cyberstatus_narc_low_acc0,low,0,53,,Red card,301,,0,wait
+cyberstatus_narc_low_acc0,low,0,54,,Waiting for the other members to make their choices…,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,55,33,Connections – round 2,245,,0,next
+cyberstatus_narc_low_acc0,low,0,56,34,Round 3 of 5,250,249,0,next
+cyberstatus_narc_low_acc0,low,0,57,35,Round 3 – vote,250,,0,next
+cyberstatus_narc_low_acc0,low,0,58,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,59,,Round 3 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,60,,Round 3 – ranking,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,61,,Round 3 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,62,,Round 3 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,63,,Round 3 – ranking,202,,0,wait
+cyberstatus_narc_low_acc0,low,0,64,36,Round 3 result,38,,0,next
+cyberstatus_narc_low_acc0,low,0,65,37,Connections – round 3,702,,2,timeout
+cyberstatus_narc_low_acc0,low,0,66,,Red card,302,,0,wait
+cyberstatus_narc_low_acc0,low,0,67,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,68,38,Connections – round 3,246,,0,next
+cyberstatus_narc_low_acc0,low,0,69,39,Round 4 of 5,248,248,0,next
+cyberstatus_narc_low_acc0,low,0,70,40,Round 4 – vote,702,,2,timeout
+cyberstatus_narc_low_acc0,low,0,71,,Red card,302,,0,wait
+cyberstatus_narc_low_acc0,low,0,72,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,73,,Round 4 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,74,,Round 4 – ranking,253,,0,wait
+cyberstatus_narc_low_acc0,low,0,75,,Round 4 – ranking,253,,0,wait
+cyberstatus_narc_low_acc0,low,0,76,41,Round 4 – ranking,237,,0,next
+cyberstatus_narc_low_acc0,low,0,77,,Round 4 – ranking,202,,0,wait
+cyberstatus_narc_low_acc0,low,0,78,42,Round 4 result,47,,0,next
+cyberstatus_narc_low_acc0,low,0,79,43,Connections – round 4,250,,0,next
+cyberstatus_narc_low_acc0,low,0,80,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,81,44,Connections – round 4,248,,0,next
+cyberstatus_narc_low_acc0,low,0,82,45,Round 5 of 5,250,250,0,next
+cyberstatus_narc_low_acc0,low,0,83,46,Round 5 – vote,251,,0,next
+cyberstatus_narc_low_acc0,low,0,84,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,85,,Round 5 – ranking,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,86,,Round 5 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,87,,Round 5 – ranking,253,,0,wait
+cyberstatus_narc_low_acc0,low,0,88,,Round 5 – ranking,252,,0,wait
+cyberstatus_narc_low_acc0,low,0,89,,Round 5 – ranking,202,,0,wait
+cyberstatus_narc_low_acc0,low,0,90,47,Round 5 result,38,,0,next
+cyberstatus_narc_low_acc0,low,0,91,48,Connections – round 5,251,,0,next
+cyberstatus_narc_low_acc0,low,0,92,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,93,49,Connections – round 5,248,,0,next
+cyberstatus_narc_low_acc0,low,0,94,,Computing the overall ranking…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,95,50,Overall ranking: Last.,249,,0,next
+cyberstatus_narc_low_acc0,low,0,96,51,Your connections: none.,251,,0,next
+cyberstatus_narc_low_acc0,low,0,97,52,"Right now, how much distress do you feel?",249,249,0,next
+cyberstatus_narc_low_acc0,low,0,98,53,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …v",251,,0,next
+cyberstatus_narc_low_acc0,low,0,99,54,How do you feel right now?,249,,0,next
+cyberstatus_narc_low_acc0,low,0,100,55,Before the mission,251,,0,next
+cyberstatus_narc_low_acc0,low,0,101,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_narc_low_acc0,low,0,102,56,The team's choices,248,,0,next
+cyberstatus_narc_low_acc0,low,0,103,57,How much would you like to take part in the mission with this team?,250,250,0,next
+cyberstatus_narc_low_acc0,low,0,104,58,"For each statement, please indicate how much you agree, thinking about",250,,0,next
+cyberstatus_narc_low_acc0,low,0,105,59,Please indicate how much you agree/disagree with the following stateme,250,,0,next
+cyberstatus_narc_low_acc0,low,0,106,60,To what extent did the other team members perceive you as:,251,250,0,next
+cyberstatus_narc_low_acc0,low,0,107,61,How satisfied are you with…,249,249,0,next
+cyberstatus_narc_low_acc0,low,0,108,62,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,250,,0,next
+cyberstatus_narc_low_acc0,low,0,109,63,Choose your avatar,249,,0,next
+cyberstatus_narc_low_acc0,low,0,110,64,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,250,250,0,next
+cyberstatus_narc_low_acc0,low,0,111,65,In your own view,251,,0,next
+cyberstatus_narc_low_acc0,low,0,112,66,"Regardless of the connections, how do you think you should take part i",248,,0,next
+cyberstatus_narc_low_acc0,low,0,113,67,Two quick questions,251,,0,next
+cyberstatus_narc_low_acc0,low,0,114,68,The mission,250,,0,next
+cyberstatus_narc_low_acc0,low,0,115,69,Questionnaires,249,,0,next
+cyberstatus_narc_low_acc0,low,0,116,70,Social Behaviour Questionnaire,250,,0,next
+cyberstatus_narc_low_acc0,low,0,117,71,Social Situations Questionnaire,250,,0,next
+cyberstatus_narc_low_acc0,low,0,118,72,Feelings in the World Questionnaire,249,,0,next
+cyberstatus_narc_low_acc0,low,0,119,73,A few details about you,251,251,0,next
+cyberstatus_narc_low_acc0,low,0,120,74,About the other members,250,250,0,next
+cyberstatus_narc_low_acc0,low,0,121,75,Thank you!,249,,0,next
+cyberstatus_narc_low_acc1,low,1,1,1,Welcome,658,,0,next
+cyberstatus_narc_low_acc1,low,1,2,2,Questionnaires,250,,0,next
+cyberstatus_narc_low_acc1,low,1,3,3,Social Anxiety Questionnaire,251,,0,next
+cyberstatus_narc_low_acc1,low,1,4,4,Fear of Positive Evaluation Questionnaire,249,,0,next
+cyberstatus_narc_low_acc1,low,1,5,5,Mood Questionnaire,251,,0,next
+cyberstatus_narc_low_acc1,low,1,6,6,Relationships Questionnaire,249,,0,next
+cyberstatus_narc_low_acc1,low,1,7,7,The team mission,249,,0,next
+cyberstatus_narc_low_acc1,low,1,8,,Please wait while we connect to the other participants. It might take ,301,,0,wait
+cyberstatus_narc_low_acc1,low,1,9,8,Please write your name or nickname (this is how the other members will,198,198,0,next
+cyberstatus_narc_low_acc1,low,1,10,9,Introduce yourself,249,249,0,next
+cyberstatus_narc_low_acc1,low,1,11,,Please wait while the other members write their introductions…,452,,0,wait
+cyberstatus_narc_low_acc1,low,1,12,10,Meet the team: Pixel,548,,0,next
+cyberstatus_narc_low_acc1,low,1,13,11,Meet the team: Taylor,750,,0,next
+cyberstatus_narc_low_acc1,low,1,14,12,Meet the team: Tom,750,,0,next
+cyberstatus_narc_low_acc1,low,1,15,13,Meet the team: Emma,750,,0,next
+cyberstatus_narc_low_acc1,low,1,16,,The other members are reading the introductions…,302,,0,wait
+cyberstatus_narc_low_acc1,low,1,17,14,Choose your avatar,198,,0,next
+cyberstatus_narc_low_acc1,low,1,18,,Waiting for the other members to place their figures…,250,,0,wait
+cyberstatus_narc_low_acc1,low,1,19,15,How the ranking works,248,,0,next
+cyberstatus_narc_low_acc1,low,1,20,16,How the connections work,250,,0,next
+cyberstatus_narc_low_acc1,low,1,21,17,How much would you like to take part in the ranking rounds with these members?,249,249,0,next
+cyberstatus_narc_low_acc1,low,1,22,18,How do you feel right now?,250,,0,next
+cyberstatus_narc_low_acc1,low,1,23,19,"Right now, how much distress do you feel?",248,248,0,next
+cyberstatus_narc_low_acc1,low,1,24,20,Round 1 of 5,251,251,0,next
+cyberstatus_narc_low_acc1,low,1,25,21,Round 1 – vote,702,,2,timeout
+cyberstatus_narc_low_acc1,low,1,26,,Red card,300,,0,wait
+cyberstatus_narc_low_acc1,low,1,27,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,28,,Round 1 – ranking,250,,0,wait
+cyberstatus_narc_low_acc1,low,1,29,,Round 1 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,30,22,Round 1 – ranking,244,,0,next
+cyberstatus_narc_low_acc1,low,1,31,,Round 1 – ranking,250,,0,wait
+cyberstatus_narc_low_acc1,low,1,32,,Round 1 – ranking,203,,0,wait
+cyberstatus_narc_low_acc1,low,1,33,23,Round 1 result,47,,0,next
+cyberstatus_narc_low_acc1,low,1,34,24,Connections – round 1,702,,2,timeout
+cyberstatus_narc_low_acc1,low,1,35,,Red card,301,,0,wait
+cyberstatus_narc_low_acc1,low,1,36,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,37,25,Connections – round 1,245,,0,next
+cyberstatus_narc_low_acc1,low,1,38,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …i",251,,0,next
+cyberstatus_narc_low_acc1,low,1,39,27,After the first round,251,,0,next
+cyberstatus_narc_low_acc1,low,1,40,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,41,28,The team's choices,247,,0,next
+cyberstatus_narc_low_acc1,low,1,42,29,Round 2 of 5,250,250,0,next
+cyberstatus_narc_low_acc1,low,1,43,30,Round 2 – vote,250,,0,next
+cyberstatus_narc_low_acc1,low,1,44,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_narc_low_acc1,low,1,45,,Round 2 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,46,,Round 2 – ranking,252,,0,wait
+cyberstatus_narc_low_acc1,low,1,47,,Round 2 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,48,,Round 2 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,49,,Round 2 – ranking,202,,0,wait
+cyberstatus_narc_low_acc1,low,1,50,31,Round 2 result,40,,0,next
+cyberstatus_narc_low_acc1,low,1,51,32,Connections – round 2,702,,2,timeout
+cyberstatus_narc_low_acc1,low,1,52,,Red card,301,,0,wait
+cyberstatus_narc_low_acc1,low,1,53,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,54,33,Connections – round 2,245,,0,next
+cyberstatus_narc_low_acc1,low,1,55,34,Round 3 of 5,249,249,0,next
+cyberstatus_narc_low_acc1,low,1,56,35,Round 3 – vote,250,,0,next
+cyberstatus_narc_low_acc1,low,1,57,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,58,,Round 3 – ranking,250,,0,wait
+cyberstatus_narc_low_acc1,low,1,59,,Round 3 – ranking,252,,0,wait
+cyberstatus_narc_low_acc1,low,1,60,,Round 3 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,61,,Round 3 – ranking,252,,0,wait
+cyberstatus_narc_low_acc1,low,1,62,,Round 3 – ranking,201,,0,wait
+cyberstatus_narc_low_acc1,low,1,63,36,Round 3 result,42,,0,next
+cyberstatus_narc_low_acc1,low,1,64,37,Connections – round 3,251,,0,next
+cyberstatus_narc_low_acc1,low,1,65,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_narc_low_acc1,low,1,66,38,Connections – round 3,248,,0,next
+cyberstatus_narc_low_acc1,low,1,67,39,Round 4 of 5,251,251,0,next
+cyberstatus_narc_low_acc1,low,1,68,40,Round 4 – vote,248,,0,next
+cyberstatus_narc_low_acc1,low,1,69,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,70,,Round 4 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,71,,Round 4 – ranking,252,,0,wait
+cyberstatus_narc_low_acc1,low,1,72,,Round 4 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,73,41,Round 4 – ranking,245,,0,next
+cyberstatus_narc_low_acc1,low,1,74,,Round 4 – ranking,202,,0,wait
+cyberstatus_narc_low_acc1,low,1,75,42,Round 4 result,47,,0,next
+cyberstatus_narc_low_acc1,low,1,76,43,Connections – round 4,250,,0,next
+cyberstatus_narc_low_acc1,low,1,77,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_narc_low_acc1,low,1,78,44,Connections – round 4,248,,0,next
+cyberstatus_narc_low_acc1,low,1,79,45,Round 5 of 5,250,250,0,next
+cyberstatus_narc_low_acc1,low,1,80,46,Round 5 – vote,250,,0,next
+cyberstatus_narc_low_acc1,low,1,81,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,82,,Round 5 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,83,,Round 5 – ranking,252,,0,wait
+cyberstatus_narc_low_acc1,low,1,84,,Round 5 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,85,,Round 5 – ranking,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,86,,Round 5 – ranking,202,,0,wait
+cyberstatus_narc_low_acc1,low,1,87,47,Round 5 result,42,,0,next
+cyberstatus_narc_low_acc1,low,1,88,48,Connections – round 5,250,,0,next
+cyberstatus_narc_low_acc1,low,1,89,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_narc_low_acc1,low,1,90,49,Connections – round 5,251,,0,next
+cyberstatus_narc_low_acc1,low,1,91,,Computing the overall ranking…,250,,0,wait
+cyberstatus_narc_low_acc1,low,1,92,50,Overall ranking: Last.,248,,0,next
+cyberstatus_narc_low_acc1,low,1,93,51,"Your connections: Emma, Tom, Taylor, Pixel.",250,,0,next
+cyberstatus_narc_low_acc1,low,1,94,52,"Right now, how much distress do you feel?",251,251,0,next
+cyberstatus_narc_low_acc1,low,1,95,53,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …i",250,,0,next
+cyberstatus_narc_low_acc1,low,1,96,54,How do you feel right now?,249,,0,next
+cyberstatus_narc_low_acc1,low,1,97,55,Before the mission,250,,0,next
+cyberstatus_narc_low_acc1,low,1,98,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_narc_low_acc1,low,1,99,56,The team's choices,248,,0,next
+cyberstatus_narc_low_acc1,low,1,100,57,How much would you like to take part in the mission with this team?,250,250,0,next
+cyberstatus_narc_low_acc1,low,1,101,58,"For each statement, please indicate how much you agree, thinking about",251,,0,next
+cyberstatus_narc_low_acc1,low,1,102,59,Please indicate how much you agree/disagree with the following stateme,249,,0,next
+cyberstatus_narc_low_acc1,low,1,103,60,To what extent did the other team members perceive you as:,250,249,0,next
+cyberstatus_narc_low_acc1,low,1,104,61,How satisfied are you with…,250,249,0,next
+cyberstatus_narc_low_acc1,low,1,105,62,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,249,,0,next
+cyberstatus_narc_low_acc1,low,1,106,63,Choose your avatar,250,,0,next
+cyberstatus_narc_low_acc1,low,1,107,64,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,250,250,0,next
+cyberstatus_narc_low_acc1,low,1,108,65,In your own view,250,,0,next
+cyberstatus_narc_low_acc1,low,1,109,66,"Regardless of the connections, how do you think you should take part i",251,,0,next
+cyberstatus_narc_low_acc1,low,1,110,67,Two quick questions,249,,0,next
+cyberstatus_narc_low_acc1,low,1,111,68,The mission,250,,0,next
+cyberstatus_narc_low_acc1,low,1,112,69,Questionnaires,250,,0,next
+cyberstatus_narc_low_acc1,low,1,113,70,Social Behaviour Questionnaire,251,,0,next
+cyberstatus_narc_low_acc1,low,1,114,71,Social Situations Questionnaire,250,,0,next
+cyberstatus_narc_low_acc1,low,1,115,72,Feelings in the World Questionnaire,250,,0,next
+cyberstatus_narc_low_acc1,low,1,116,73,A few details about you,250,250,0,next
+cyberstatus_narc_low_acc1,low,1,117,74,About the other members,249,249,0,next
+cyberstatus_narc_low_acc1,low,1,118,75,Thank you!,251,,0,next
+cyberstatus_sa_high_acc0,high,0,1,1,Welcome,658,,0,next
+cyberstatus_sa_high_acc0,high,0,2,2,Questionnaires,250,,0,next
+cyberstatus_sa_high_acc0,high,0,3,3,Social Anxiety Questionnaire,249,,0,next
+cyberstatus_sa_high_acc0,high,0,4,4,Fear of Positive Evaluation Questionnaire,249,,0,next
+cyberstatus_sa_high_acc0,high,0,5,5,Mood Questionnaire,253,,0,next
+cyberstatus_sa_high_acc0,high,0,6,6,Relationships Questionnaire,249,,0,next
+cyberstatus_sa_high_acc0,high,0,7,7,The team mission,249,,0,next
+cyberstatus_sa_high_acc0,high,0,8,,Please wait while we connect to the other participants. It might take ,303,,0,wait
+cyberstatus_sa_high_acc0,high,0,9,8,Please write your name or nickname (this is how the other members will,198,197,0,next
+cyberstatus_sa_high_acc0,high,0,10,9,Introduce yourself,249,249,0,next
+cyberstatus_sa_high_acc0,high,0,11,,Please wait while the other members write their introductions…,451,,0,wait
+cyberstatus_sa_high_acc0,high,0,12,10,Meet the team: Pixel,549,,0,next
+cyberstatus_sa_high_acc0,high,0,13,11,Meet the team: Emma,750,,0,next
+cyberstatus_sa_high_acc0,high,0,14,12,Meet the team: Tom,749,,0,next
+cyberstatus_sa_high_acc0,high,0,15,13,Meet the team: Taylor,750,,0,next
+cyberstatus_sa_high_acc0,high,0,16,,The other members are reading the introductions…,301,,0,wait
+cyberstatus_sa_high_acc0,high,0,17,14,Choose your avatar,200,,0,next
+cyberstatus_sa_high_acc0,high,0,18,,Waiting for the other members to place their figures…,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,19,15,How the ranking works,245,,0,next
+cyberstatus_sa_high_acc0,high,0,20,16,How the connections work,251,,0,next
+cyberstatus_sa_high_acc0,high,0,21,17,How much would you like to take part in the ranking rounds with these members?,251,250,0,next
+cyberstatus_sa_high_acc0,high,0,22,18,How do you feel right now?,248,,0,next
+cyberstatus_sa_high_acc0,high,0,23,19,"Right now, how much distress do you feel?",251,251,0,next
+cyberstatus_sa_high_acc0,high,0,24,20,Round 1 of 5,250,250,0,next
+cyberstatus_sa_high_acc0,high,0,25,21,Round 1 – vote,248,,0,next
+cyberstatus_sa_high_acc0,high,0,26,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,27,,Round 1 – ranking,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,28,,Round 1 – ranking,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,29,22,Round 1 – ranking,246,,0,next
+cyberstatus_sa_high_acc0,high,0,30,,Round 1 – ranking,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,31,,Round 1 – ranking,202,,0,wait
+cyberstatus_sa_high_acc0,high,0,32,23,Round 1 result,47,,0,next
+cyberstatus_sa_high_acc0,high,0,33,24,Connections – round 1,703,,2,timeout
+cyberstatus_sa_high_acc0,high,0,34,,Red card,301,,0,wait
+cyberstatus_sa_high_acc0,high,0,35,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_sa_high_acc0,high,0,36,25,Connections – round 1,246,,0,next
+cyberstatus_sa_high_acc0,high,0,37,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …v",249,,0,next
+cyberstatus_sa_high_acc0,high,0,38,27,After the first round,252,,0,next
+cyberstatus_sa_high_acc0,high,0,39,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,40,28,The team's choices,246,,0,next
+cyberstatus_sa_high_acc0,high,0,41,29,Round 2 of 5,250,250,0,next
+cyberstatus_sa_high_acc0,high,0,42,30,Round 2 – vote,703,,2,timeout
+cyberstatus_sa_high_acc0,high,0,43,,Red card,301,,0,wait
+cyberstatus_sa_high_acc0,high,0,44,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_sa_high_acc0,high,0,45,,Round 2 – ranking,152,,0,wait
+cyberstatus_sa_high_acc0,high,0,46,31,Round 2 – ranking,92,,0,next
+cyberstatus_sa_high_acc0,high,0,47,,Round 2 – ranking,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,48,,Round 2 – ranking,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,49,,Round 2 – ranking,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,50,,Round 2 – ranking,202,,0,wait
+cyberstatus_sa_high_acc0,high,0,51,32,Round 2 result,43,,0,next
+cyberstatus_sa_high_acc0,high,0,52,33,Connections – round 2,251,,0,next
+cyberstatus_sa_high_acc0,high,0,53,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,54,34,Connections – round 2,248,,0,next
+cyberstatus_sa_high_acc0,high,0,55,35,Round 3 of 5,249,249,0,next
+cyberstatus_sa_high_acc0,high,0,56,36,Round 3 – vote,251,,0,next
+cyberstatus_sa_high_acc0,high,0,57,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_sa_high_acc0,high,0,58,,Round 3 – ranking,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,59,37,Round 3 – ranking,245,,0,next
+cyberstatus_sa_high_acc0,high,0,60,,Round 3 – ranking,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,61,,Round 3 – ranking,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,62,,Round 3 – ranking,202,,0,wait
+cyberstatus_sa_high_acc0,high,0,63,38,Round 3 result,44,,0,next
+cyberstatus_sa_high_acc0,high,0,64,39,Connections – round 3,702,,2,timeout
+cyberstatus_sa_high_acc0,high,0,65,,Red card,302,,0,wait
+cyberstatus_sa_high_acc0,high,0,66,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,67,40,Connections – round 3,246,,0,next
+cyberstatus_sa_high_acc0,high,0,68,41,Round 4 of 5,249,249,0,next
+cyberstatus_sa_high_acc0,high,0,69,42,Round 4 – vote,250,,0,next
+cyberstatus_sa_high_acc0,high,0,70,,Waiting for the other members to vote…,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,71,,Round 4 – ranking,151,,0,wait
+cyberstatus_sa_high_acc0,high,0,72,43,Round 4 – ranking,97,,0,next
+cyberstatus_sa_high_acc0,high,0,73,,Round 4 – ranking,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,74,,Round 4 – ranking,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,75,,Round 4 – ranking,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,76,,Round 4 – ranking,202,,0,wait
+cyberstatus_sa_high_acc0,high,0,77,44,Round 4 result,43,,0,next
+cyberstatus_sa_high_acc0,high,0,78,45,Connections – round 4,250,,0,next
+cyberstatus_sa_high_acc0,high,0,79,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,80,46,Connections – round 4,249,,0,next
+cyberstatus_sa_high_acc0,high,0,81,47,Round 5 of 5,249,249,0,next
+cyberstatus_sa_high_acc0,high,0,82,48,Round 5 – vote,249,,0,next
+cyberstatus_sa_high_acc0,high,0,83,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,84,,Round 5 – ranking,152,,0,wait
+cyberstatus_sa_high_acc0,high,0,85,49,Round 5 – ranking,97,,0,next
+cyberstatus_sa_high_acc0,high,0,86,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,87,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_high_acc0,high,0,88,,Round 5 – ranking,253,,0,wait
+cyberstatus_sa_high_acc0,high,0,89,,Round 5 – ranking,203,,0,wait
+cyberstatus_sa_high_acc0,high,0,90,50,Round 5 result,39,,0,next
+cyberstatus_sa_high_acc0,high,0,91,51,Connections – round 5,702,,2,timeout
+cyberstatus_sa_high_acc0,high,0,92,,Red card,302,,0,wait
+cyberstatus_sa_high_acc0,high,0,93,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,94,52,Connections – round 5,242,,0,next
+cyberstatus_sa_high_acc0,high,0,95,,Computing the overall ranking…,251,,0,wait
+cyberstatus_sa_high_acc0,high,0,96,53,Overall ranking: First.,248,,0,next
+cyberstatus_sa_high_acc0,high,0,97,54,Your connections: none.,250,,0,next
+cyberstatus_sa_high_acc0,high,0,98,55,"Right now, how much distress do you feel?",250,250,0,next
+cyberstatus_sa_high_acc0,high,0,99,56,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …v",251,,0,next
+cyberstatus_sa_high_acc0,high,0,100,57,How do you feel right now?,249,,0,next
+cyberstatus_sa_high_acc0,high,0,101,58,Before the mission,251,,0,next
+cyberstatus_sa_high_acc0,high,0,102,,Waiting for the other members to state their choices…,250,,0,wait
+cyberstatus_sa_high_acc0,high,0,103,59,The team's choices,247,,0,next
+cyberstatus_sa_high_acc0,high,0,104,60,How much would you like to take part in the mission with this team?,251,251,0,next
+cyberstatus_sa_high_acc0,high,0,105,61,"For each statement, please indicate how much you agree, thinking about",251,,0,next
+cyberstatus_sa_high_acc0,high,0,106,62,Please indicate how much you agree/disagree with the following stateme,250,,0,next
+cyberstatus_sa_high_acc0,high,0,107,63,To what extent did the other team members perceive you as:,250,249,0,next
+cyberstatus_sa_high_acc0,high,0,108,64,How satisfied are you with…,249,249,0,next
+cyberstatus_sa_high_acc0,high,0,109,65,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,250,,0,next
+cyberstatus_sa_high_acc0,high,0,110,66,Choose your avatar,250,,0,next
+cyberstatus_sa_high_acc0,high,0,111,67,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,251,250,0,next
+cyberstatus_sa_high_acc0,high,0,112,68,In your own view,250,,0,next
+cyberstatus_sa_high_acc0,high,0,113,69,"Regardless of the connections, how do you think you should take part i",248,,0,next
+cyberstatus_sa_high_acc0,high,0,114,70,Two quick questions,253,,0,next
+cyberstatus_sa_high_acc0,high,0,115,71,The mission,248,,0,next
+cyberstatus_sa_high_acc0,high,0,116,72,Questionnaires,248,,0,next
+cyberstatus_sa_high_acc0,high,0,117,73,Social Behaviour Questionnaire,253,,0,next
+cyberstatus_sa_high_acc0,high,0,118,74,Social Situations Questionnaire,248,,0,next
+cyberstatus_sa_high_acc0,high,0,119,75,Feelings in the World Questionnaire,250,,0,next
+cyberstatus_sa_high_acc0,high,0,120,76,A few details about you,250,249,0,next
+cyberstatus_sa_high_acc0,high,0,121,77,About the other members,251,251,0,next
+cyberstatus_sa_high_acc0,high,0,122,78,Thank you!,249,,0,next
+cyberstatus_sa_high_acc1,high,1,1,1,Welcome,660,,0,next
+cyberstatus_sa_high_acc1,high,1,2,2,Questionnaires,249,,0,next
+cyberstatus_sa_high_acc1,high,1,3,3,Social Anxiety Questionnaire,252,,0,next
+cyberstatus_sa_high_acc1,high,1,4,4,Fear of Positive Evaluation Questionnaire,249,,0,next
+cyberstatus_sa_high_acc1,high,1,5,5,Mood Questionnaire,252,,0,next
+cyberstatus_sa_high_acc1,high,1,6,6,Relationships Questionnaire,249,,0,next
+cyberstatus_sa_high_acc1,high,1,7,7,The team mission,249,,0,next
+cyberstatus_sa_high_acc1,high,1,8,,Please wait while we connect to the other participants. It might take ,301,,0,wait
+cyberstatus_sa_high_acc1,high,1,9,8,Please write your name or nickname (this is how the other members will,199,199,0,next
+cyberstatus_sa_high_acc1,high,1,10,9,Introduce yourself,249,249,0,next
+cyberstatus_sa_high_acc1,high,1,11,,Please wait while the other members write their introductions…,452,,0,wait
+cyberstatus_sa_high_acc1,high,1,12,10,Meet the team: Emma,548,,0,next
+cyberstatus_sa_high_acc1,high,1,13,11,Meet the team: Tom,750,,0,next
+cyberstatus_sa_high_acc1,high,1,14,12,Meet the team: Pixel,750,,0,next
+cyberstatus_sa_high_acc1,high,1,15,13,Meet the team: Taylor,749,,0,next
+cyberstatus_sa_high_acc1,high,1,16,,The other members are reading the introductions…,301,,0,wait
+cyberstatus_sa_high_acc1,high,1,17,14,Choose your avatar,200,,0,next
+cyberstatus_sa_high_acc1,high,1,18,,Waiting for the other members to place their figures…,250,,0,wait
+cyberstatus_sa_high_acc1,high,1,19,15,How the ranking works,248,,0,next
+cyberstatus_sa_high_acc1,high,1,20,16,How the connections work,250,,0,next
+cyberstatus_sa_high_acc1,high,1,21,17,How much would you like to take part in the ranking rounds with these members?,250,250,0,next
+cyberstatus_sa_high_acc1,high,1,22,18,How do you feel right now?,250,,0,next
+cyberstatus_sa_high_acc1,high,1,23,19,"Right now, how much distress do you feel?",250,250,0,next
+cyberstatus_sa_high_acc1,high,1,24,20,Round 1 of 5,250,250,0,next
+cyberstatus_sa_high_acc1,high,1,25,21,Round 1 – vote,702,,2,timeout
+cyberstatus_sa_high_acc1,high,1,26,,Red card,300,,0,wait
+cyberstatus_sa_high_acc1,high,1,27,,Waiting for the other members to vote…,252,,0,wait
+cyberstatus_sa_high_acc1,high,1,28,,Round 1 – ranking,252,,0,wait
+cyberstatus_sa_high_acc1,high,1,29,,Round 1 – ranking,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,30,22,Round 1 – ranking,245,,0,next
+cyberstatus_sa_high_acc1,high,1,31,,Round 1 – ranking,262,,0,wait
+cyberstatus_sa_high_acc1,high,1,32,,Round 1 – ranking,201,,0,wait
+cyberstatus_sa_high_acc1,high,1,33,23,Round 1 result,31,,0,next
+cyberstatus_sa_high_acc1,high,1,34,24,Connections – round 1,701,,2,timeout
+cyberstatus_sa_high_acc1,high,1,35,,Red card,301,,0,wait
+cyberstatus_sa_high_acc1,high,1,36,,Waiting for the other members to make their choices…,252,,0,wait
+cyberstatus_sa_high_acc1,high,1,37,25,Connections – round 1,246,,0,next
+cyberstatus_sa_high_acc1,high,1,38,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …i",251,,0,next
+cyberstatus_sa_high_acc1,high,1,39,27,After the first round,250,,0,next
+cyberstatus_sa_high_acc1,high,1,40,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,41,28,The team's choices,247,,0,next
+cyberstatus_sa_high_acc1,high,1,42,29,Round 2 of 5,250,250,0,next
+cyberstatus_sa_high_acc1,high,1,43,30,Round 2 – vote,250,,0,next
+cyberstatus_sa_high_acc1,high,1,44,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,45,,Round 2 – ranking,151,,0,wait
+cyberstatus_sa_high_acc1,high,1,46,31,Round 2 – ranking,97,,0,next
+cyberstatus_sa_high_acc1,high,1,47,,Round 2 – ranking,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,48,,Round 2 – ranking,252,,0,wait
+cyberstatus_sa_high_acc1,high,1,49,,Round 2 – ranking,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,50,,Round 2 – ranking,203,,0,wait
+cyberstatus_sa_high_acc1,high,1,51,32,Round 2 result,43,,0,next
+cyberstatus_sa_high_acc1,high,1,52,33,Connections – round 2,702,,2,timeout
+cyberstatus_sa_high_acc1,high,1,53,,Red card,302,,0,wait
+cyberstatus_sa_high_acc1,high,1,54,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,55,34,Connections – round 2,245,,0,next
+cyberstatus_sa_high_acc1,high,1,56,35,Round 3 of 5,250,250,0,next
+cyberstatus_sa_high_acc1,high,1,57,36,Round 3 – vote,249,,0,next
+cyberstatus_sa_high_acc1,high,1,58,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,59,,Round 3 – ranking,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,60,37,Round 3 – ranking,248,,0,next
+cyberstatus_sa_high_acc1,high,1,61,,Round 3 – ranking,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,62,,Round 3 – ranking,252,,0,wait
+cyberstatus_sa_high_acc1,high,1,63,,Round 3 – ranking,202,,0,wait
+cyberstatus_sa_high_acc1,high,1,64,38,Round 3 result,45,,0,next
+cyberstatus_sa_high_acc1,high,1,65,39,Connections – round 3,702,,2,timeout
+cyberstatus_sa_high_acc1,high,1,66,,Red card,301,,0,wait
+cyberstatus_sa_high_acc1,high,1,67,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,68,40,Connections – round 3,245,,0,next
+cyberstatus_sa_high_acc1,high,1,69,41,Round 4 of 5,250,250,0,next
+cyberstatus_sa_high_acc1,high,1,70,42,Round 4 – vote,251,,0,next
+cyberstatus_sa_high_acc1,high,1,71,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_sa_high_acc1,high,1,72,,Round 4 – ranking,152,,0,wait
+cyberstatus_sa_high_acc1,high,1,73,43,Round 4 – ranking,96,,0,next
+cyberstatus_sa_high_acc1,high,1,74,,Round 4 – ranking,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,75,,Round 4 – ranking,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,76,,Round 4 – ranking,252,,0,wait
+cyberstatus_sa_high_acc1,high,1,77,,Round 4 – ranking,202,,0,wait
+cyberstatus_sa_high_acc1,high,1,78,44,Round 4 result,43,,0,next
+cyberstatus_sa_high_acc1,high,1,79,45,Connections – round 4,702,,2,timeout
+cyberstatus_sa_high_acc1,high,1,80,,Red card,301,,0,wait
+cyberstatus_sa_high_acc1,high,1,81,,Waiting for the other members to make their choices…,252,,0,wait
+cyberstatus_sa_high_acc1,high,1,82,46,Connections – round 4,245,,0,next
+cyberstatus_sa_high_acc1,high,1,83,47,Round 5 of 5,250,250,0,next
+cyberstatus_sa_high_acc1,high,1,84,48,Round 5 – vote,249,,0,next
+cyberstatus_sa_high_acc1,high,1,85,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_sa_high_acc1,high,1,86,,Round 5 – ranking,152,,0,wait
+cyberstatus_sa_high_acc1,high,1,87,49,Round 5 – ranking,98,,0,next
+cyberstatus_sa_high_acc1,high,1,88,,Round 5 – ranking,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,89,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_high_acc1,high,1,90,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_high_acc1,high,1,91,,Round 5 – ranking,202,,0,wait
+cyberstatus_sa_high_acc1,high,1,92,50,Round 5 result,43,,0,next
+cyberstatus_sa_high_acc1,high,1,93,51,Connections – round 5,249,,0,next
+cyberstatus_sa_high_acc1,high,1,94,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_sa_high_acc1,high,1,95,52,Connections – round 5,250,,0,next
+cyberstatus_sa_high_acc1,high,1,96,,Computing the overall ranking…,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,97,53,Overall ranking: First.,247,,0,next
+cyberstatus_sa_high_acc1,high,1,98,54,"Your connections: Emma, Tom, Taylor, Pixel.",252,,0,next
+cyberstatus_sa_high_acc1,high,1,99,55,"Right now, how much distress do you feel?",249,249,0,next
+cyberstatus_sa_high_acc1,high,1,100,56,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …i",250,,0,next
+cyberstatus_sa_high_acc1,high,1,101,57,How do you feel right now?,250,,0,next
+cyberstatus_sa_high_acc1,high,1,102,58,Before the mission,251,,0,next
+cyberstatus_sa_high_acc1,high,1,103,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_sa_high_acc1,high,1,104,59,The team's choices,247,,0,next
+cyberstatus_sa_high_acc1,high,1,105,60,How much would you like to take part in the mission with this team?,250,250,0,next
+cyberstatus_sa_high_acc1,high,1,106,61,"For each statement, please indicate how much you agree, thinking about",251,,0,next
+cyberstatus_sa_high_acc1,high,1,107,62,Please indicate how much you agree/disagree with the following stateme,250,,0,next
+cyberstatus_sa_high_acc1,high,1,108,63,To what extent did the other team members perceive you as:,250,249,0,next
+cyberstatus_sa_high_acc1,high,1,109,64,How satisfied are you with…,248,248,0,next
+cyberstatus_sa_high_acc1,high,1,110,65,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,251,,0,next
+cyberstatus_sa_high_acc1,high,1,111,66,Choose your avatar,249,,0,next
+cyberstatus_sa_high_acc1,high,1,112,67,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,251,250,0,next
+cyberstatus_sa_high_acc1,high,1,113,68,In your own view,249,,0,next
+cyberstatus_sa_high_acc1,high,1,114,69,"Regardless of the connections, how do you think you should take part i",250,,0,next
+cyberstatus_sa_high_acc1,high,1,115,70,With whom? Emma Tom Taylor Pixel,250,,0,next
+cyberstatus_sa_high_acc1,high,1,116,71,Two quick questions,249,,0,next
+cyberstatus_sa_high_acc1,high,1,117,72,The mission,248,,0,next
+cyberstatus_sa_high_acc1,high,1,118,73,Questionnaires,250,,0,next
+cyberstatus_sa_high_acc1,high,1,119,74,Social Behaviour Questionnaire,252,,0,next
+cyberstatus_sa_high_acc1,high,1,120,75,Social Situations Questionnaire,249,,0,next
+cyberstatus_sa_high_acc1,high,1,121,76,Feelings in the World Questionnaire,248,,0,next
+cyberstatus_sa_high_acc1,high,1,122,77,A few details about you,250,249,0,next
+cyberstatus_sa_high_acc1,high,1,123,78,About the other members,251,251,0,next
+cyberstatus_sa_high_acc1,high,1,124,79,Thank you!,248,,0,next
+cyberstatus_sa_low_acc0,low,0,1,1,Welcome,658,,0,next
+cyberstatus_sa_low_acc0,low,0,2,2,Questionnaires,251,,0,next
+cyberstatus_sa_low_acc0,low,0,3,3,Social Anxiety Questionnaire,250,,0,next
+cyberstatus_sa_low_acc0,low,0,4,4,Fear of Positive Evaluation Questionnaire,249,,0,next
+cyberstatus_sa_low_acc0,low,0,5,5,Mood Questionnaire,252,,0,next
+cyberstatus_sa_low_acc0,low,0,6,6,Relationships Questionnaire,249,,0,next
+cyberstatus_sa_low_acc0,low,0,7,7,The team mission,249,,0,next
+cyberstatus_sa_low_acc0,low,0,8,,Please wait while we connect to the other participants. It might take ,301,,0,wait
+cyberstatus_sa_low_acc0,low,0,9,8,Please write your name or nickname (this is how the other members will,198,198,0,next
+cyberstatus_sa_low_acc0,low,0,10,9,Introduce yourself,251,251,0,next
+cyberstatus_sa_low_acc0,low,0,11,,Please wait while the other members write their introductions…,451,,0,wait
+cyberstatus_sa_low_acc0,low,0,12,10,Meet the team: Emma,549,,0,next
+cyberstatus_sa_low_acc0,low,0,13,11,Meet the team: Tom,749,,0,next
+cyberstatus_sa_low_acc0,low,0,14,12,Meet the team: Pixel,751,,0,next
+cyberstatus_sa_low_acc0,low,0,15,13,Meet the team: Taylor,749,,0,next
+cyberstatus_sa_low_acc0,low,0,16,,The other members are reading the introductions…,301,,0,wait
+cyberstatus_sa_low_acc0,low,0,17,14,Choose your avatar,200,,0,next
+cyberstatus_sa_low_acc0,low,0,18,,Waiting for the other members to place their figures…,250,,0,wait
+cyberstatus_sa_low_acc0,low,0,19,15,How the ranking works,247,,0,next
+cyberstatus_sa_low_acc0,low,0,20,16,How the connections work,251,,0,next
+cyberstatus_sa_low_acc0,low,0,21,17,How much would you like to take part in the ranking rounds with these members?,250,250,0,next
+cyberstatus_sa_low_acc0,low,0,22,18,How do you feel right now?,248,,0,next
+cyberstatus_sa_low_acc0,low,0,23,19,"Right now, how much distress do you feel?",250,250,0,next
+cyberstatus_sa_low_acc0,low,0,24,20,Round 1 of 5,250,250,0,next
+cyberstatus_sa_low_acc0,low,0,25,21,Round 1 – vote,250,,0,next
+cyberstatus_sa_low_acc0,low,0,26,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,27,,Round 1 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,28,,Round 1 – ranking,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,29,22,Round 1 – ranking,244,,0,next
+cyberstatus_sa_low_acc0,low,0,30,,Round 1 – ranking,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,31,,Round 1 – ranking,202,,0,wait
+cyberstatus_sa_low_acc0,low,0,32,23,Round 1 result,47,,0,next
+cyberstatus_sa_low_acc0,low,0,33,24,Connections – round 1,702,,2,timeout
+cyberstatus_sa_low_acc0,low,0,34,,Red card,301,,0,wait
+cyberstatus_sa_low_acc0,low,0,35,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,36,25,Connections – round 1,244,,0,next
+cyberstatus_sa_low_acc0,low,0,37,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",251,,0,next
+cyberstatus_sa_low_acc0,low,0,38,27,After the first round,251,,0,next
+cyberstatus_sa_low_acc0,low,0,39,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,40,28,The team's choices,247,,0,next
+cyberstatus_sa_low_acc0,low,0,41,29,Round 2 of 5,250,250,0,next
+cyberstatus_sa_low_acc0,low,0,42,30,Round 2 – vote,249,,0,next
+cyberstatus_sa_low_acc0,low,0,43,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,44,,Round 2 – ranking,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,45,,Round 2 – ranking,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,46,,Round 2 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,47,,Round 2 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,48,,Round 2 – ranking,203,,0,wait
+cyberstatus_sa_low_acc0,low,0,49,31,Round 2 result,38,,0,next
+cyberstatus_sa_low_acc0,low,0,50,32,Connections – round 2,702,,2,timeout
+cyberstatus_sa_low_acc0,low,0,51,,Red card,301,,0,wait
+cyberstatus_sa_low_acc0,low,0,52,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_sa_low_acc0,low,0,53,33,Connections – round 2,247,,0,next
+cyberstatus_sa_low_acc0,low,0,54,34,Round 3 of 5,249,249,0,next
+cyberstatus_sa_low_acc0,low,0,55,35,Round 3 – vote,702,,2,timeout
+cyberstatus_sa_low_acc0,low,0,56,,Red card,302,,0,wait
+cyberstatus_sa_low_acc0,low,0,57,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,58,,Round 3 – ranking,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,59,,Round 3 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,60,,Round 3 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,61,,Round 3 – ranking,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,62,,Round 3 – ranking,201,,0,wait
+cyberstatus_sa_low_acc0,low,0,63,36,Round 3 result,34,,0,next
+cyberstatus_sa_low_acc0,low,0,64,37,Connections – round 3,701,,2,timeout
+cyberstatus_sa_low_acc0,low,0,65,,Red card,301,,0,wait
+cyberstatus_sa_low_acc0,low,0,66,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,67,38,Connections – round 3,248,,0,next
+cyberstatus_sa_low_acc0,low,0,68,39,Round 4 of 5,249,249,0,next
+cyberstatus_sa_low_acc0,low,0,69,40,Round 4 – vote,250,,0,next
+cyberstatus_sa_low_acc0,low,0,70,,Waiting for the other members to vote…,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,71,,Round 4 – ranking,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,72,,Round 4 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,73,,Round 4 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,74,41,Round 4 – ranking,242,,0,next
+cyberstatus_sa_low_acc0,low,0,75,,Round 4 – ranking,202,,0,wait
+cyberstatus_sa_low_acc0,low,0,76,42,Round 4 result,47,,0,next
+cyberstatus_sa_low_acc0,low,0,77,43,Connections – round 4,251,,0,next
+cyberstatus_sa_low_acc0,low,0,78,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,79,44,Connections – round 4,248,,0,next
+cyberstatus_sa_low_acc0,low,0,80,45,Round 5 of 5,249,249,0,next
+cyberstatus_sa_low_acc0,low,0,81,46,Round 5 – vote,251,,0,next
+cyberstatus_sa_low_acc0,low,0,82,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,83,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,84,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,85,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,86,,Round 5 – ranking,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,87,,Round 5 – ranking,203,,0,wait
+cyberstatus_sa_low_acc0,low,0,88,47,Round 5 result,37,,0,next
+cyberstatus_sa_low_acc0,low,0,89,48,Connections – round 5,702,,2,timeout
+cyberstatus_sa_low_acc0,low,0,90,,Red card,301,,0,wait
+cyberstatus_sa_low_acc0,low,0,91,,Waiting for the other members to make their choices…,252,,0,wait
+cyberstatus_sa_low_acc0,low,0,92,49,Connections – round 5,245,,0,next
+cyberstatus_sa_low_acc0,low,0,93,,Computing the overall ranking…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,94,50,Overall ranking: Last.,248,,0,next
+cyberstatus_sa_low_acc0,low,0,95,51,Your connections: none.,252,,0,next
+cyberstatus_sa_low_acc0,low,0,96,52,"Right now, how much distress do you feel?",249,249,0,next
+cyberstatus_sa_low_acc0,low,0,97,53,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …w",250,,0,next
+cyberstatus_sa_low_acc0,low,0,98,54,How do you feel right now?,251,,0,next
+cyberstatus_sa_low_acc0,low,0,99,55,Before the mission,249,,0,next
+cyberstatus_sa_low_acc0,low,0,100,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_sa_low_acc0,low,0,101,56,The team's choices,248,,0,next
+cyberstatus_sa_low_acc0,low,0,102,57,How much would you like to take part in the mission with this team?,250,250,0,next
+cyberstatus_sa_low_acc0,low,0,103,58,"For each statement, please indicate how much you agree, thinking about",251,,0,next
+cyberstatus_sa_low_acc0,low,0,104,59,Please indicate how much you agree/disagree with the following stateme,249,,0,next
+cyberstatus_sa_low_acc0,low,0,105,60,To what extent did the other team members perceive you as:,251,250,0,next
+cyberstatus_sa_low_acc0,low,0,106,61,How satisfied are you with…,250,250,0,next
+cyberstatus_sa_low_acc0,low,0,107,62,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,250,,0,next
+cyberstatus_sa_low_acc0,low,0,108,63,Choose your avatar,250,,0,next
+cyberstatus_sa_low_acc0,low,0,109,64,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,250,250,0,next
+cyberstatus_sa_low_acc0,low,0,110,65,In your own view,250,,0,next
+cyberstatus_sa_low_acc0,low,0,111,66,"Regardless of the connections, how do you think you should take part i",249,,0,next
+cyberstatus_sa_low_acc0,low,0,112,67,Two quick questions,251,,0,next
+cyberstatus_sa_low_acc0,low,0,113,68,The mission,249,,0,next
+cyberstatus_sa_low_acc0,low,0,114,69,Questionnaires,250,,0,next
+cyberstatus_sa_low_acc0,low,0,115,70,Social Behaviour Questionnaire,250,,0,next
+cyberstatus_sa_low_acc0,low,0,116,71,Social Situations Questionnaire,251,,0,next
+cyberstatus_sa_low_acc0,low,0,117,72,Feelings in the World Questionnaire,249,,0,next
+cyberstatus_sa_low_acc0,low,0,118,73,A few details about you,250,249,0,next
+cyberstatus_sa_low_acc0,low,0,119,74,About the other members,250,250,0,next
+cyberstatus_sa_low_acc0,low,0,120,75,Thank you!,250,,0,next
+cyberstatus_sa_low_acc1,low,1,1,1,Welcome,658,,0,next
+cyberstatus_sa_low_acc1,low,1,2,2,Questionnaires,250,,0,next
+cyberstatus_sa_low_acc1,low,1,3,3,Social Anxiety Questionnaire,252,,0,next
+cyberstatus_sa_low_acc1,low,1,4,4,Fear of Positive Evaluation Questionnaire,247,,0,next
+cyberstatus_sa_low_acc1,low,1,5,5,Mood Questionnaire,253,,0,next
+cyberstatus_sa_low_acc1,low,1,6,6,Relationships Questionnaire,248,,0,next
+cyberstatus_sa_low_acc1,low,1,7,7,The team mission,249,,0,next
+cyberstatus_sa_low_acc1,low,1,8,,Please wait while we connect to the other participants. It might take ,303,,0,wait
+cyberstatus_sa_low_acc1,low,1,9,8,Please write your name or nickname (this is how the other members will,198,197,0,next
+cyberstatus_sa_low_acc1,low,1,10,9,Introduce yourself,250,249,0,next
+cyberstatus_sa_low_acc1,low,1,11,,Please wait while the other members write their introductions…,451,,0,wait
+cyberstatus_sa_low_acc1,low,1,12,10,Meet the team: Pixel,548,,0,next
+cyberstatus_sa_low_acc1,low,1,13,11,Meet the team: Emma,750,,0,next
+cyberstatus_sa_low_acc1,low,1,14,12,Meet the team: Taylor,750,,0,next
+cyberstatus_sa_low_acc1,low,1,15,13,Meet the team: Tom,749,,0,next
+cyberstatus_sa_low_acc1,low,1,16,,The other members are reading the introductions…,301,,0,wait
+cyberstatus_sa_low_acc1,low,1,17,14,Choose your avatar,200,,0,next
+cyberstatus_sa_low_acc1,low,1,18,,Waiting for the other members to place their figures…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,19,15,How the ranking works,246,,0,next
+cyberstatus_sa_low_acc1,low,1,20,16,How the connections work,250,,0,next
+cyberstatus_sa_low_acc1,low,1,21,17,How much would you like to take part in the ranking rounds with these members?,251,251,0,next
+cyberstatus_sa_low_acc1,low,1,22,18,How do you feel right now?,249,,0,next
+cyberstatus_sa_low_acc1,low,1,23,19,"Right now, how much distress do you feel?",250,250,0,next
+cyberstatus_sa_low_acc1,low,1,24,20,Round 1 of 5,251,250,0,next
+cyberstatus_sa_low_acc1,low,1,25,21,Round 1 – vote,702,,2,timeout
+cyberstatus_sa_low_acc1,low,1,26,,Red card,300,,0,wait
+cyberstatus_sa_low_acc1,low,1,27,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,28,,Round 1 – ranking,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,29,,Round 1 – ranking,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,30,22,Round 1 – ranking,250,,0,next
+cyberstatus_sa_low_acc1,low,1,31,,Round 1 – ranking,262,,0,wait
+cyberstatus_sa_low_acc1,low,1,32,,Round 1 – ranking,202,,0,wait
+cyberstatus_sa_low_acc1,low,1,33,23,Round 1 result,24,,0,next
+cyberstatus_sa_low_acc1,low,1,34,24,Connections – round 1,701,,2,timeout
+cyberstatus_sa_low_acc1,low,1,35,,Red card,301,,0,wait
+cyberstatus_sa_low_acc1,low,1,36,,Waiting for the other members to make their choices…,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,37,25,Connections – round 1,246,,0,next
+cyberstatus_sa_low_acc1,low,1,38,26,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …v",250,,0,next
+cyberstatus_sa_low_acc1,low,1,39,27,After the first round,250,,0,next
+cyberstatus_sa_low_acc1,low,1,40,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,41,28,The team's choices,246,,0,next
+cyberstatus_sa_low_acc1,low,1,42,29,Round 2 of 5,249,249,0,next
+cyberstatus_sa_low_acc1,low,1,43,30,Round 2 – vote,251,,0,next
+cyberstatus_sa_low_acc1,low,1,44,,Waiting for the other members to vote…,250,,0,wait
+cyberstatus_sa_low_acc1,low,1,45,,Round 2 – ranking,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,46,,Round 2 – ranking,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,47,,Round 2 – ranking,253,,0,wait
+cyberstatus_sa_low_acc1,low,1,48,,Round 2 – ranking,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,49,,Round 2 – ranking,203,,0,wait
+cyberstatus_sa_low_acc1,low,1,50,31,Round 2 result,39,,0,next
+cyberstatus_sa_low_acc1,low,1,51,32,Connections – round 2,250,,0,next
+cyberstatus_sa_low_acc1,low,1,52,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,53,33,Connections – round 2,248,,0,next
+cyberstatus_sa_low_acc1,low,1,54,34,Round 3 of 5,249,249,0,next
+cyberstatus_sa_low_acc1,low,1,55,35,Round 3 – vote,702,,2,timeout
+cyberstatus_sa_low_acc1,low,1,56,,Red card,302,,0,wait
+cyberstatus_sa_low_acc1,low,1,57,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,58,,Round 3 – ranking,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,59,,Round 3 – ranking,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,60,,Round 3 – ranking,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,61,,Round 3 – ranking,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,62,,Round 3 – ranking,201,,0,wait
+cyberstatus_sa_low_acc1,low,1,63,36,Round 3 result,33,,0,next
+cyberstatus_sa_low_acc1,low,1,64,37,Connections – round 3,702,,2,timeout
+cyberstatus_sa_low_acc1,low,1,65,,Red card,301,,0,wait
+cyberstatus_sa_low_acc1,low,1,66,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,67,38,Connections – round 3,246,,0,next
+cyberstatus_sa_low_acc1,low,1,68,39,Round 4 of 5,250,250,0,next
+cyberstatus_sa_low_acc1,low,1,69,40,Round 4 – vote,702,,2,timeout
+cyberstatus_sa_low_acc1,low,1,70,,Red card,302,,0,wait
+cyberstatus_sa_low_acc1,low,1,71,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,72,,Round 4 – ranking,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,73,,Round 4 – ranking,253,,0,wait
+cyberstatus_sa_low_acc1,low,1,74,,Round 4 – ranking,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,75,41,Round 4 – ranking,237,,0,next
+cyberstatus_sa_low_acc1,low,1,76,,Round 4 – ranking,202,,0,wait
+cyberstatus_sa_low_acc1,low,1,77,42,Round 4 result,47,,0,next
+cyberstatus_sa_low_acc1,low,1,78,43,Connections – round 4,702,,2,timeout
+cyberstatus_sa_low_acc1,low,1,79,,Red card,301,,0,wait
+cyberstatus_sa_low_acc1,low,1,80,,Waiting for the other members to make their choices…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,81,44,Connections – round 4,246,,0,next
+cyberstatus_sa_low_acc1,low,1,82,45,Round 5 of 5,249,249,0,next
+cyberstatus_sa_low_acc1,low,1,83,46,Round 5 – vote,251,,0,next
+cyberstatus_sa_low_acc1,low,1,84,,Waiting for the other members to vote…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,85,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,86,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,87,,Round 5 – ranking,253,,0,wait
+cyberstatus_sa_low_acc1,low,1,88,,Round 5 – ranking,252,,0,wait
+cyberstatus_sa_low_acc1,low,1,89,,Round 5 – ranking,202,,0,wait
+cyberstatus_sa_low_acc1,low,1,90,47,Round 5 result,35,,0,next
+cyberstatus_sa_low_acc1,low,1,91,48,Connections – round 5,250,,0,next
+cyberstatus_sa_low_acc1,low,1,92,,Waiting for the other members to make their choices…,250,,0,wait
+cyberstatus_sa_low_acc1,low,1,93,49,Connections – round 5,250,,0,next
+cyberstatus_sa_low_acc1,low,1,94,,Computing the overall ranking…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,95,50,Overall ranking: Last.,247,,0,next
+cyberstatus_sa_low_acc1,low,1,96,51,"Your connections: Emma, Tom, Taylor, Pixel.",249,,0,next
+cyberstatus_sa_low_acc1,low,1,97,52,"Right now, how much distress do you feel?",251,250,0,next
+cyberstatus_sa_low_acc1,low,1,98,53,"Right now, how much do you feel… Not at all 1 2 3 4 5 6 Very much 7 …v",250,,0,next
+cyberstatus_sa_low_acc1,low,1,99,54,How do you feel right now?,250,,0,next
+cyberstatus_sa_low_acc1,low,1,100,55,Before the mission,251,,0,next
+cyberstatus_sa_low_acc1,low,1,101,,Waiting for the other members to state their choices…,251,,0,wait
+cyberstatus_sa_low_acc1,low,1,102,56,The team's choices,247,,0,next
+cyberstatus_sa_low_acc1,low,1,103,57,How much would you like to take part in the mission with this team?,251,251,0,next
+cyberstatus_sa_low_acc1,low,1,104,58,"For each statement, please indicate how much you agree, thinking about",251,,0,next
+cyberstatus_sa_low_acc1,low,1,105,59,Please indicate how much you agree/disagree with the following stateme,250,,0,next
+cyberstatus_sa_low_acc1,low,1,106,60,To what extent did the other team members perceive you as:,249,248,0,next
+cyberstatus_sa_low_acc1,low,1,107,61,How satisfied are you with…,250,250,0,next
+cyberstatus_sa_low_acc1,low,1,108,62,Thinking about the mission that is about to start: Not at all 1 2 3 4 ,250,,0,next
+cyberstatus_sa_low_acc1,low,1,109,63,Choose your avatar,249,,0,next
+cyberstatus_sa_low_acc1,low,1,110,64,Please rate the extent to which you had the following desires or plans during the ranking and connections rounds:,251,251,0,next
+cyberstatus_sa_low_acc1,low,1,111,65,In your own view,250,,0,next
+cyberstatus_sa_low_acc1,low,1,112,66,"Regardless of the connections, how do you think you should take part i",248,,0,next
+cyberstatus_sa_low_acc1,low,1,113,67,With whom? Emma Tom Taylor Pixel,251,,0,next
+cyberstatus_sa_low_acc1,low,1,114,68,Two quick questions,250,,0,next
+cyberstatus_sa_low_acc1,low,1,115,69,The mission,250,,0,next
+cyberstatus_sa_low_acc1,low,1,116,70,Questionnaires,249,,0,next
+cyberstatus_sa_low_acc1,low,1,117,71,Social Behaviour Questionnaire,250,,0,next
+cyberstatus_sa_low_acc1,low,1,118,72,Social Situations Questionnaire,250,,0,next
+cyberstatus_sa_low_acc1,low,1,119,73,Feelings in the World Questionnaire,249,,0,next
+cyberstatus_sa_low_acc1,low,1,120,74,A few details about you,250,249,0,next
+cyberstatus_sa_low_acc1,low,1,121,75,About the other members,250,250,0,next
+cyberstatus_sa_low_acc1,low,1,122,76,Thank you!,250,,0,next
