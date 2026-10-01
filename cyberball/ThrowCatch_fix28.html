@@ -918,7 +918,7 @@ function renderPage(p){
   }
   else if(p.type==="welcome"){
     header("Colors and Social Choices","",{kicker:""});
-    $("measureBody").innerHTML=`<div class="page-card"><p><strong>Thank you for taking part.</strong> This study combines questionnaires and an online group game about colors and social choices.</p><p>First you will complete four short questionnaires about yourself. Then you will join a group of three other participants for an online game, with short questions between the games.</p><p>About 30–35 minutes. Participation is voluntary; you may stop at any time. All data are anonymous. Questions: ${esc(CONFIG.contactEmail)}</p><p><strong>By pressing Continue you confirm that you have read the above and consent to participate.</strong></p></div>`;
+    $("measureBody").innerHTML=`<div class="page-card"><p><strong>Thank you for taking part.</strong> This study combines questionnaires and an online group game about colors and social choices.</p><p>First you will complete four short questionnaires about yourself. Then you will join a group of three other participants for an online game, with short questions between the games.</p><p>The study takes approximately 45 minutes. Participation is voluntary; you may stop at any time. All data are anonymous. Questions: ${esc(CONFIG.contactEmail)}</p><p><strong>By pressing Continue you confirm that you have read the above and consent to participate.</strong></p></div>`;
     p.commit=()=>{logStudyStart();logRow({phase:"setup",event:"consent"})};
   }
   else if(p.type==="text"){
