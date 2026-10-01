@@ -32,6 +32,9 @@ const guard=setTimeout(()=>{console.error('FAIL test promise did not resolve');p
     const st=storage();st.setItem('isf_pending_cyberball_TEST','{"meta":{"pid":"TEST"},"rows":[]}');let resolve;const h=harness(st,()=>new Promise(r=>resolve=r));const p=h.api.flush();await h.tick();assert.equal(st.getItem('isf_pending_cyberball_TEST'),'{"meta":{"pid":"TEST"},"rows":[]}');resolve(true);await p;assert.equal(Object.keys(st).length,0);console.log('PASS legacy final payload preserved until acknowledgement');
   }
   {
+    const h=harness();h.api.enqueue('already saved','run|recovered',0);const other=harness(h.localStorage);await other.api.flush();await h.api.flush();assert.equal(h.posts.length,0);console.log('PASS one tab skips a record already acknowledged in another tab');
+  }
+  {
     const h=harness();h.api.enqueue('first','run|progress',20000);await h.tick(10000);h.api.enqueue('second','run|progress',20000);await h.tick(10000);assert.equal(h.posts.length,1);assert.equal(h.posts[0].records[0],'second');console.log('PASS continuous events do not postpone periodic backup');
   }
 })().catch(e=>{console.error(e);process.exitCode=1}).finally(()=>clearTimeout(guard));

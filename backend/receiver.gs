@@ -62,7 +62,8 @@ function storeRecord(ss, raw) {
   for (var c = 0; c < nChunks; c++) rec['json_' + (c + 1)] = chunks[c];
   rec.n_chunks = nChunks; rec.md5 = md5; rec.ok = ''; rec.wide = ''; rec.run_id = id;
   var prev = findRecent(sh, md5), r;
-  if (prev && readRawRow(sh, prev.row) === raw) r = prev.row;
+  if (prev && prev.raw === raw && isTrue(prev.ok) && (d.stage !== 'complete' || isTrue(prev.wide))) return;
+  if (prev && prev.raw === raw) r = prev.row;
   else r = upsertAlignedMany(sh, [rec], 'md5')[0];
   SpreadsheetApp.flush();
   if (readRawRow(sh, r) !== raw) { setCell(sh, r, 'ok', false); throw new Error('raw verification failed, retry'); }
@@ -117,7 +118,7 @@ function findRecent(sh, md5) { // full history: offline retries can be older tha
   var n = sh.getLastRow(), h = headerOf(sh), cm = colOf(h, 'md5');
   if (n < 2 || cm < 0) return null;
   var vals = sh.getRange(2, cm + 1, n - 1, 1).getValues();
-  for (var i = vals.length - 1; i >= 0; i--) if (String(vals[i][0]) === md5) return {row: i + 2};
+  for (var i = vals.length - 1; i >= 0; i--) if (String(vals[i][0]) === md5) { var row = sh.getRange(i + 2, 1, 1, h.length).getValues()[0]; return {row: i + 2, ok: row[colOf(h, 'ok')], wide: row[colOf(h, 'wide')], raw: jsonCols(h).map(function (c) { return String(row[c.i] || ''); }).join('')}; }
   return null;
 }
 // Caller holds the script lock. Each group is verified, including retry repairs.

@@ -7,17 +7,17 @@
     let pumping = null, timer = null, failures = 0;
     function persist(key, entry) {
       pending.set(key, entry);
-      try { localStorage.setItem(key, JSON.stringify(entry)); return true; }
+      try { localStorage.setItem(key, JSON.stringify(entry)); entry.durable = true; return true; }
       catch (error) { console.warn('Study backup could not be stored in this browser', error); return false; }
     }
     // Recover durable records from an earlier visit, including the older final-only format.
     try {
       for (const key of Object.keys(localStorage)) {
         if (key.startsWith(PREFIX)) {
-          try { const entry = JSON.parse(localStorage.getItem(key)); if (entry && entry.body && entry.endpoint) pending.set(key, {...entry, readyAt: 0}); } catch (_) {}
+          try { const entry = JSON.parse(localStorage.getItem(key)); if (entry && entry.body && entry.endpoint) pending.set(key, {...entry, readyAt: 0, durable: true}); } catch (_) {}
         } else if (key.startsWith('isf_pending_')) {
           const body = localStorage.getItem(key);
-          if (body && endpoint) pending.set(key, {body, endpoint, readyAt: 0, legacy: true});
+          if (body && endpoint) pending.set(key, {body, endpoint, readyAt: 0, legacy: true, durable: true});
         }
       }
     } catch (_) {}
@@ -46,6 +46,12 @@
     }
     async function drain() {
       while (true) {
+        // Another open study tab may have delivered a recovered record already.
+        for (const [key, entry] of pending) {
+          if (entry.durable) {
+            try { const stored = localStorage.getItem(key); if (stored === null || (stored !== entry.body && JSON.parse(stored).body !== entry.body)) pending.delete(key); } catch (_) {}
+          }
+        }
         const ready = [...pending].filter(([, e]) => e.readyAt <= Date.now());
         if (!ready.length) { failures = 0; return true; }
         const entries = ready.filter(([, e]) => e.endpoint === ready[0][1].endpoint).slice(0, 8);
