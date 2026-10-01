@@ -84,11 +84,15 @@ function storeBatch(ss, bodies) {
       }
       var rec = makeRawRecord(item.raw, item.d, item.md5, item.id);
       if (prev && prev[colOf(h, 'timestamp')] instanceof Date) rec.timestamp = prev[colOf(h, 'timestamp')];
-      rec.ok = true; // acknowledgement still requires exact read-back in upsertAlignedMany
+      rec.ok = ''; // marked verified only after the exact read-back succeeds
       writes.push(rec); pending.push(item);
     });
     var rows = upsertAlignedMany(sh, writes, 'md5'), byMd5 = {};
     writes.forEach(function (rec, i) { byMd5[rec.md5] = rows[i]; });
+    if (rows.length) {
+      var verified = rows.slice().sort(function (a, b) { return a - b; }), okCol = colOf(headerOf(sh), 'ok') + 1;
+      for (var i = 0; i < verified.length;) { var start = verified[i++], values = [[true]]; while (i < verified.length && verified[i] === start + values.length) { values.push([true]); i++; } sh.getRange(start, okCol, values.length, 1).setValues(values); }
+    }
     pending.forEach(function (item) {
       if (item.d.stage === 'complete') { writeWide(ss, task, item.d, item.id); setCell(sh, item.row || byMd5[item.md5], 'wide', true); }
     });
