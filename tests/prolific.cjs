@@ -25,3 +25,15 @@ console.log('PASS missing-code placeholder and successful retry update');
 // Compile all inline game scripts without running or changing the game.
 for(const match of fs.readFileSync('cyberball/ThrowCatch_fix28.html','utf8').matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g))new vm.Script(match[1]);
 console.log('PASS game inline scripts parse');
+// Exercise the real game entry handlers: no start event may retain a blank URL ID.
+const game=fs.readFileSync('cyberball/ThrowCatch_fix28.html','utf8');
+const init=game.slice(game.indexOf('setCtx("setup","");\nPANAS.order'),game.indexOf('const PRE='));
+const branches=game.slice(game.indexOf('  if(p.type==="prolific_id")'),game.indexOf('  else if(p.type==="text")'));
+const events=[],nodes={measureBody:{innerHTML:''},prolificId:{value:''}},meta={pid:'',study:'study',session:'session'};
+const context=vm.createContext({ISFProlific:p,META:meta,CONFIG:{contactEmail:'test',version:'test',idleMs:10000},state:{},CONDITIONS:{A:{label:'test'}},COND:'A',PANAS:{items:[1,2]},window:{innerWidth:1200,innerHeight:800},esc:String,setCtx(){},shuffle:a=>a,qa:()=>[],$:id=>nodes[id],header(){},logRow:row=>events.push({pid:meta.pid,...row})});
+vm.runInContext(init+'\nfunction renderEntry(p){'+branches+'}\nvar page={type:"prolific_id"};renderEntry(page);',context);
+assert.equal(events.length,0);assert.ok(vm.runInContext('page.validate()',context));
+nodes.prolificId.value='  TEST_MANUAL_ID  ';assert.equal(vm.runInContext('page.validate()',context),null);
+vm.runInContext('page={type:"welcome"};renderEntry(page);page.commit();',context);
+assert.deepEqual(events.map(e=>[e.event,e.pid]),[['study_start','TEST_MANUAL_ID'],['consent','TEST_MANUAL_ID']]);
+console.log('PASS manual first-screen ID is attached to both initial game events');
