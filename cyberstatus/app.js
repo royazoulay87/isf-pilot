@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-10-01k';
+const VERSION='cyberstatus_v3_pilot_2026-10-01l';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -83,11 +83,18 @@ async function sendWithRetries(stage,body,waits){ // → true = the receiver sto
   for(let i=0;i<waits.length;i++){ if(waits[i]) await new Promise(r=>setTimeout(r,waits[i])); const res=await postOnce(body); if(res==='ok'){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-'+stage+':'+(i+1)+':'+res); }
   try{ fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body,keepalive:body.length<60000}).catch(()=>{}); }catch(e){}
   return false; }
+function pendingKey(){ return 'isf_pending_'+D.task+'_'+(D.pid||'nopid'); }
+function resendPending(){ // at start: any final record still waiting in this browser is sent again (the receiver ignores a copy it already stored)
+  if(!CONFIG.endpoint) return; let keys=[]; try{ keys=Object.keys(localStorage).filter(k=>k.startsWith('isf_pending_')); }catch(e){ return; }
+  keys.forEach(async k=>{ try{ const body=localStorage.getItem(k); if(!body) return; const res=await postOnce(body); if(res==='ok') localStorage.removeItem(k); }catch(e){} }); }
+function wireRetry(){ // the thank-you page: "Try saving again" when the final save was not confirmed
+  const b=document.getElementById('retrySave'), m=document.getElementById('retryMsg'); if(!b) return;
+  b.onclick=async()=>{ b.disabled=true; m.textContent='Saving…'; const ok=await save('complete'); m.textContent=ok?'Saved. Thank you!':'Still not confirmed. Please download the file and send it to the researcher.'; if(!ok) b.disabled=false; }; }
 function save(stage){ // returns a promise: resolved at once for checkpoints (the send continues in the background), the real result for 'complete'; null = no endpoint
   D.stage=stage; D.lastSave=new Date().toISOString();
   if(!CONFIG.endpoint) return Promise.resolve(null);
   const body=payload();
-  if(stage==='complete') return sendWithRetries(stage,body,[0,2000,5000]);
+  if(stage==='complete'){ try{ localStorage.setItem(pendingKey(),body); }catch(e){} return sendWithRetries(stage,body,[0,2000,5000]).then(ok=>{ if(ok){ try{ localStorage.removeItem(pendingKey()); }catch(e){} } return ok; }); }
   sendWithRetries(stage,body,[0,3000]).catch(()=>{}); return Promise.resolve(undefined);
 }
 // ---------- generic screen: resolves when Next is clicked and validate() returns null, or when opts.timer (ms) runs out ----------
@@ -375,6 +382,7 @@ async function wishScreen(phase){
 }
 // ---------- main flow ----------
 async function main(){
+  resendPending();
   await show(`<h2>Welcome</h2><p>Thank you for choosing our study! This study examines decision-making in a group.</p><p>First you will fill out a few questionnaires about yourself. Then you will take part in an online team task with other participants. Afterwards you will answer some questions about your experience and a few more questionnaires.</p><p><b>About 40 minutes.</b> The study must be completed in one sitting. Participation is voluntary; if you choose to stop, close the browser window.</p><p>Confidentiality: all your data are anonymous and confidential. Questions: ${CONFIG.contactEmail}</p><p><b>By pressing the button I declare that I have read and understood the consent form and provide my free and informed consent to participate.</b></p>`);
   D.consent=new Date().toISOString(); await save('consent');
   await show(`<h2>Questionnaires</h2><p>Before the team task, please fill out a few questionnaires about yourself. Answer honestly; there are no right or wrong answers.</p>`);
@@ -464,9 +472,9 @@ async function main(){
   $app.innerHTML='<div class="screen"><h2>Saving your answers…</h2><p>Please keep this window open. This takes a few seconds.</p></div>';
   const savedOk=await save('complete');
   const dlLink=`<p><a id="dl" download="cyberstatus_${(D.pid||'test').replace(/[^A-Za-z0-9_-]/g,'')}.json">Download your data file${savedOk===null?' (local test mode)':''}</a></p>`;
-  const dl=savedOk===true?'':(savedOk===false?`<p class="err"><b>We could not confirm that your answers were saved.</b> Please download this file and send it to the researcher through a Prolific message, then continue.</p>`+dlLink:dlLink);
+  const dl=savedOk===true?'':(savedOk===false?`<p class="err"><b>We could not confirm that your answers were saved.</b> Please try again; if it still fails, download this file and send it to the researcher through a Prolific message, then continue.</p><p><button class="next" type="button" id="retrySave">Try saving again</button> <span id="retryMsg" class="small"></span></p>`+dlLink:dlLink);
   await show(`<h2>Thank you!</h2><p><b>There is no mission.</b></p><p>This study looks at how people respond to where they are ranked, and to being chosen or not chosen, in a group task.</p><p>The four other members were not real: they were controlled by the computer. Your rankings, the connections you received, the positions the others asked for, and everything they "wrote" or "chose" were set in advance and assigned at random. They say nothing about you or about how you come across to others.</p><p>Thank you for taking part. Questions, or a request to remove your data: ${CONFIG.contactEmail}.</p>${dl}${CONFIG.completionUrl?'<p>Press the button to return to Prolific.</p>':''}`,
-    {setup:()=>{const a=document.getElementById('dl'); if(a) a.href=URL.createObjectURL(new Blob([JSON.stringify(JSON.parse(payload()),null,1)],{type:'application/json'}));}});
+    {setup:()=>{const a=document.getElementById('dl'); if(a) a.href=URL.createObjectURL(new Blob([JSON.stringify(JSON.parse(payload()),null,1)],{type:'application/json'})); wireRetry();}});
   if(CONFIG.completionUrl) location.href=CONFIG.completionUrl; else await show('<h2>You may now close this window.</h2>',{noNext:true});
 }
 main().catch(e=>{ $app.innerHTML=`<div class="screen"><p>Something went wrong: ${esc(e.message)}. Please contact ${CONFIG.contactEmail}.</p></div>`; console.error(e); });

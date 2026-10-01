@@ -668,7 +668,7 @@ const CONFIG={
   pageTimers:{distress:20000,panas:40000,status:45000,belonging:50000,participation:20000,range_choice:20000,range_adjust:20000,passes:30000,wish_rank:20000,others_wish:20000,lookback:30000,color:20000,rep_sentence:20000,avatar:30000,sentences_show:20000,text:20000,traits_intro:20000}, // time limits between the games (Roy, 30.9): at zero the page moves on; text = the "Questions for the whole group" page
   transitionTimerMs:15000,         // (Roy, 30.9) the "Game 1" / "Game 2" screens continue by themselves after this long
   forceCondition:null,             // 'A' (status increased) | 'B' (affiliation increased) | null = random. ?cond=A|B overrides.
-  version:'fix29b_2026-10-01'
+  version:'fix29c_2026-10-01'
 };
 const q=new URLSearchParams(location.search);
 if(q.get('fast')){const f=Number(q.get('fast'));CONFIG.timeScale=(f>0&&f<1)?f:0.15}
@@ -831,6 +831,8 @@ const state={
   pageShownAt:null,pageLog:[],turnShownAt:null,holdStartedAt:null,gameStartedAt:null,progress:0,queueTotal:0,queueProg:null,
   repSentence:{},idleTimer:null,autoCount:0,pageTimer:null,traits:{},demog:null,avatar:{}
 };
+(function resendPending(){if(!CONFIG.endpoint)return;let keys=[];try{keys=Object.keys(localStorage).filter(k=>k.startsWith("isf_pending_"))}catch(_){return}
+  keys.forEach(async k=>{try{const b=localStorage.getItem(k);if(!b)return;const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),12000);const r=await fetch(CONFIG.endpoint,{method:"POST",mode:"cors",cache:"no-store",headers:{"Content-Type":"text/plain"},body:b,signal:ctl.signal});clearTimeout(tm);const t=(await r.text()).trim();if(r.ok&&/^ok/.test(t))localStorage.removeItem(k)}catch(_){}})})();
 if(DEBUG){window.S=state;window.META=META;window.CONDITIONS=CONDITIONS;$("condTag").classList.remove("hidden");$("condTag").textContent="cond "+COND+" · "+CONFIG.version}
 
 function $(id){return document.getElementById(id)}
@@ -1311,9 +1313,15 @@ async function finishStudy(){
   let saved="none";
   if(CONFIG.endpoint){
     txt.textContent="Saving your responses… please keep this window open.";info.textContent="";
-    saved=await postWithAck(makeJSON());state.saved=saved;
+    const body=makeJSON(),pkey="isf_pending_cyberball_"+(META.pid||"nopid");try{localStorage.setItem(pkey,body)}catch(_){}
+    saved=await postWithAck(body);state.saved=saved;if(saved==="ok"){try{localStorage.removeItem(pkey)}catch(_){}}
     if(saved==="ok"){txt.textContent="You have completed the study.";info.textContent="Your responses and game events have been recorded."}
-    else{txt.textContent="You have completed the study.";info.innerHTML="<b>We could not confirm that your responses were saved.</b> Please download the JSON file below and send it to the researcher through a Prolific message"+(CONFIG.completionUrl?", then return to Prolific with the button.":", then close this window.")}
+    else{txt.textContent="You have completed the study.";info.innerHTML="<b>We could not confirm that your responses were saved.</b> Please press \"Try saving again\"; if it still fails, download the JSON file below and send it to the researcher through a Prolific message"+(CONFIG.completionUrl?", then return to Prolific with the button.":", then close this window.");
+      const rb=document.createElement("button");rb.className="primary";rb.textContent="Try saving again";
+      rb.addEventListener("click",async()=>{rb.disabled=true;txt.textContent="Saving your responses… please keep this window open.";const again=await postWithAck(body);state.saved=again;
+        if(again==="ok"){try{localStorage.removeItem(pkey)}catch(_){};txt.textContent="You have completed the study.";info.textContent="Your responses and game events have been recorded.";rb.remove();if(CONFIG.completionUrl){txt.textContent="Redirecting you to Prolific…";setTimeout(()=>location.href=CONFIG.completionUrl,1200)}}
+        else{rb.disabled=false;txt.textContent="You have completed the study."}});
+      document.querySelector("#completeStudyScreen .actions").appendChild(rb)}
   }
   if(CONFIG.completionUrl){
     if(saved==="ok"||saved==="none"){txt.textContent="Redirecting you to Prolific…";setTimeout(()=>location.href=CONFIG.completionUrl,1200)}
