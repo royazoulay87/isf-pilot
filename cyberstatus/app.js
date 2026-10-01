@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-10-01n';
+const VERSION='cyberstatus_v3_pilot_2026-10-01p';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -20,7 +20,7 @@ const BOT_INTRO={ // approved by Roy, 29.9.2026 (typed feel: small typos and str
   Pixel:"Whats the most useless skill you have? Mine is planning road trips I never take, complete with playlists and where to stop for lunch. Graphic designer, still living next to my parents (sunday dinner is not optional), podcast addict. Im the one who packs too much and then lends everyone stuff. Pixel (yes thats what everyone calls me, long story)"};
 const ROLES=['Leader','First Deputy','Second Deputy','Support','Second Support'];
 const CHOICE_SEC=CONFIG.rankChoiceSeconds||10;
-const GT=Object.assign({read:20,outcome:25,state:60,wish:20,distress:20,emotions:90,slider:20},CONFIG.gameTimers||{}); // seconds; every screen of the task continues by itself (Roy, 30.9)
+const GT=Object.assign({read:20,result:15,outcome:25,state:60,wish:20,distress:20,emotions:40,slider:20,avatar:20,rankInfo:60,connInfo:45},CONFIG.gameTimers||{}); // seconds; every screen of the task continues by itself (Roy, 30.9); round result 15 s and the six pages before round 1 timed (Roy, 1.10)
 const autoNote=sec=>`<p class="small autonote">This screen continues automatically after ${sec} seconds.</p>`; // ranking choices (vote, staircase picks) must be made within this time; otherwise the system chooses (Roy, 29.9)
 const mustChoose=`<p class="small">You must choose within ${CHOICE_SEC} seconds. If you do not, the system will choose for you, and this counts as not taking part in the ranking.</p>`;
 const ORDN=n=>n===2?'second':n===3?'third':n===4?'fourth':n+'th';
@@ -286,7 +286,8 @@ async function avatarScreen(key,phase){
     ?'Each member now places a figure to show the team how they see themselves right now. Drag the figure to the spot that best describes you: further to the right = more approachable, further to the left = more reserved; higher up = bigger, lower down = smaller. The figure changes as you move it. <b class="emph">Your figure will be shown to the other members, and theirs to you.</b>'
     :'Before the mission, each member places their figure again to show the team how they see themselves right now. Drag the figure to the spot that best describes you: further to the right = more approachable, further to the left = more reserved; higher up = bigger, lower down = smaller. <b class="emph">Your figure will be shown to the other members, and theirs to you.</b>';
   const w=AvatarField.create({id:key,title:'Choose your avatar',text,small:'Click or drag the figure, then press Next.',start:phase==='post'&&D.avatar_pre?{x:D.avatar_pre.x,y:D.avatar_pre.y}:undefined});
-  await show(w.html,{setup:w.setup,validate:()=>{ const e=w.validate(); if(e) return e; D[key]=w.value(); return null; }});
+  const tmd=phase==='pre'; // Roy 1.10: timed before the ranking (the other members are waiting); untimed in the post-task block
+  await show(w.html+(tmd?autoNote(GT.avatar):''),{setup:w.setup,timer:tmd?GT.avatar*1000:undefined,validate:()=>{ const e=w.validate(); if(e) return e; D[key]=w.value(); D[key+'Timeout']=false; return null; },onTimeout:()=>{ D[key]=w.value(); D[key+'Timeout']=true; }});
   mark(key);
 }
 // ---------- channel diagram for the connections outcome ----------
@@ -348,7 +349,7 @@ async function rankingRound(r){
     }
   }
   const myPos=assign.indexOf(D.name)+1; R.position=myPos; R.role=ROLES[myPos-1]; R.winner=assign[0]; R.finalOrder=assign.slice();
-  await show(`<div class="split"><div class="txt"><h2>Round ${r} result</h2><p class="banner">Round winner: <b>${esc(R.winner)}</b></p><p>In this round you were ranked <b>${ORD[myPos-1]}</b> (step ${myPos}, <b>${ROLES[myPos-1]}</b>).</p><p>The rankings of this round are added to the overall standing.</p>${autoNote(GT.read)}</div><div class="stair">${stair(assign)}</div></div>`,{timer:GT.read*1000});
+  await show(`<div class="split"><div class="txt"><h2>Round ${r} result</h2><p class="banner">Round winner: <b>${esc(R.winner)}</b></p><p>In this round you were ranked <b>${ORD[myPos-1]}</b> (step ${myPos}, <b>${ROLES[myPos-1]}</b>).</p><p>The rankings of this round are added to the overall standing.</p>${autoNote(GT.result)}</div><div class="stair">${stair(assign)}</div></div>`,{timer:GT.result*1000});
   R.resultMs=lastMs(); mark('rank'+r);
 }
 // ---------- connections round (cards show this round's sentences) ----------
@@ -407,15 +408,15 @@ async function main(){
   await timed(spinner('Waiting for the other members to place their figures…'),5000);
   prog(12);
   // ranking instructions (F2) with the staircase and the five roles
-  await show(`<div class="split"><div class="txt"><h2>How the ranking works</h2><p>Before the mission, you and your team will rank each member to decide who does what. Each step of the staircase is a role:</p><ol><li><b>Leader</b> – runs the discussion and makes the final call.</li><li><b>First Deputy</b> – the Leader's right hand; contributes and argues for the plan.</li><li><b>Second Deputy</b> – contributes and argues for the plan.</li><li><b>Support</b> – prepares the parts assigned by the Leader.</li><li><b>Second Support</b> – assists the First Deputy.</li></ol><p>The ranking works like this:</p><ol><li>First, everyone votes for who should be ranked at the top (step 1, Leader).</li><li>Then the person with the most votes chooses who is ranked second (step 2), that member chooses who is ranked third, and so on, until everyone is ranked.</li></ol><p>This is repeated <b>five times</b> so that every member has a chance to show what they can bring. At the end, the overall ranking is computed and the roles for the mission are assigned.</p><p>(We remind you that the mission requires cooperation, creativity, and analytical thinking.)</p></div><div class="stair">${stair()}</div></div>`);
+  await show(`<div class="split"><div class="txt"><h2>How the ranking works</h2><p>Before the mission, you and your team will rank each member to decide who does what. Each step of the staircase is a role:</p><ol><li><b>Leader</b> – runs the discussion and makes the final call.</li><li><b>First Deputy</b> – the Leader's right hand; contributes and argues for the plan.</li><li><b>Second Deputy</b> – contributes and argues for the plan.</li><li><b>Support</b> – prepares the parts assigned by the Leader.</li><li><b>Second Support</b> – assists the First Deputy.</li></ol><p>The ranking works like this:</p><ol><li>First, everyone votes for who should be ranked at the top (step 1, Leader).</li><li>Then the person with the most votes chooses who is ranked second (step 2), that member chooses who is ranked third, and so on, until everyone is ranked.</li></ol><p>This is repeated <b>five times</b> so that every member has a chance to show what they can bring. At the end, the overall ranking is computed and the roles for the mission are assigned.</p><p>(We remind you that the mission requires cooperation, creativity, and analytical thinking.)</p>${autoNote(GT.rankInfo)}</div><div class="stair">${stair()}</div></div>`,{timer:GT.rankInfo*1000});
   // connections instructions (F3) with the circle
-  await show(`<h2>How the connections work</h2><p>Rankings decide roles. <b>Connections decide who you are in contact with.</b></p><p>After each ranking round, every member chooses <b>two</b> people they would like to be connected with during the mission – the people they would want in their channel. Everyone chooses at the same time, and then all the connections are shown on a circle like this one:</p>${circle(BASE,['Emma'],['Emma','Tom'],D.name)}<p class="legend"><span style="color:#1a6fbf;font-weight:bold">thick blue = chose you</span> &nbsp; light grey dashed = your choices &nbsp; grey = the others' choices (↔ chose each other)</p><p>In this example you chose Emma and Tom, and Emma chose you back.</p><p><b>This is not about ability.</b> Choose the people you would like to be in contact with. During the mission, you will be in a shared channel with your connections; members without connections work in a separate channel.</p>`);
+  await show(`<h2>How the connections work</h2><p>Rankings decide roles. <b>Connections decide who you are in contact with.</b></p><p>After each ranking round, every member chooses <b>two</b> people they would like to be connected with during the mission – the people they would want in their channel. Everyone chooses at the same time, and then all the connections are shown on a circle like this one:</p>${circle(BASE,['Emma'],['Emma','Tom'],D.name)}<p class="legend"><span style="color:#1a6fbf;font-weight:bold">thick blue = chose you</span> &nbsp; light grey dashed = your choices &nbsp; grey = the others' choices (↔ chose each other)</p><p>In this example you chose Emma and Tom, and Emma chose you back.</p><p><b>This is not about ability.</b> Choose the people you would like to be in contact with. During the mission, you will be in a shared channel with your connections; members without connections work in a separate channel.</p>${autoNote(GT.connInfo)}`,{timer:GT.connInfo*1000});
   mark('instructions');
-  { const pw=oneSlider('participation_pre','How much would you like to take part in the ranking rounds with these members?',['Not at all','Very much']); await show(pw.html,pw); mark('participation_pre'); }
+  { const pw=oneSlider('participation_pre','How much would you like to take part in the ranking rounds with these members?',['Not at all','Very much']); await show(pw.html+autoNote(GT.slider),{setup:pw.setup,timer:GT.slider*1000,validate:pw.validate,onTimeout:()=>{ const el=document.getElementById('participation_pres'); D.participation_pre=el&&el.dataset.touched==='1'?+el.value:null; D.participation_preTimeout=true; }}); mark('participation_pre'); }
   prog(15);
-  // baseline emotions + distress right before the first round, after everything else (Roy, 29.9 night)
-  { const e1=emotionsMatrix('panas_pre'); await show(e1.html,{validate:e1.validate}); mark('panas_pre'); }
-  { const ds=distressSlider('distress_pre'); await show(ds.html.replace(/<p class="small autonote">.*?<\/p>/,''),{setup:ds.setup,validate:ds.validate}); mark('distress_pre'); }
+  // baseline emotions + distress right before the first round, after everything else (Roy, 29.9 night); timed like the task since 1.10
+  { const e1=emotionsMatrix('panas_pre'); await show(e1.html+autoNote(GT.emotions),{timer:GT.emotions*1000,validate:e1.validate,onTimeout:e1.partial}); mark('panas_pre'); }
+  { const ds=distressSlider('distress_pre'); await show(ds.html,ds); mark('distress_pre'); }
   for(let r=1;r<=5;r++){
     await rankingRound(r); await connectionsRound(r);
     if(r===1){ const st=stateCheck('state1'); await show(st.html,st); D.rounds[0].state=(D.state1||[]).slice(); mark('state1'); }
