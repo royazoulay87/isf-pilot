@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-10-01q';
+const VERSION='cyberstatus_v3_pilot_2026-10-01r';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -20,6 +20,7 @@ const BOT_INTRO={ // approved by Roy, 29.9.2026 (typed feel: small typos and str
   Pixel:"Whats the most useless skill you have? Mine is planning road trips I never take, complete with playlists and where to stop for lunch. Graphic designer, still living next to my parents (sunday dinner is not optional), podcast addict. Im the one who packs too much and then lends everyone stuff. Pixel (yes thats what everyone calls me, long story)"};
 const ROLES=['Leader','First Deputy','Second Deputy','Support','Second Support'];
 const CHOICE_SEC=CONFIG.rankChoiceSeconds||10;
+const CONN_SEC=CONFIG.connChoiceSeconds||20; // Roy 1.10
 const GT=Object.assign({read:20,result:15,outcome:25,state:60,wish:20,distress:20,emotions:40,slider:20,avatar:40,rankInfo:60,connInfo:45},CONFIG.gameTimers||{}); // seconds; every screen of the task continues by itself (Roy, 30.9); round result 15 s and the six pages before round 1 timed (Roy, 1.10)
 const autoNote=sec=>`<p class="small autonote">This screen continues automatically after ${sec} seconds.</p>`; // ranking choices (vote, staircase picks) must be made within this time; otherwise the system chooses (Roy, 29.9)
 const mustChoose=`<p class="small">You must choose within ${CHOICE_SEC} seconds. If you do not, the system will choose for you, and this counts as not taking part in the ranking.</p>`;
@@ -356,8 +357,8 @@ async function rankingRound(r){
 async function connectionsRound(r){
   const R=D.rounds[r-1]; const S=D.acc?CONN.acc:CONN.rej; const desc=BOT_DESC[r-1];
   const connOpts=shuffle(BOTS); R.connOrder=connOpts.slice(); const c=choiceList('_conn',connOpts,{multi:true,max:2,cards:true,desc,figs:true}); D._conn=null; D._auto=false;
-  await show(`<h2>Connections – round ${r}</h2><p>Choose <b>two</b> members you would like to be connected with during the mission. Everyone chooses at the same time; the connections are then shown to the whole team.</p>`+mustChoose.replace('taking part in the ranking','taking part in the connections')+c.html,
-    {timer:CHOICE_SEC*1000,setup:c.setup,validate:()=>{const e=c.validate(); if(e) return e; if(D._conn.length!==2) return 'Please choose exactly two members.'; return null;},
+  await show(`<h2>Connections – round ${r}</h2><p>Choose <b>two</b> members you would like to be connected with during the mission. Everyone chooses at the same time; the connections are then shown to the whole team.</p>`+mustChoose.replace(CHOICE_SEC+' seconds',CONN_SEC+' seconds').replace('taking part in the ranking','taking part in the connections')+c.html,
+    {timer:CONN_SEC*1000,setup:c.setup,validate:()=>{const e=c.validate(); if(e) return e; if(D._conn.length!==2) return 'Please choose exactly two members.'; return null;},
      onTimeout:()=>{ const sel=[...document.querySelectorAll('.card.sel')].map(e=>connOpts[+e.dataset.i]); const rest=shuffle(BOTS.filter(b=>!sel.includes(b))); D._conn=sel.concat(rest).slice(0,2); D._auto=true; }});
   R.connPicks=D._conn.slice(); R.connMs=lastMs(); R.connAuto=D._auto;
   if(R.connAuto) await timed(redCard(R.connPicks.join(' and '),' as your connections').replace('the team cannot rank without your choice, and it counts as not taking part in the ranking','the team cannot form its connections without your choice, and it counts as not taking part'),6000);
