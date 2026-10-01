@@ -668,7 +668,7 @@ const CONFIG={
   pageTimers:{distress:20000,panas:40000,status:45000,belonging:50000,participation:20000,range_choice:20000,range_adjust:20000,passes:30000,wish_rank:20000,others_wish:20000,lookback:30000,color:20000,rep_sentence:20000,avatar:30000,sentences_show:20000,text:20000,traits_intro:20000}, // time limits between the games (Roy, 30.9): at zero the page moves on; text = the "Questions for the whole group" page
   transitionTimerMs:15000,         // (Roy, 30.9) the "Game 1" / "Game 2" screens continue by themselves after this long
   forceCondition:null,             // 'A' (status increased) | 'B' (affiliation increased) | null = random. ?cond=A|B overrides.
-  version:'fix29_2026-10-01'
+  version:'fix29b_2026-10-01'
 };
 const q=new URLSearchParams(location.search);
 if(q.get('fast')){const f=Number(q.get('fast'));CONFIG.timeScale=(f>0&&f<1)?f:0.15}
@@ -1292,12 +1292,14 @@ function stairsSVG(perStep,o={}){ // perStep: array of 4 arrays of player keys (
 function buildDots(){$("dots").innerHTML="";for(let i=0;i<60;i++){const d=document.createElement("span");d.className="dot"+(i<state.throwNo?" done":"");$("dots").appendChild(d)}}
 function updateCounter(){/* HUD "n / 60" counter removed (Roy, 30.9); the left board shows "Throws: n of 60" */}
 /* ================= end ================= */
-async function postWithAck(body){ // fix29: POST with a readable reply (CORS) and retries; "ok" = the receiver stored and verified the record
-  const waits=[0,2000,5000,10000];state.saveLog=[];
+async function postWithAck(body){ // fix29: POST with a readable reply (CORS), 12-s timeout per attempt, retries; "ok" = the receiver stored and verified the record
+  const waits=[0,2000,5000];state.saveLog=[];
   for(let i=0;i<waits.length;i++){
     if(waits[i])await new Promise(r=>setTimeout(r,waits[i]));
-    try{const r=await fetch(CONFIG.endpoint,{method:"POST",mode:"cors",cache:"no-store",headers:{"Content-Type":"text/plain"},body});const t=(await r.text()).trim();state.saveLog.push({attempt:i+1,status:r.status,reply:t.slice(0,80)});if(r.ok&&/^ok/.test(t))return "ok"}
-    catch(e){state.saveLog.push({attempt:i+1,error:String(e).slice(0,120)})}
+    const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),12000);
+    try{const r=await fetch(CONFIG.endpoint,{method:"POST",mode:"cors",cache:"no-store",headers:{"Content-Type":"text/plain"},body,signal:ctl.signal});const t=(await r.text()).trim();state.saveLog.push({attempt:i+1,status:r.status,reply:t.slice(0,80)});if(r.ok&&/^ok/.test(t))return "ok"}
+    catch(e){state.saveLog.push({attempt:i+1,error:String(e&&e.name||e).slice(0,120)})}
+    finally{clearTimeout(tm)}
   }
   try{await fetch(CONFIG.endpoint,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body});return "sent"}catch(_){return "failed"}
 }

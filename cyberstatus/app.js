@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-10-01j';
+const VERSION='cyberstatus_v3_pilot_2026-10-01k';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -74,18 +74,21 @@ const sec=t=>+((Date.now()-t)/1000).toFixed(1);
 let t0=Date.now();
 function mark(k){D.timings[k]=(D.timings[k]||0)+(Date.now()-t0)/1000;t0=Date.now();}
 const payload=()=>JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v); // temporary '_' keys are never sent
-async function save(stage){ // 1.10: POST with a readable reply (CORS) and retries → true = stored and verified by the receiver, false = not confirmed, null = no endpoint
+// ---------- saving (1.10 b): checkpoint saves run in the background and never hold up the screen; only save('complete') is awaited ----------
+const SAVE_TIMEOUT_MS=12000;
+async function postOnce(body){ const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),SAVE_TIMEOUT_MS);
+  try{ const r=await fetch(CONFIG.endpoint,{method:'POST',mode:'cors',cache:'no-store',headers:{'Content-Type':'text/plain'},body,signal:ctl.signal}); const txt=(await r.text()).trim(); return (r.ok&&/^ok/.test(txt))?'ok':'reply:'+txt.slice(0,60); }
+  catch(e){ return 'fail:'+String(e&&e.name||e).slice(0,40); } finally{ clearTimeout(t); } }
+async function sendWithRetries(stage,body,waits){ // → true = the receiver stored and verified the record; false = not confirmed (a last no-cors copy is still sent)
+  for(let i=0;i<waits.length;i++){ if(waits[i]) await new Promise(r=>setTimeout(r,waits[i])); const res=await postOnce(body); if(res==='ok'){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-'+stage+':'+(i+1)+':'+res); }
+  try{ fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body,keepalive:body.length<60000}).catch(()=>{}); }catch(e){}
+  return false; }
+function save(stage){ // returns a promise: resolved at once for checkpoints (the send continues in the background), the real result for 'complete'; null = no endpoint
   D.stage=stage; D.lastSave=new Date().toISOString();
-  if(!CONFIG.endpoint) return null;
-  const body=payload(); const waits=stage==='complete'?[0,2000,5000,10000]:[0,2000];
-  for(let i=0;i<waits.length;i++){
-    if(waits[i]) await new Promise(r=>setTimeout(r,waits[i]));
-    try{ const r=await fetch(CONFIG.endpoint,{method:'POST',mode:'cors',cache:'no-store',headers:{'Content-Type':'text/plain'},body}); const t=(await r.text()).trim();
-         if(r.ok&&/^ok/.test(t)){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-reply:'+stage+':'+t.slice(0,60)); }
-    catch(e){ D.log.push('save-fail:'+stage+':'+(i+1)); }
-  }
-  try{ await fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body}); }catch(e){}
-  return false;
+  if(!CONFIG.endpoint) return Promise.resolve(null);
+  const body=payload();
+  if(stage==='complete') return sendWithRetries(stage,body,[0,2000,5000]);
+  sendWithRetries(stage,body,[0,3000]).catch(()=>{}); return Promise.resolve(undefined);
 }
 // ---------- generic screen: resolves when Next is clicked and validate() returns null, or when opts.timer (ms) runs out ----------
 let screenNo=0, firstInteract=null; const T0=Date.now();
@@ -457,7 +460,9 @@ async function main(){
     {setup:()=>{ const el=document.getElementById('pol'); const t=()=>{el.dataset.touched='1';}; ['input','change','pointerdown','keydown'].forEach(ev=>el.addEventListener(ev,t)); },
      validate:()=>{const g=id=>document.getElementById(id).value.trim(); if(!g('gender')||!g('age')||!g('marital')||!g('attn')) return 'Please complete the required fields (gender, age, marital status, attention check).'; const pol=document.getElementById('pol'); if(pol.dataset.touched!=='1') return 'Please click or move the politics slider.'; D.demog={gender:g('gender'),age:g('age'),edu:g('edu'),marital:g('marital'),children:g('children'),nChildren:g('nchild'),attract:g('attract'),nationality:g('nat'),politics:+pol.value,attention:g('attn')}; if(!D.pid) D.pid=g('pidm'); return null;}});
   await show(`<h2>About the other members</h2>${D.botOrder.map(b=>mc('aw_'+b,`According to your understanding, ${b} was a`,['Man','Woman','Computer','AI'])).join('')}<p><b>Any comments on the study?</b></p><textarea id="cmt" rows="3"></textarea>`,{validate:()=>{D.awareness={}; for(const b of BOTS){const v=document.getElementById('aw_'+b).value; if(!v) return 'Please answer for every member.'; D.awareness[b]=v;} D.comments=document.getElementById('cmt').value; return null;}});
-  D.end=new Date().toISOString(); mark('post3'); prog(100); const savedOk=await save('complete');
+  D.end=new Date().toISOString(); mark('post3'); prog(100);
+  $app.innerHTML='<div class="screen"><h2>Saving your answers…</h2><p>Please keep this window open. This takes a few seconds.</p></div>';
+  const savedOk=await save('complete');
   const dlLink=`<p><a id="dl" download="cyberstatus_${(D.pid||'test').replace(/[^A-Za-z0-9_-]/g,'')}.json">Download your data file${savedOk===null?' (local test mode)':''}</a></p>`;
   const dl=savedOk===true?'':(savedOk===false?`<p class="err"><b>We could not confirm that your answers were saved.</b> Please download this file and send it to the researcher through a Prolific message, then continue.</p>`+dlLink:dlLink);
   await show(`<h2>Thank you!</h2><p><b>There is no mission.</b></p><p>This study looks at how people respond to where they are ranked, and to being chosen or not chosen, in a group task.</p><p>The four other members were not real: they were controlled by the computer. Your rankings, the connections you received, the positions the others asked for, and everything they "wrote" or "chose" were set in advance and assigned at random. They say nothing about you or about how you come across to others.</p><p>Thank you for taking part. Questions, or a request to remove your data: ${CONFIG.contactEmail}.</p>${dl}${CONFIG.completionUrl?'<p>Press the button to return to Prolific.</p>':''}`,

@@ -3,7 +3,7 @@
    Counterbalancing: half (X: H1 clear / H2 ambiguous; Y: the reverse), order 0–3 (version Latin square), amb 0|1 (which settings get variant A), lvl 0|1 (level pattern). */
 (function(){
 'use strict';
-const VERSION='scenarios_v4_2026-10-01b';
+const VERSION='scenarios_v4_2026-10-01c';
 const $app=document.getElementById('app'); let screenN=0;
 const q=new URLSearchParams(location.search);
 const DEBUG=q.get('debug')==='1';
@@ -47,17 +47,20 @@ D.cond.clearPlan=clearPlan.map(x=>x.id+':'+x.version); D.cond.ambPlan=ambPlan.ma
 if(DEBUG){ const lbl=(DESIGN.textVersion||'').startsWith('prenotes')?'PRE-NOTES TEXTS (Word v32)':'CURRENT TEXTS (settings '+DESIGN.textVersion+')'; const b=document.createElement('div'); b.id='verbanner'; b.textContent=lbl+' · mode: '+(FULL?'all 16 ambiguous, then all 16 clear':'8 + 8')+(CONFIG.fixedOrder?' · fixed order 1–16':'')+(FULL?' · second part: '+(CONFIG.altSet==='mild'?'MILD changes':'PARALLEL STORY'):'')+' · port '+location.port; document.body.prepend(b); }
 // ---------- helpers ----------
 let t0=Date.now(); function mark(k){D.timings[k]=(D.timings[k]||0)+(Date.now()-t0)/1000;t0=Date.now();}
-async function save(stage){ // 1.10: POST with a readable reply (CORS) and retries → true = stored and verified by the receiver, false = not confirmed, null = no endpoint
-  D.stage=stage; D.lastSave=new Date().toISOString(); if(!CONFIG.endpoint) return null;
-  const body=JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v); const waits=stage==='complete'?[0,2000,5000,10000]:[0,2000];
-  for(let i=0;i<waits.length;i++){
-    if(waits[i]) await new Promise(r=>setTimeout(r,waits[i]));
-    try{ const r=await fetch(CONFIG.endpoint,{method:'POST',mode:'cors',cache:'no-store',headers:{'Content-Type':'text/plain'},body}); const t=(await r.text()).trim();
-         if(r.ok&&/^ok/.test(t)){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-reply:'+stage+':'+t.slice(0,60)); }
-    catch(e){ D.log.push('save-fail:'+stage+':'+(i+1)); }
-  }
-  try{ await fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body}); }catch(e){}
+// ---------- saving (1.10 b): checkpoint saves run in the background and never hold up the screen; only save('complete') is awaited ----------
+const SAVE_TIMEOUT_MS=12000;
+async function postOnce(body){ const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),SAVE_TIMEOUT_MS);
+  try{ const r=await fetch(CONFIG.endpoint,{method:'POST',mode:'cors',cache:'no-store',headers:{'Content-Type':'text/plain'},body,signal:ctl.signal}); const txt=(await r.text()).trim(); return (r.ok&&/^ok/.test(txt))?'ok':'reply:'+txt.slice(0,60); }
+  catch(e){ return 'fail:'+String(e&&e.name||e).slice(0,40); } finally{ clearTimeout(t); } }
+async function sendWithRetries(stage,body,waits){ // → true = the receiver stored and verified the record; false = not confirmed (a last no-cors copy is still sent)
+  for(let i=0;i<waits.length;i++){ if(waits[i]) await new Promise(r=>setTimeout(r,waits[i])); const res=await postOnce(body); if(res==='ok'){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-'+stage+':'+(i+1)+':'+res); }
+  try{ fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body,keepalive:body.length<60000}).catch(()=>{}); }catch(e){}
   return false; }
+function save(stage){ // returns a promise: resolved at once for checkpoints (the send continues in the background), the real result for 'complete'; null = no endpoint
+  D.stage=stage; D.lastSave=new Date().toISOString(); if(!CONFIG.endpoint) return Promise.resolve(null);
+  const body=JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v);
+  if(stage==='complete') return sendWithRetries(stage,body,[0,2000,5000]);
+  sendWithRetries(stage,body,[0,3000]).catch(()=>{}); return Promise.resolve(undefined); }
 function show(html,opts={}){
   return new Promise(res=>{
     screenN++; const shown=Date.now();
@@ -68,7 +71,9 @@ function show(html,opts={}){
     if(opts.noNext) return;
     const btn=document.getElementById('next');
     const minMs=(opts.minSeconds||0)*1000*CONFIG.timeScale;
-    if(minMs>0){ btn.disabled=true; setTimeout(()=>{btn.disabled=false;},minMs); }
+    if(minMs>0){ btn.disabled=true; const note=document.createElement('span'); note.className='small'; note.id='mincount'; note.style.cssText='margin:0 12px;color:#666'; btn.parentNode.insertBefore(note,btn);
+      let left=Math.ceil(minMs/1000); const tick=()=>{ note.textContent=left>0?`Next in ${left} s`:''; }; tick();
+      const iv=setInterval(()=>{ left--; tick(); if(left<=0){ clearInterval(iv); btn.disabled=false; } },Math.min(1000,minMs)); }
     btn.onclick=()=>{ if(btn.disabled) return; const e=opts.validate?opts.validate():null; if(e){document.getElementById('err').textContent=e;return;} D.screens.push({n:screenN,title:opts.title||'',ms:Date.now()-shown}); res(); };
     if(AUTO){ setTimeout(()=>{ autofill(); setTimeout(()=>btn.click(),Math.max(60,minMs+80)); },120); }
   });
@@ -163,7 +168,9 @@ async function main(){
     {title:'demographics',validate:()=>{const g=id=>document.getElementById(id).value.trim(); if(!g('gender')||!g('age')||!g('attn')) return 'Please complete the required fields (gender, age, attention check).'; D.demog={gender:g('gender'),age:g('age'),edu:g('edu'),marital:g('marital'),employment:g('employment'),nationality:g('nat')}; D.attention=g('attn'); if(!D.pid) D.pid=g('pidm'); return null;}});
   await show(`<h2>Almost done</h2><p><b>How realistic did the situations seem to you, on the whole?</b></p><div style="overflow-x:auto"><table class="rt"><tr><th></th>${SEVEN.map(n=>`<th>${n}</th>`).join('')}</tr><tr data-k="realism"><td class="stem">1 = not at all realistic, 7 = very realistic</td>${SEVEN.map(n=>`<td><input type="radio" name="realism" value="${n}"></td>`).join('')}</tr></table></div><p><b>Any comments on the study?</b></p><textarea id="cmt" rows="3"></textarea>`,
     {title:'realism',setup:cellClicks,validate:()=>{const r=document.querySelector('input[name="realism"]:checked'); if(!r) return 'Please rate how realistic the situations were.'; D.realism=+r.value; D.comments=document.getElementById('cmt').value; return null;}});
-  D.end=new Date().toISOString(); mark('post'); const savedOk=await save('complete');
+  D.end=new Date().toISOString(); mark('post');
+  $app.innerHTML='<div class="screen"><h2>Saving your answers…</h2><p>Please keep this window open. This takes a few seconds.</p></div>';
+  const savedOk=await save('complete');
   const dlLink=`<p><a id="dl" download="scenarios_${D.pid||'test'}.json">Download your data file${savedOk===null?' (local test mode)':''}</a></p>`;
   const dl=savedOk===true?'':(savedOk===false?`<p class="err"><b>We could not confirm that your answers were saved.</b> Please download this file and send it to the researcher through a Prolific message, then continue.</p>`+dlLink:dlLink);
   await show(`<h2>Thank you!</h2><p>The situations you read were fictional. This study looks at how people respond to two kinds of social feedback: how much a group values what they do, and how much it wants them around, and at how people interpret situations in which one of these is left unclear.</p><p>If any of the situations brought up difficult feelings, please know that they were invented for this study and say nothing about you. Questions, or a request to remove your data: ${CONFIG.contactEmail}.</p>${dl}${CONFIG.completionUrl?'<p>Press the button to return to Prolific.</p>':''}`,
