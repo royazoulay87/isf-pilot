@@ -374,12 +374,12 @@ function doGet(e) {
     if (wideSheet && wideSheet.getLastRow() >= 2) {
       var wh = headerOf(wideSheet), wk = colOf(wh, 'run_id'), wp = colOf(wh, name === 'cyberball' ? 'meta_pid' : 'pid'), wstart = colOf(wh, name === 'cyberball' ? 'meta_start' : 'start');
       var wvals = wideSheet.getRange(2, 1, wideSheet.getLastRow() - 1, wh.length).getValues();
-      wvals.forEach(function (w) { if (wk >= 0 && w[wk]) readable[String(w[wk])] = 1; if (wp >= 0 && wstart >= 0) readable['legacy:' + w[wp] + ':' + w[wstart]] = 1; });
+      wvals.forEach(function (w) { if (wk >= 0 && w[wk]) readable[String(w[wk])] = 1; if (wp >= 0) readable['legacy:' + w[wp] + ':' + (wstart < 0 ? '' : (w[wstart] || ''))] = 1; });
     }
     var rawIds = colOf(h, 'run_id') >= 0 ? sh.getRange(2, colOf(h, 'run_id') + 1, n - 1, 1).getValues() : null;
     var pids = {}, stages = {}, completePids = {}, notOk = 0, unverified = 0, fast = 0, noWide = 0;
     for (var r = 0; r < vals.length; r++) {
-      var pid = String(vals[r][0]), st = String(vals[r][1]); pids[pid] = 1; stages[st] = (stages[st] || 0) + 1; if (st === 'complete') { completePids[pid] = 1; var rid = rawIds && rawIds[r][0]; if (!rid || !readable[rid]) { var rd = JSON.parse(readRawRow(sh, r + 2)), rm = rd.meta || rd; if (!readable['legacy:' + pid + ':' + rm.start]) noWide++; } }
+      var pid = String(vals[r][0]), st = String(vals[r][1]); pids[pid] = 1; stages[st] = (stages[st] || 0) + 1; if (st === 'complete') { completePids[pid] = 1; var rid = rawIds && rawIds[r][0]; if (!rid || !readable[rid]) { var rd = JSON.parse(readRawRow(sh, r + 2)), rm = rd.meta || rd; if (!readable['legacy:' + pid + ':' + (rm.start || '')]) noWide++; } }
       if (oks) { var ov = oks[r][0]; if (ov === false || String(ov).toUpperCase() === 'FALSE') notOk++; else if (String(ov) === 'fast') fast++; else if (!isTrue(ov)) unverified++; } else unverified++;
     }
     var test = 0, odd = 0; for (var p in pids) { if (isTestPid(p)) test++; else if (!PROLIFIC_PID.test(p)) odd++; }
