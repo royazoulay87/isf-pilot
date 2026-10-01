@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-10-01l';
+const VERSION='cyberstatus_v3_pilot_2026-10-01m';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -81,7 +81,7 @@ async function postOnce(body){ const ctl=new AbortController(); const t=setTimeo
   catch(e){ return 'fail:'+String(e&&e.name||e).slice(0,40); } finally{ clearTimeout(t); } }
 async function sendWithRetries(stage,body,waits){ // → true = the receiver stored and verified the record; false = not confirmed (a last no-cors copy is still sent)
   for(let i=0;i<waits.length;i++){ if(waits[i]) await new Promise(r=>setTimeout(r,waits[i])); const res=await postOnce(body); if(res==='ok'){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-'+stage+':'+(i+1)+':'+res); }
-  try{ fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body,keepalive:body.length<60000}).catch(()=>{}); }catch(e){}
+  try{ const c2=new AbortController(); setTimeout(()=>c2.abort(),SAVE_TIMEOUT_MS); fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body,keepalive:body.length<60000,signal:c2.signal}).catch(()=>{}); }catch(e){}
   return false; }
 function pendingKey(){ return 'isf_pending_'+D.task+'_'+(D.pid||'nopid'); }
 function resendPending(){ // at start: any final record still waiting in this browser is sent again (the receiver ignores a copy it already stored)
@@ -94,7 +94,7 @@ function save(stage){ // returns a promise: resolved at once for checkpoints (th
   D.stage=stage; D.lastSave=new Date().toISOString();
   if(!CONFIG.endpoint) return Promise.resolve(null);
   const body=payload();
-  if(stage==='complete'){ try{ localStorage.setItem(pendingKey(),body); }catch(e){} return sendWithRetries(stage,body,[0,2000,5000]).then(ok=>{ if(ok){ try{ localStorage.removeItem(pendingKey()); }catch(e){} } return ok; }); }
+  if(stage==='complete'){ if(!D._finalBody) D._finalBody=body; const fb=D._finalBody; try{ localStorage.setItem(pendingKey(),fb); }catch(e){} return sendWithRetries(stage,fb,[0,2000,5000]).then(ok=>{ if(ok){ try{ localStorage.removeItem(pendingKey()); }catch(e){} } return ok; }); }
   sendWithRetries(stage,body,[0,3000]).catch(()=>{}); return Promise.resolve(undefined);
 }
 // ---------- generic screen: resolves when Next is clicked and validate() returns null, or when opts.timer (ms) runs out ----------
