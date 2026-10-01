@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-10-01r';
+const VERSION='cyberstatus_v3_pilot_2026-10-01s';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -444,7 +444,7 @@ async function main(){
   const mp=sliders('metaperc',ITEMS.metaperc); await show(mp.html,mp);
   const sat=sliders('satisfaction',ITEMS.satisfaction); await show(sat.html,sat);
   const ex=matrix('expect',ITEMS.expect); await show(ex.html,ex);
-  const dz=sliders('desires',ITEMS.desires); await show(dz.html,dz);
+  // desires-or-plans sliders removed from all cells (Roy 1.10); items kept in items.js
   mark('post1');
   // private "should" items
   { let sel=null; const ts=Date.now(); const render=()=>{ const a=[null,null,null,null,null]; if(sel!==null) a[sel]=D.name; const box=document.getElementById('stairbox'); box.innerHTML=stair(a,{clickable:true,selected:sel}); bindStair(box,i=>{sel=i; render(); document.getElementById('shTxt').innerHTML=`You chose step <b>${i+1}</b> (${ROLES[i]}).`;}); };
