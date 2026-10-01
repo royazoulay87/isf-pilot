@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-10-01m';
+const VERSION='cyberstatus_v3_pilot_2026-10-01n';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -434,6 +434,7 @@ async function main(){
   { const st=stateCheck('state5'); await show(st.html,st); D.rounds[4].state=(D.state5||[]).slice(); mark('state5'); }
   { const e2=emotionsMatrix('panas_post'); await show(e2.html+autoNote(GT.emotions),{timer:GT.emotions*1000,validate:e2.validate,onTimeout:e2.partial}); mark('panas_post'); }
   await wishScreen('final');
+  await avatarScreen('avatar_post','post');   // Roy 1.10: the second avatar choice comes right after the final place-on-the-stairs declaration
   { const pm=oneSlider('participation_mission','How much would you like to take part in the mission with this team?',['Not at all','Very much']); await show(pm.html+autoNote(GT.slider),{setup:pm.setup,timer:GT.slider*1000,validate:pm.validate,onTimeout:()=>{ const el=document.getElementById('participation_missions'); D.participation_mission=el&&el.dataset.touched==='1'?+el.value:null; D.participation_missionTimeout=true; }}); mark('participation_mission'); }
   // post measures
   const ps=matrix('pstatus',ITEMS.pstatus); await show(ps.html,ps);
@@ -441,7 +442,6 @@ async function main(){
   const mp=sliders('metaperc',ITEMS.metaperc); await show(mp.html,mp);
   const sat=sliders('satisfaction',ITEMS.satisfaction); await show(sat.html,sat);
   const ex=matrix('expect',ITEMS.expect); await show(ex.html,ex);
-  await avatarScreen('avatar_post','post');
   const dz=sliders('desires',ITEMS.desires); await show(dz.html,dz);
   mark('post1');
   // private "should" items
