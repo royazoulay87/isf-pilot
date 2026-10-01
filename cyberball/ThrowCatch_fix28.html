@@ -673,7 +673,7 @@ const CONFIG={
   pageTimers:{distress:20000,panas:40000,status:45000,belonging:50000,participation:20000,range_choice:20000,range_adjust:20000,passes:30000,wish_rank:20000,others_wish:20000,lookback:30000,color:20000,rep_sentence:20000,avatar:30000,sentences_show:20000,text:20000,traits_intro:20000}, // time limits between the games (Roy, 30.9): at zero the page moves on; text = the "Questions for the whole group" page
   transitionTimerMs:15000,         // (Roy, 30.9) the "Game 1" / "Game 2" screens continue by themselves after this long
   forceCondition:null,             // 'A' (status increased) | 'B' (affiliation increased) | null = random. ?cond=A|B overrides.
-  version:'fix32_2026-10-01'
+  version:'fix33_2026-10-01'
 };
 const q=new URLSearchParams(location.search);
 if(q.get('fast')){const f=Number(q.get('fast'));CONFIG.timeScale=(f>0&&f<1)?f:0.15}
@@ -919,7 +919,7 @@ function renderPage(p){
   else if(p.type==="welcome"){
     header("Colors and Social Choices","",{kicker:""});
     $("measureBody").innerHTML=`<div class="page-card"><p><strong>Thank you for taking part.</strong> This study combines questionnaires and an online group game about colors and social choices.</p><p>First you will complete four short questionnaires about yourself. Then you will join a group of three other participants for an online game, with short questions between the games.</p><p>About 30–35 minutes. Participation is voluntary; you may stop at any time. All data are anonymous. Questions: ${esc(CONFIG.contactEmail)}</p><p><strong>By pressing Continue you confirm that you have read the above and consent to participate.</strong></p></div>`;
-    p.commit=()=>logRow({phase:"setup",event:"consent"});
+    p.commit=()=>{logStudyStart();logRow({phase:"setup",event:"consent"})};
   }
   else if(p.type==="text"){
     header(p.title,"",{kicker:p.kicker!==undefined?p.kicker:""});
@@ -1185,13 +1185,14 @@ function showTransition(title,text,fn){showScreen("transitionScreen");$("transit
 setCtx("setup","");
 PANAS.order=state.panasOrder=shuffle(PANAS.items.map((_,i)=>i));   // counterbalanced emotion list (Roy, 30.9): random order per participant, the same order after both games; logged values keep the item numbers of the fixed list
 qa(".idle-secs").forEach(e=>e.textContent=String(CONFIG.idleMs/1000));
-logRow({phase:"setup",event:"study_start",condition_label:CONDITIONS[COND].label,version:CONFIG.version,pid:META.pid,study:META.study,session:META.session,viewport_w:window.innerWidth,viewport_h:window.innerHeight,panas_order:state.panasOrder.map(i=>i+1).join("|"),idle_ms:CONFIG.idleMs});
+function logStudyStart(){logRow({phase:"setup",event:"study_start",condition_label:CONDITIONS[COND].label,version:CONFIG.version,pid:META.pid,study:META.study,session:META.session,viewport_w:window.innerWidth,viewport_h:window.innerHeight,panas_order:state.panasOrder.map(i=>i+1).join("|"),idle_ms:CONFIG.idleMs});}
 const PRE=[...CONFIG.traitsPre.filter(k=>ITEMS[k]).map(k=>({type:"trait",key:k,battery:CONFIG.traitsPre,kicker:"Before the games"}))];
 const GAME_INTRO={type:"text",title:"The group game",text:"Thank you. Now the group game. You will choose a color and an avatar and introduce yourself to three other players with three sentences. Then you will play three games of an online ball-tossing game with them. Between the games you will answer short questions.",kicker:"Part 2"};   // fix26: the game is presented after the four questionnaires (Roy, 30.9)
 const POST=[{type:"traits_intro",timed:true},...CONFIG.traitsPost.filter(k=>ITEMS[k]).map(k=>({type:"trait",key:k,battery:CONFIG.traitsPost})),{type:"demographics"},{type:"awareness"},{type:"debrief"}];
-if(q.get("jump")==="traits"){state.name="Test";LABEL.you="Test";runQueue(POST,finishStudy,[80,100])}   // test switches: ?jump=traits = the questionnaires at the end; ?jump=pre = the questionnaires before the games
-else if(q.get("jump")==="pre"){runQueue([...PRE,GAME_INTRO,{type:"name"},{type:"color",when:"setup"}],()=>{buildExample();showScreen("introScreen");setProgress(13)},[0,12])}
-else runQueue([{type:"prolific_id"},{type:"welcome"},...PRE,GAME_INTRO,{type:"name"},{type:"color",when:"setup"}],()=>{buildExample();showScreen("introScreen");setProgress(13)},[0,12]);   // fix26: connection to the other players only after sentences and avatar
+const ENTRY=[{type:"prolific_id"},{type:"welcome"}];
+if(q.get("jump")==="traits"){state.name="Test";LABEL.you="Test";runQueue([...ENTRY,...POST],finishStudy,[80,100])}   // test switches: ?jump=traits = the questionnaires at the end; ?jump=pre = the questionnaires before the games
+else if(q.get("jump")==="pre"){runQueue([...ENTRY,...PRE,GAME_INTRO,{type:"name"},{type:"color",when:"setup"}],()=>{buildExample();showScreen("introScreen");setProgress(13)},[0,12])}
+else runQueue([...ENTRY,...PRE,GAME_INTRO,{type:"name"},{type:"color",when:"setup"}],()=>{buildExample();showScreen("introScreen");setProgress(13)},[0,12]);   // fix26: connection to the other players only after sentences and avatar
 $("toIntro2Btn").addEventListener("click",()=>{logRow({phase:"setup",event:"screen_continue",screen:"intro",screen_ms:screenMs()});showScreen("intro2Screen");setProgress(14)});
 $("toPracticeBtn").addEventListener("click",()=>{logRow({phase:"setup",event:"screen_continue",screen:"intro2",screen_ms:screenMs()});state.phase="practice";showScreen("practiceScreen");setProgress(15);setupPractice()});
 $("toMeetBtn").addEventListener("click",()=>{logRow({phase:"setup",event:"screen_continue",screen:"practice",screen_ms:screenMs(),practice_throws:state.practice.attempts});setCtx("setup","");runQueue([{type:"text",title:"Your presentation to the other players",text:"Next you introduce yourself: three sentences and your avatar. Then you will be connected with the other players and see what they chose."},{type:"sentences3",game:1,kicker:""},{type:"rep_sentence",game:1,kicker:""},{type:"avatar",game:1,kicker:""},{type:"wait",text:"Connecting you with the other players…",ms:5000}],()=>{buildMeet();showScreen("meetScreen");setProgress(20);state.meetShownAt=performance.now();readGate(READ_GATE_MS,$("toRulesBtn"),$("meetGate"))},[16,20])});
