@@ -30,7 +30,7 @@
       const key = PREFIX + encodeURIComponent(identity);
       // A delayed progress snapshot replaces an older snapshot of the same stage.
       // It keeps the original deadline, even when events arrive continuously.
-      const old = pending.get(key), readyAt = Math.min(old ? old.readyAt : Infinity, Date.now() + delay);
+      const old = pending.get(key), readyAt = Math.min(old && !old.inFlight ? old.readyAt : Infinity, Date.now() + delay);
       persist(key, {body, endpoint, readyAt});
       schedule(Math.max(0, readyAt - Date.now()));
       return key;
@@ -55,6 +55,7 @@
         const ready = [...pending].filter(([, e]) => e.readyAt <= Date.now());
         if (!ready.length) { failures = 0; return true; }
         const entries = ready.filter(([, e]) => e.endpoint === ready[0][1].endpoint).slice(0, 8);
+        entries.forEach(([, entry]) => { entry.inFlight = true; });
         if (await post(entries)) {
           failures = 0;
           for (const [key, entry] of entries) {

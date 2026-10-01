@@ -28,7 +28,7 @@ function doPost(e) {
   if (!lock.tryLock(30000)) return ContentService.createTextOutput('error: busy, retry');
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    bodies.forEach(function (body) { storeRecord(ss, body); });
+    storeBatch(ss, bodies);
     return ContentService.createTextOutput('ok verified ' + bodies.length);
   } catch (err) {
     return ContentService.createTextOutput('error: ' + err);
@@ -50,9 +50,7 @@ function runId(task, d, fallback) {
   var m = d.meta || d;
   return md5hex(JSON.stringify([task, m.pid || '', m.study || '', m.session || '', m.start || fallback]));
 }
-function storeRecord(ss, raw) {
-  var d = normalizeRecord(raw), task = d.task, md5 = md5hex(raw), id = runId(task, d, md5);
-  var sh = ss.getSheetByName(task) || ss.insertSheet(task);
+function makeRawRecord(raw, d, md5, id) {
   var chunks = [], offset = 0;
   while (offset < raw.length) { var end = Math.min(offset + CHUNK, raw.length); if (end < raw.length && /[\uD800-\uDBFF]/.test(raw.charAt(end - 1))) end--; chunks.push(raw.slice(offset, end)); offset = end; }
   var nChunks = chunks.length, cond = d.cond;
@@ -61,15 +59,41 @@ function storeRecord(ss, raw) {
     version: d.version || '', ua: String(d.ua || '').slice(0, 200), json_len: raw.length};
   for (var c = 0; c < nChunks; c++) rec['json_' + (c + 1)] = chunks[c];
   rec.n_chunks = nChunks; rec.md5 = md5; rec.ok = ''; rec.wide = ''; rec.run_id = id;
-  var prev = findRecent(sh, md5), r;
-  if (prev && prev.raw === raw && isTrue(prev.ok) && (d.stage !== 'complete' || isTrue(prev.wide))) return;
-  if (prev && prev.raw === raw) r = prev.row;
-  else r = upsertAlignedMany(sh, [rec], 'md5')[0];
-  SpreadsheetApp.flush();
-  if (readRawRow(sh, r) !== raw) { setCell(sh, r, 'ok', false); throw new Error('raw verification failed, retry'); }
-  setCell(sh, r, 'ok', true);
-  if (d.stage === 'complete') { writeWide(ss, task, d, id); setCell(sh, r, 'wide', true); }
-  SpreadsheetApp.flush();
+  return rec;
+}
+function storeRecord(ss, raw) { storeBatch(ss, [raw]); }
+function storeBatch(ss, bodies) {
+  var groups = {}, seen = {};
+  bodies.forEach(function (raw) {
+    var d = normalizeRecord(raw), md5 = md5hex(raw), task = d.task;
+    if (seen[task + ':' + md5]) return;
+    seen[task + ':' + md5] = true;
+    (groups[task] || (groups[task] = [])).push({raw: raw, d: d, md5: md5, id: runId(task, d, md5)});
+  });
+  Object.keys(groups).forEach(function (task) {
+    var sh = ss.getSheetByName(task) || ss.insertSheet(task), h = headerOf(sh), cm = colOf(h, 'md5'), index = {};
+    if (cm >= 0 && sh.getLastRow() >= 2) sh.getRange(2, cm + 1, sh.getLastRow() - 1, 1).getValues().forEach(function (v, i) { index[String(v[0])] = i + 2; });
+    var writes = [], pending = [];
+    groups[task].forEach(function (item) {
+      var r = index[item.md5], prev = r ? sh.getRange(r, 1, 1, h.length).getValues()[0] : null;
+      var same = prev && jsonCols(h).map(function (c) { return String(prev[c.i] || ''); }).join('') === item.raw;
+      if (same && isTrue(prev[colOf(h, 'ok')])) {
+        item.row = r;
+        if (item.d.stage === 'complete' && !isTrue(prev[colOf(h, 'wide')])) pending.push(item);
+        return;
+      }
+      var rec = makeRawRecord(item.raw, item.d, item.md5, item.id);
+      if (prev && prev[colOf(h, 'timestamp')] instanceof Date) rec.timestamp = prev[colOf(h, 'timestamp')];
+      rec.ok = true; // acknowledgement still requires exact read-back in upsertAlignedMany
+      writes.push(rec); pending.push(item);
+    });
+    var rows = upsertAlignedMany(sh, writes, 'md5'), byMd5 = {};
+    writes.forEach(function (rec, i) { byMd5[rec.md5] = rows[i]; });
+    pending.forEach(function (item) {
+      if (item.d.stage === 'complete') { writeWide(ss, task, item.d, item.id); setCell(sh, item.row || byMd5[item.md5], 'wide', true); }
+    });
+    SpreadsheetApp.flush();
+  });
 }
 
 /* ---------- small helpers ---------- */

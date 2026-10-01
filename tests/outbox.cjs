@@ -23,7 +23,7 @@ const guard=setTimeout(()=>{console.error('FAIL test promise did not resolve');p
     const reload=harness(h.localStorage);await reload.api.flush();assert.equal(reload.posts[0].records[0],'FINAL_EXACT');assert.equal(Object.keys(h.localStorage).length,0);console.log('PASS failed final stays durable; exact body retried after restart');
   }
   {
-    let resolve;const h=harness(undefined,()=>new Promise(r=>resolve=r));h.api.enqueue('older','run|progress',0);const p=h.api.flush();await h.tick();h.api.enqueue('newer','run|progress',20000);resolve(true);await h.tick();assert.equal(Object.keys(h.localStorage).length,1);assert.equal(JSON.parse(Object.values(h.localStorage)[0]).body,'newer');assert.equal(h.posts[1].records[0],'newer');resolve(true);await p;console.log('PASS older acknowledgement cannot erase newer progress');
+    let resolve;const h=harness(undefined,()=>new Promise(r=>resolve=r));h.api.enqueue('older','run|progress',0);const p=h.api.flush();await h.tick();h.api.enqueue('newer','run|progress',20000);resolve(true);await p;assert.equal(Object.keys(h.localStorage).length,1);assert.equal(JSON.parse(Object.values(h.localStorage)[0]).body,'newer');assert.equal(h.posts.length,1);await h.tick(20000);assert.equal(h.posts[1].records[0],'newer');resolve(true);await h.api.flush();console.log('PASS older acknowledgement cannot erase newer progress');
   }
   {
     const h=harness();for(let i=0;i<12;i++)h.api.enqueue('stage'+i,'run|'+i,0);assert.equal(await h.api.complete('complete','run|complete'),true);assert.deepEqual(h.posts.map(p=>p.records.length),[8,5]);assert.equal(Object.keys(h.localStorage).length,0);console.log('PASS final awaits checkpoint batches and clears only confirmed entries');
