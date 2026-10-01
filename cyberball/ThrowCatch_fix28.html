@@ -504,6 +504,7 @@ table.ans{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:12px}
 /* fix29: boards are no longer hidden on narrow windows (see the 820px rule above) */
 @media(max-width:620px){.reveal-cards{grid-template-columns:1fr}.pair{grid-template-columns:34px 1fr}.pair .opt:last-child{grid-column:2}}
 </style>
+<link rel="stylesheet" href="../prolific.css?v=20261001p1">
 </head>
 <body>
 <div class="app"><div class="shell">
@@ -642,12 +643,14 @@ table.ans{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:12px}
     <h1 class="hero-title">Thank you</h1>
     <p id="completeText">You have completed the study.</p>
     <p class="complete-data">Your responses and game events have been recorded.</p>
+    <div id="prolificCompletion"></div>
     <div class="actions"><button id="finalDownloadBtn" class="secondary">Download CSV</button><button id="finalJsonBtn" class="secondary">Download JSON</button></div>
   </div>
 </section>
 <div id="condTag" class="cond-tag hidden"></div>
 </div></div>
 
+<script src="../prolific.js?v=20261001p1"></script>
 <script src="../save.js?v=20261001v10c"></script>
 <script src="avatar.js"></script>
 <script src="avatar_cb.js"></script>
@@ -658,7 +661,8 @@ table.ans{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:12px}
 /* ================= configuration ================= */
 const CONFIG={
   endpoint:'https://script.google.com/macros/s/AKfycbzA9xE25wi0LRvcUIWVWDrB_oZoxA_QqXt_KDwNGB_xEyrEVTBspEBf2s_cjrVCJtI6/exec',                     // data receiver (POST JSON at the end). Empty = nothing is sent (local testing); the last screen offers downloads.
-  completionUrl:'',                // Prolific completion URL. Empty = "you may close this window".
+  completionUrl:'',                // Optional Prolific completion URL.
+  completionCode:'',               // Add the Prolific code before opening recruitment.
   contactEmail:'Cyberstatusegs@gmail.com',
   timeScale:1,                     // multiplies every waiting delay (?fast=1 sets 0.15 for testing)
   hideUnchangedBoardInGame2:false, // Roy 29.9: both boards visible in every game (true = Dan's design, hide the unchanged one in Game 2)
@@ -669,7 +673,7 @@ const CONFIG={
   pageTimers:{distress:20000,panas:40000,status:45000,belonging:50000,participation:20000,range_choice:20000,range_adjust:20000,passes:30000,wish_rank:20000,others_wish:20000,lookback:30000,color:20000,rep_sentence:20000,avatar:30000,sentences_show:20000,text:20000,traits_intro:20000}, // time limits between the games (Roy, 30.9): at zero the page moves on; text = the "Questions for the whole group" page
   transitionTimerMs:15000,         // (Roy, 30.9) the "Game 1" / "Game 2" screens continue by themselves after this long
   forceCondition:null,             // 'A' (status increased) | 'B' (affiliation increased) | null = random. ?cond=A|B overrides.
-  version:'fix30_2026-10-01'
+  version:'fix31_2026-10-01'
 };
 const q=new URLSearchParams(location.search);
 if(q.get('fast')){const f=Number(q.get('fast'));CONFIG.timeScale=(f>0&&f<1)?f:0.15}
@@ -907,7 +911,12 @@ function readGate(ms,btn,noteEl){const b=btn||$("measureContinueBtn");const note
 function renderPage(p){
   if(p.kicker!==undefined)state.ctx.kicker=p.kicker;
   const kick=state.ctx.kicker;
-  if(p.type==="welcome"){
+  if(p.type==="prolific_id"){
+    header("Before you begin","",{kicker:""});
+    $("measureBody").innerHTML=ISFProlific.questionHTML(META.pid);
+    p.validate=()=>{const value=$("prolificId").value.trim(),error=ISFProlific.validateID(value);if(error)return error;META.pid=value;return null};
+  }
+  else if(p.type==="welcome"){
     header("Colors and Social Choices","",{kicker:""});
     $("measureBody").innerHTML=`<div class="page-card"><p><strong>Thank you for taking part.</strong> This study combines questionnaires and an online group game about colors and social choices.</p><p>First you will complete four short questionnaires about yourself. Then you will join a group of three other participants for an online game, with short questions between the games.</p><p>About 30–35 minutes. Participation is voluntary; you may stop at any time. All data are anonymous. Questions: ${esc(CONFIG.contactEmail)}</p><p><strong>By pressing Continue you confirm that you have read the above and consent to participate.</strong></p></div>`;
     p.commit=()=>logRow({phase:"setup",event:"consent"});
@@ -1119,7 +1128,7 @@ function renderPage(p){
   else if(p.type==="debrief"){
     header("Thank you!","",{kicker:""});
     $("measureBody").innerHTML=`<div class="page-card"><p><strong>There is no Game 3.</strong> This study looks at how people respond to being included or left out, and to succeeding or failing, in a group game.</p><p><strong>The three other players were not real people.</strong> They were controlled by the computer. How often the ball came to you, whether your passes succeeded, and everything the others "chose" or "answered" were set in advance and assigned at random. Nothing in the game says anything about your skill or about how you come across.</p><p>Thank you for taking part. Questions: ${esc(CONFIG.contactEmail)}.</p></div>
-<div class="page-card" id="dbCheck"><p><strong>To make sure this is clear, please answer:</strong> who were the other three players?</p><label class="db-opt"><input type="radio" name="dbq" value="real"> Real people who played online at the same time as me</label><label class="db-opt"><input type="radio" name="dbq" value="computer"> Computer-controlled players whose passes and answers were set in advance</label><label class="db-opt"><input type="radio" name="dbq" value="unsure"> I am not sure</label><div id="dbAgain" class="db-again hidden"><strong>Please read again:</strong> the other three players were not real. The computer controlled them, and everything they did was set in advance. Nothing in the game reflects your skill or how you come across. Please choose the answer that says so.</div><label class="db-ack"><input type="checkbox" id="dbAck"> I understand that the other players were not real and that the results of the game say nothing about me.</label>${CONFIG.completionUrl?"<p><b>Press Continue to return to Prolific.</b></p>":""}</div>`;
+<div class="page-card" id="dbCheck"><p><strong>To make sure this is clear, please answer:</strong> who were the other three players?</p><label class="db-opt"><input type="radio" name="dbq" value="real"> Real people who played online at the same time as me</label><label class="db-opt"><input type="radio" name="dbq" value="computer"> Computer-controlled players whose passes and answers were set in advance</label><label class="db-opt"><input type="radio" name="dbq" value="unsure"> I am not sure</label><div id="dbAgain" class="db-again hidden"><strong>Please read again:</strong> the other three players were not real. The computer controlled them, and everything they did was set in advance. Nothing in the game reflects your skill or how you come across. Please choose the answer that says so.</div><label class="db-ack"><input type="checkbox" id="dbAck"> I understand that the other players were not real and that the results of the game say nothing about me.</label><p><b>Press Continue to save your responses and see the completion page.</b></p></div>`;
     p._attempts=0;
     p.validate=()=>{const r=document.querySelector('input[name="dbq"]:checked');p._attempts++;if(!r)return "Please answer the question.";if(r.value!=="computer"){$("dbAgain").classList.remove("hidden");logRow({phase:"end",event:"debrief_check",answer:r.value,attempt:p._attempts,correct:false});return "Please read the explanation again and choose the answer that says the players were not real."}if(!$("dbAck").checked)return "Please tick the box to confirm that you understand.";return null};
     p.commit=()=>logRow({phase:"end",event:"debrief_seen",debrief_check_answer:"computer",debrief_check_attempts:p._attempts,acknowledged:true});
@@ -1182,7 +1191,7 @@ const GAME_INTRO={type:"text",title:"The group game",text:"Thank you. Now the gr
 const POST=[{type:"traits_intro",timed:true},...CONFIG.traitsPost.filter(k=>ITEMS[k]).map(k=>({type:"trait",key:k,battery:CONFIG.traitsPost})),{type:"demographics"},{type:"awareness"},{type:"debrief"}];
 if(q.get("jump")==="traits"){state.name="Test";LABEL.you="Test";runQueue(POST,finishStudy,[80,100])}   // test switches: ?jump=traits = the questionnaires at the end; ?jump=pre = the questionnaires before the games
 else if(q.get("jump")==="pre"){runQueue([...PRE,GAME_INTRO,{type:"name"},{type:"color",when:"setup"}],()=>{buildExample();showScreen("introScreen");setProgress(13)},[0,12])}
-else runQueue([{type:"welcome"},...PRE,GAME_INTRO,{type:"name"},{type:"color",when:"setup"}],()=>{buildExample();showScreen("introScreen");setProgress(13)},[0,12]);   // fix26: connection to the other players only after sentences and avatar
+else runQueue([{type:"prolific_id"},{type:"welcome"},...PRE,GAME_INTRO,{type:"name"},{type:"color",when:"setup"}],()=>{buildExample();showScreen("introScreen");setProgress(13)},[0,12]);   // fix26: connection to the other players only after sentences and avatar
 $("toIntro2Btn").addEventListener("click",()=>{logRow({phase:"setup",event:"screen_continue",screen:"intro",screen_ms:screenMs()});showScreen("intro2Screen");setProgress(14)});
 $("toPracticeBtn").addEventListener("click",()=>{logRow({phase:"setup",event:"screen_continue",screen:"intro2",screen_ms:screenMs()});state.phase="practice";showScreen("practiceScreen");setProgress(15);setupPractice()});
 $("toMeetBtn").addEventListener("click",()=>{logRow({phase:"setup",event:"screen_continue",screen:"practice",screen_ms:screenMs(),practice_throws:state.practice.attempts});setCtx("setup","");runQueue([{type:"text",title:"Your presentation to the other players",text:"Next you introduce yourself: three sentences and your avatar. Then you will be connected with the other players and see what they chose."},{type:"sentences3",game:1,kicker:""},{type:"rep_sentence",game:1,kicker:""},{type:"avatar",game:1,kicker:""},{type:"wait",text:"Connecting you with the other players…",ms:5000}],()=>{buildMeet();showScreen("meetScreen");setProgress(20);state.meetShownAt=performance.now();readGate(READ_GATE_MS,$("toRulesBtn"),$("meetGate"))},[16,20])});
@@ -1307,22 +1316,21 @@ async function finishStudy(){
   try{window.parent.postMessage({type:"CyberCatchComplete",condition:COND,rows:state.logs},"*")}catch(_){}
   const txt=$("completeText"),info=document.querySelector("#completeStudyScreen .complete-data");
   let saved="none";
+  ISFProlific.renderCompletion($("prolificCompletion"),CONFIG,false);
   if(CONFIG.endpoint){
     txt.textContent="Saving your responses… please keep this window open.";info.textContent="";
     const body=makeJSON();
     saved=await postWithAck(body);state.saved=saved;
     if(saved==="ok"){txt.textContent="You have completed the study.";info.textContent="Your responses and game events have been recorded."}
-    else{txt.textContent="You have completed the study.";info.innerHTML="<b>We could not confirm that your responses were saved.</b> Please press \"Try saving again\"; if it still fails, download the JSON file below and send it to the researcher through a Prolific message"+(CONFIG.completionUrl?", then return to Prolific with the button.":", then close this window.");
+    else{txt.textContent="You have completed the study.";info.innerHTML="<b>We could not confirm that your responses were saved.</b> Please press \"Try saving again\"; if it still fails, download the JSON file below and send it to the researcher through a Prolific message.";
       const rb=document.createElement("button");rb.className="primary";rb.textContent="Try saving again";
       rb.addEventListener("click",async()=>{rb.disabled=true;txt.textContent="Saving your responses… please keep this window open.";const again=await postWithAck(body);state.saved=again;
-        if(again==="ok"){txt.textContent="You have completed the study.";info.textContent="Your responses and game events have been recorded.";rb.remove();if(CONFIG.completionUrl){txt.textContent="Redirecting you to Prolific…";setTimeout(()=>location.href=CONFIG.completionUrl,1200)}}
+        if(again==="ok"){txt.textContent="You have completed the study.";info.textContent="Your responses and game events have been recorded.";rb.remove();ISFProlific.renderCompletion($("prolificCompletion"),CONFIG,true);}
         else{rb.disabled=false;txt.textContent="You have completed the study."}});
       document.querySelector("#completeStudyScreen .actions").appendChild(rb)}
   }
-  if(CONFIG.completionUrl){
-    if(saved==="ok"||saved==="none"){txt.textContent="Redirecting you to Prolific…";setTimeout(()=>location.href=CONFIG.completionUrl,1200)}
-    else{const b=document.createElement("button");b.className="primary";b.textContent="Return to Prolific";b.addEventListener("click",()=>location.href=CONFIG.completionUrl);document.querySelector("#completeStudyScreen .actions").appendChild(b)}
-  }
+  ISFProlific.renderCompletion($("prolificCompletion"),CONFIG,saved==="ok");
+  if(!CONFIG.endpoint)info.textContent="Local preview: responses have not been sent. You can download them below.";
 }
 window.addEventListener("resize",()=>{if(state.holder&&!$("gameScreen").classList.contains("hidden"))positionBall(state.holder,false)});
 const checkNarrow=()=>{$("narrowNote").classList.toggle("hidden",window.innerWidth>=820)};checkNarrow();window.addEventListener("resize",checkNarrow);

@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v4_pilot_2026-10-01';
+const VERSION='cyberstatus_v5_pilot_2026-10-01';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -77,11 +77,12 @@ function mark(k){D.timings[k]=(D.timings[k]||0)+(Date.now()-t0)/1000;t0=Date.now
 const payload=()=>JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v); // temporary '_' keys are never sent
 // Checkpoints are durable before navigation; only completion waits for acknowledgement.
 const saver=ISFSave(CONFIG.endpoint);
+let finalSaved=null;
 const saveIdentity=stage=>[D.task,D.pid,D.session,D.start,stage].join('|');
 function resendPending(){ saver.flush(); }
 function wireRetry(){ // the thank-you page: "Try saving again" when the final save was not confirmed
   const b=document.getElementById('retrySave'), m=document.getElementById('retryMsg'); if(!b) return;
-  b.onclick=async()=>{ b.disabled=true; m.textContent='Saving…'; const ok=await save('complete'); m.textContent=ok?'Saved. Thank you!':'Still not confirmed. Please download the file and send it to the researcher.'; if(!ok) b.disabled=false; }; }
+  b.onclick=async()=>{ b.disabled=true; m.textContent='Saving…'; const ok=await save('complete'); finalSaved=ok; ISFProlific.renderCompletion(document.getElementById('prolificCompletion'),CONFIG,finalSaved); m.textContent=ok?'Saved. Thank you!':'Still not confirmed. Please download the file and send it to the researcher.'; if(!ok) b.disabled=false; }; }
 function save(stage){
   D.stage=stage; D.lastSave=new Date().toISOString();
   if(!CONFIG.endpoint) return Promise.resolve(null);
@@ -240,7 +241,7 @@ function autofill(){
   const groups={}; document.querySelectorAll('input[type=radio]').forEach(r=>{(groups[r.name]=groups[r.name]||[]).push(r);});
   Object.values(groups).forEach(g=>{ if(!g.some(r=>r.checked)){ const r=rnd(g); r.checked=true; r.dispatchEvent(new Event('change')); } });
   document.querySelectorAll('.opts,.cards,.pair').forEach(c=>{ const els=[...c.querySelectorAll('.opt,.card')]; if(!els.length) return; const max=+c.dataset.max||1; const sel=els.filter(e=>e.classList.contains('sel')); if(!sel.length||hasErr){ els.forEach(e=>e.classList.remove('sel')); shuffle(els).slice(0,max).forEach(e=>e.click()); } });
-  document.querySelectorAll('input[type=text],textarea').forEach(el=>{ if(el.value||el.offsetParent===null) return; el.value=el.id==='age'?'30':el.id==='edu'?'15':el.id==='nm'?'Testy':el.dataset.min?Array.from({length:55},(_,i)=>'word'+i).join(' '):(el.tagName==='TEXTAREA'?'auto comment':'auto '+el.id); el.dispatchEvent(new Event('input')); });
+  document.querySelectorAll('input[type=text],textarea').forEach(el=>{ if(el.value||el.offsetParent===null) return; el.value=el.id==='prolificId'?'TEST_AUTO_CS_'+Date.now():el.id==='age'?'30':el.id==='edu'?'15':el.id==='nm'?'Testy':el.dataset.min?Array.from({length:55},(_,i)=>'word'+i).join(' '):(el.tagName==='TEXTAREA'?'auto comment':'auto '+el.id); el.dispatchEvent(new Event('input')); });
   document.querySelectorAll('select').forEach(s=>{ if(!s.value){ if(s.id==='attn') s.value='Disagree'; else s.selectedIndex=1; } });
   document.querySelectorAll('input[type=range]').forEach(el=>{ if(el.dataset.touched!=='1'){ el.value=Math.floor(Math.random()*101); el.dispatchEvent(new Event('input')); } });
   document.querySelectorAll('[data-autofill="avatar"]').forEach(el=>{ if(el.__autofill) el.__autofill(); });
@@ -380,6 +381,7 @@ async function wishScreen(phase){
 // ---------- main flow ----------
 async function main(){
   resendPending();
+  await show(ISFProlific.questionHTML(D.pid),{title:'prolific_id',validate:()=>{const value=document.getElementById('prolificId').value.trim(); const error=ISFProlific.validateID(value); if(error)return error; D.pid=value; return null;}});
   await show(`<h2>Welcome</h2><p>Thank you for choosing our study! This study examines decision-making in a group.</p><p>First you will fill out a few questionnaires about yourself. Then you will take part in an online team task with other participants. Afterwards you will answer some questions about your experience and a few more questionnaires.</p><p><b>About 40 minutes.</b> The study must be completed in one sitting. Participation is voluntary; if you choose to stop, close the browser window.</p><p>Confidentiality: all your data are anonymous and confidential. Questions: ${CONFIG.contactEmail}</p><p><b>By pressing the button I declare that I have read and understood the consent form and provide my free and informed consent to participate.</b></p>`);
   D.consent=new Date().toISOString(); await save('consent');
   await show(`<h2>Questionnaires</h2><p>Before the team task, please fill out a few questionnaires about yourself. Answer honestly; there are no right or wrong answers.</p>`);
@@ -461,18 +463,21 @@ async function main(){
   // trait questionnaires after the task: NPI-16, LSAS (fear only), Sense of Absence (Roy, 30.9)
   await show(`<h2>Questionnaires</h2><p>Before the mission, please fill out the remaining questionnaires about yourself. Answer honestly; there are no right or wrong answers.</p>`);
   await runTraits(CONFIG.traitsAfter||[],86,98); await save('traits');
-  await show(`<h2>A few details about you</h2>${mc('gender','What is your gender?',['Man','Woman','Other'])}<p><b>What is your age?</b></p><input type="text" id="age" style="width:100px"><p><b>How many years of formal education do you have (beginning with 1st grade)?</b></p><input type="text" id="edu" style="width:100px">${mc('marital','What is your marital status?',['Single, never married','Romantic relationship (more than three months)','Married or domestic partnership','Divorced','Widowed'])}${mc('children','Do you have children?',['No','Yes'])}<p><b>If yes, how many children?</b></p><input type="text" id="nchild" style="width:100px">${mc('attract',"I'm mostly attracted to:",['Men','Women','Both',"I don't want to answer"])}<p><b>Please specify your nationality:</b></p><input type="text" id="nat"><p><b>In politics, where would you place yourself?</b></p><div class="slider" data-i="0"><input type="range" min="0" max="100" value="50" id="pol"><div class="ends"><span>Left</span><span>Right</span></div></div><p class="small">Please click or move the slider.</p>${mc('attn','This is an attention check. Please select "Disagree".',['Totally agree','Agree','Neutral','Disagree','Totally disagree'])}${D.pid?'':'<p><b>Please enter your Prolific ID:</b></p><input type="text" id="pidm">'}`,
+  await show(`<h2>A few details about you</h2>${mc('gender','What is your gender?',['Man','Woman','Other'])}<p><b>What is your age?</b></p><input type="text" id="age" style="width:100px"><p><b>How many years of formal education do you have (beginning with 1st grade)?</b></p><input type="text" id="edu" style="width:100px">${mc('marital','What is your marital status?',['Single, never married','Romantic relationship (more than three months)','Married or domestic partnership','Divorced','Widowed'])}${mc('children','Do you have children?',['No','Yes'])}<p><b>If yes, how many children?</b></p><input type="text" id="nchild" style="width:100px">${mc('attract',"I'm mostly attracted to:",['Men','Women','Both',"I don't want to answer"])}<p><b>Please specify your nationality:</b></p><input type="text" id="nat"><p><b>In politics, where would you place yourself?</b></p><div class="slider" data-i="0"><input type="range" min="0" max="100" value="50" id="pol"><div class="ends"><span>Left</span><span>Right</span></div></div><p class="small">Please click or move the slider.</p>${mc('attn','This is an attention check. Please select "Disagree".',['Totally agree','Agree','Neutral','Disagree','Totally disagree'])}`,
     {setup:()=>{ const el=document.getElementById('pol'); const t=()=>{el.dataset.touched='1';}; ['input','change','pointerdown','keydown'].forEach(ev=>el.addEventListener(ev,t)); },
-     validate:()=>{const g=id=>document.getElementById(id).value.trim(); if(!g('gender')||!g('age')||!g('marital')||!g('attn')) return 'Please complete the required fields (gender, age, marital status, attention check).'; const pol=document.getElementById('pol'); if(pol.dataset.touched!=='1') return 'Please click or move the politics slider.'; D.demog={gender:g('gender'),age:g('age'),edu:g('edu'),marital:g('marital'),children:g('children'),nChildren:g('nchild'),attract:g('attract'),nationality:g('nat'),politics:+pol.value,attention:g('attn')}; if(!D.pid) D.pid=g('pidm'); return null;}});
+     validate:()=>{const g=id=>document.getElementById(id).value.trim(); if(!g('gender')||!g('age')||!g('marital')||!g('attn')) return 'Please complete the required fields (gender, age, marital status, attention check).'; const pol=document.getElementById('pol'); if(pol.dataset.touched!=='1') return 'Please click or move the politics slider.'; D.demog={gender:g('gender'),age:g('age'),edu:g('edu'),marital:g('marital'),children:g('children'),nChildren:g('nchild'),attract:g('attract'),nationality:g('nat'),politics:+pol.value,attention:g('attn')}; return null;}});
   await show(`<h2>About the other members</h2>${D.botOrder.map(b=>mc('aw_'+b,`According to your understanding, ${b} was a`,['Man','Woman','Computer','AI'])).join('')}<p><b>Any comments on the study?</b></p><textarea id="cmt" rows="3"></textarea>`,{validate:()=>{D.awareness={}; for(const b of BOTS){const v=document.getElementById('aw_'+b).value; if(!v) return 'Please answer for every member.'; D.awareness[b]=v;} D.comments=document.getElementById('cmt').value; return null;}});
   D.end=new Date().toISOString(); mark('post3'); prog(100);
   $app.innerHTML='<div class="screen"><h2>Saving your answers…</h2><p>Please keep this window open. This takes a few seconds.</p></div>';
-  const savedOk=await save('complete');
+  const savedOk=await save('complete'); finalSaved=savedOk;
   const dlLink=`<p><a id="dl" download="cyberstatus_${(D.pid||'test').replace(/[^A-Za-z0-9_-]/g,'')}.json">Download your data file${savedOk===null?' (local test mode)':''}</a></p>`;
   const dl=savedOk===true?'':(savedOk===false?`<p class="err"><b>We could not confirm that your answers were saved.</b> Please try again; if it still fails, download this file and send it to the researcher through a Prolific message, then continue.</p><p><button class="next" type="button" id="retrySave">Try saving again</button> <span id="retryMsg" class="small"></span></p>`+dlLink:dlLink);
-  await show(`<h2>Thank you!</h2><p><b>There is no mission.</b></p><p>This study looks at how people respond to where they are ranked, and to being chosen or not chosen, in a group task.</p><p>The four other members were not real: they were controlled by the computer. Your rankings, the connections you received, the positions the others asked for, and everything they "wrote" or "chose" were set in advance and assigned at random. They say nothing about you or about how you come across to others.</p><p>Thank you for taking part. Questions, or a request to remove your data: ${CONFIG.contactEmail}.</p>${dl}${CONFIG.completionUrl?'<p>Press the button to return to Prolific.</p>':''}`,
+  await show(`<h2>Thank you!</h2><p><b>There is no mission.</b></p><p>This study looks at how people respond to where they are ranked, and to being chosen or not chosen, in a group task.</p><p>The four other members were not real: they were controlled by the computer. Your rankings, the connections you received, the positions the others asked for, and everything they "wrote" or "chose" were set in advance and assigned at random. They say nothing about you or about how you come across to others.</p><p>Thank you for taking part. Questions, or a request to remove your data: ${CONFIG.contactEmail}.</p>${dl}<p>Press Next to see the completion page.</p>`,
     {setup:()=>{const a=document.getElementById('dl'); if(a) a.href=URL.createObjectURL(new Blob([JSON.stringify(JSON.parse(payload()),null,1)],{type:'application/json'})); wireRetry();}});
-  if(CONFIG.completionUrl) location.href=CONFIG.completionUrl; else await show('<h2>You may now close this window.</h2>',{noNext:true});
+  await show(`<h2>Study complete</h2><p>${finalSaved===true?'Your responses have been saved. Thank you for taking part.':'Thank you for taking part.'}</p>${finalSaved===true?'':dl}<div id="prolificCompletion"></div>`,{noNext:true,title:'end',setup:()=>{
+    const a=document.getElementById('dl'); if(a) a.href=URL.createObjectURL(new Blob([D._finalBody||JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v)],{type:'application/json'}));
+    wireRetry(); ISFProlific.renderCompletion(document.getElementById('prolificCompletion'),CONFIG,finalSaved);
+  }});
 }
 main().catch(e=>{ $app.innerHTML=`<div class="screen"><p>Something went wrong: ${esc(e.message)}. Please contact ${CONFIG.contactEmail}.</p></div>`; console.error(e); });
 })();

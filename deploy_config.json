@@ -1,5 +1,14 @@
 {
-  "_comment": "Deployment values injected into the published copies at deploy time (deploy.sh). Source folders stay untouched. completionUrl empty = thank-you page instead of a Prolific redirect; fill per study before publishing on Prolific.",
+  "_comment": "Deployment values injected by deploy.sh. Add the completionCode for each study before opening it on Prolific; the return link is generated automatically. completionUrl is optional. Empty settings show a disabled completion placeholder.",
   "endpoint": "https://script.google.com/macros/s/AKfycbzA9xE25wi0LRvcUIWVWDrB_oZoxA_QqXt_KDwNGB_xEyrEVTBspEBf2s_cjrVCJtI6/exec",
-  "completionUrl": { "scenarios": "", "cyberstatus": "", "cyberball": "" }
+  "completionUrl": {
+    "scenarios": "",
+    "cyberstatus": "",
+    "cyberball": ""
+  },
+  "completionCode": {
+    "scenarios": "",
+    "cyberstatus": "",
+    "cyberball": ""
+  }
 }

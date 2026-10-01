@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inject endpoint + completionUrl from deploy_config.json into the published app copies (run by deploy.sh after the sync)."""
+"""Inject endpoint + Prolific completion settings from deploy_config.json into the published app copies (run by deploy.sh after the sync)."""
 import json, re, os, sys, glob
 here=os.path.dirname(os.path.abspath(__file__)); cfg=json.load(open(os.path.join(here,'deploy_config.json')))
 targets={'scenarios':['scenarios/config.js'],'cyberstatus':['cyberstatus/config.js'],'cyberball':glob.glob(os.path.join(here,'cyberball','ThrowCatch_*.html'))}
@@ -10,5 +10,6 @@ for task,files in targets.items():
         s=open(p,encoding='utf-8').read(); s0=s
         s=re.sub(r"(\bendpoint\s*:\s*)'[^']*'", lambda m: m.group(1)+"'"+cfg['endpoint']+"'", s, count=1)
         s=re.sub(r"(\bcompletionUrl\s*:\s*)'[^']*'", lambda m: m.group(1)+"'"+cfg['completionUrl'].get(task,'')+"'", s, count=1)
+        s=re.sub(r"(\bcompletionCode\s*:\s*)'[^']*'", lambda m: m.group(1)+"'"+cfg.get('completionCode',{}).get(task,'')+"'", s, count=1)
         if s!=s0: open(p,'w',encoding='utf-8').write(s)
         print(f"{task}: endpoint {'SET' if cfg['endpoint'] in s else 'NOT FOUND'}, completionUrl='{cfg['completionUrl'].get(task,'')}' in {os.path.relpath(p,here)}")

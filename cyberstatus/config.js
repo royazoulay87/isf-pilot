@@ -3,8 +3,9 @@ const CONFIG = {
   // Where data is sent (POST JSON; receiver contract = backend/google_apps_script_multitask.gs of the pilot hub).
   // Leave empty to skip sending and offer a JSON download at the end (local testing).
   endpoint: 'https://script.google.com/macros/s/AKfycbzA9xE25wi0LRvcUIWVWDrB_oZoxA_QqXt_KDwNGB_xEyrEVTBspEBf2s_cjrVCJtI6/exec',
-  // Prolific completion URL (participants are redirected here after the debrief). Leave empty to show a thank-you page instead.
+  // Prolific completion settings. Empty values leave the return button disabled.
   completionUrl: '',
+  completionCode: '', // Add the Prolific code here (or through deploy_config.json).
   // Multiply every "waiting for the other members" delay, the reading minimums and the answer timers (1 = real timing; 0.1 = fast testing).
   timeScale: 1,
   // Trait questionnaires BEFORE the task (right after consent) and AFTER it (before the demographics). Roy, 30.9.2026.

@@ -3,7 +3,7 @@
    Counterbalancing: half (X: H1 clear / H2 ambiguous; Y: the reverse), order 0–3 (version Latin square), amb 0|1 (which settings get variant A), lvl 0|1 (level pattern). */
 (function(){
 'use strict';
-const VERSION='scenarios_v7_2026-10-01';
+const VERSION='scenarios_v8_2026-10-01';
 const $app=document.getElementById('app'); let screenN=0;
 const q=new URLSearchParams(location.search);
 const DEBUG=q.get('debug')==='1';
@@ -49,11 +49,12 @@ if(DEBUG&&q.get('banner')==='1'){ const lbl=(DESIGN.textVersion||'').startsWith(
 let t0=Date.now(); function mark(k){D.timings[k]=(D.timings[k]||0)+(Date.now()-t0)/1000;t0=Date.now();}
 // Checkpoints are durable before navigation; only completion waits for acknowledgement.
 const saver=ISFSave(CONFIG.endpoint);
+let finalSaved=null;
 const saveIdentity=stage=>[D.task,D.pid,D.session,D.start,stage].join('|');
 function resendPending(){ saver.flush(); }
 function wireRetry(){ // the thank-you page: "Try saving again" when the final save was not confirmed
   const b=document.getElementById('retrySave'), m=document.getElementById('retryMsg'); if(!b) return;
-  b.onclick=async()=>{ b.disabled=true; m.textContent='Saving…'; const ok=await save('complete'); m.textContent=ok?'Saved. Thank you!':'Still not confirmed. Please download the file and send it to the researcher.'; if(!ok) b.disabled=false; }; }
+  b.onclick=async()=>{ b.disabled=true; m.textContent='Saving…'; const ok=await save('complete'); finalSaved=ok; ISFProlific.renderCompletion(document.getElementById('prolificCompletion'),CONFIG,finalSaved); m.textContent=ok?'Saved. Thank you!':'Still not confirmed. Please download the file and send it to the researcher.'; if(!ok) b.disabled=false; }; }
 function save(stage){
   D.stage=stage; D.lastSave=new Date().toISOString();
   if(!CONFIG.endpoint) return Promise.resolve(null);
@@ -86,7 +87,7 @@ function autofill(){ // testing only: answers every input at random (attention c
   const groups={}; document.querySelectorAll('input[type=radio]').forEach(r=>{(groups[r.name]=groups[r.name]||[]).push(r);});
   Object.values(groups).forEach(g=>{const r=g[rnd(g.length)]; r.checked=true; r.dispatchEvent(new Event('change',{bubbles:true})); r.closest('td')&&r.closest('td').click();});
   document.querySelectorAll('.pair, .choice').forEach(p=>{const o=p.querySelectorAll('.opt'); o[rnd(o.length)].click();});
-  document.querySelectorAll('input[type=text]').forEach(i=>{ if(!i.value) i.value=i.id==='age'?'34':i.id==='edu'?'15':'test'; });
+  document.querySelectorAll('input[type=text]').forEach(i=>{ if(!i.value) i.value=i.id==='prolificId'?'TEST_AUTO_SC_'+Date.now():i.id==='age'?'34':i.id==='edu'?'15':'test'; });
   document.querySelectorAll('select').forEach(s=>{ if(s.id==='attn'){s.value='Disagree';} else if(s.selectedIndex<=0){s.selectedIndex=1+rnd(s.options.length-1);} });
   document.querySelectorAll('textarea').forEach(t=>t.value='autopilot');
 }
@@ -160,6 +161,7 @@ async function ambScene(plan,pos,total){
 const mc=(id,label,opts)=>`<p><b>${label}</b></p><select id="${id}"><option value="">–</option>${opts.map(o=>`<option>${esc(o)}</option>`).join('')}</select>`;
 async function main(){
   resendPending();
+  await show(ISFProlific.questionHTML(D.pid),{title:'prolific_id',validate:()=>{const value=document.getElementById('prolificId').value.trim(); const error=ISFProlific.validateID(value); if(error)return error; D.pid=value; return null;}});
   await show(`<h2>Welcome</h2><p>Thank you for choosing our study! This study combines questionnaires and short descriptions of everyday situations. We aim to understand the way people experience various social events in their lives.</p><p>First you will complete four short questionnaires about yourself. Then you will read a series of short descriptions of everyday situations and answer a few questions after each one. At the end there are three more short questionnaires. The study takes approximately 45 minutes and must be completed in one sitting.</p><p>Participation is voluntary; if you choose to stop, close the browser window. Some situations describe unpleasant social events.</p><p>Confidentiality: all your data are anonymous and confidential. Questions: ${CONFIG.contactEmail}</p><p><b>By pressing the button I declare that I have read and understood the consent form and provide my free and informed consent to participate.</b></p>`,{title:'consent'});
   D.consent=new Date().toISOString(); await save('consent');
   await runTraits(CONFIG.traitsBefore||[]); await save('traits');
@@ -169,18 +171,21 @@ async function main(){
   for(let i=0;i<clearPlan.length;i++) await clearScene(clearPlan[i],ambPlan.length+i+1,ambPlan.length+clearPlan.length);
   mark('clear'); await save('clear');
   if((CONFIG.traitsAfter||[]).length){ await show(`<h2>Almost done</h2><p>Three more short questionnaires about yourself, then a few details, and you are finished.</p>`,{title:'traits_after_intro'}); await runTraits(CONFIG.traitsAfter); await save('traits_after'); }
-  await show(`<h2>A few details about you</h2>${mc('gender','What is your gender?',['Man','Woman','Other'])}<p><b>What is your age?</b></p><input type="text" id="age" style="width:100px"><p><b>How many years of formal education do you have (beginning with 1st grade)?</b></p><input type="text" id="edu" style="width:100px">${mc('marital','What is your marital status?',['Single, never married','Romantic relationship (more than three months)','Married or domestic partnership','Divorced','Widowed'])}${mc('employment','What is your current employment status?',['Employed full-time','Employed part-time','Self-employed','Student','Unemployed','Retired','Other'])}<p><b>Please specify your nationality:</b></p><input type="text" id="nat">${mc('attn','This is an attention check. Please select "Disagree".',['Totally agree','Agree','Neutral','Disagree','Totally disagree'])}${D.pid?'':'<p><b>Please enter your Prolific ID:</b></p><input type="text" id="pidm">'}`,
-    {title:'demographics',validate:()=>{const g=id=>document.getElementById(id).value.trim(); if(!g('gender')||!g('age')||!g('attn')) return 'Please complete the required fields (gender, age, attention check).'; D.demog={gender:g('gender'),age:g('age'),edu:g('edu'),marital:g('marital'),employment:g('employment'),nationality:g('nat')}; D.attention=g('attn'); if(!D.pid) D.pid=g('pidm'); return null;}});
+  await show(`<h2>A few details about you</h2>${mc('gender','What is your gender?',['Man','Woman','Other'])}<p><b>What is your age?</b></p><input type="text" id="age" style="width:100px"><p><b>How many years of formal education do you have (beginning with 1st grade)?</b></p><input type="text" id="edu" style="width:100px">${mc('marital','What is your marital status?',['Single, never married','Romantic relationship (more than three months)','Married or domestic partnership','Divorced','Widowed'])}${mc('employment','What is your current employment status?',['Employed full-time','Employed part-time','Self-employed','Student','Unemployed','Retired','Other'])}<p><b>Please specify your nationality:</b></p><input type="text" id="nat">${mc('attn','This is an attention check. Please select "Disagree".',['Totally agree','Agree','Neutral','Disagree','Totally disagree'])}`,
+    {title:'demographics',validate:()=>{const g=id=>document.getElementById(id).value.trim(); if(!g('gender')||!g('age')||!g('attn')) return 'Please complete the required fields (gender, age, attention check).'; D.demog={gender:g('gender'),age:g('age'),edu:g('edu'),marital:g('marital'),employment:g('employment'),nationality:g('nat')}; D.attention=g('attn'); return null;}});
   await show(`<h2>Almost done</h2><p><b>How realistic did the situations seem to you, on the whole?</b></p><div style="overflow-x:auto"><table class="rt"><tr><th></th>${SEVEN.map(n=>`<th>${n}</th>`).join('')}</tr><tr data-k="realism"><td class="stem">1 = not at all realistic, 7 = very realistic</td>${SEVEN.map(n=>`<td><input type="radio" name="realism" value="${n}"></td>`).join('')}</tr></table></div><p><b>Any comments on the study?</b></p><textarea id="cmt" rows="3"></textarea>`,
     {title:'realism',setup:cellClicks,validate:()=>{const r=document.querySelector('input[name="realism"]:checked'); if(!r) return 'Please rate how realistic the situations were.'; D.realism=+r.value; D.comments=document.getElementById('cmt').value; return null;}});
   D.end=new Date().toISOString(); mark('post');
   $app.innerHTML='<div class="screen"><h2>Saving your answers…</h2><p>Please keep this window open. This takes a few seconds.</p></div>';
-  const savedOk=await save('complete');
-  const dlLink=`<p><a id="dl" download="scenarios_${D.pid||'test'}.json">Download your data file${savedOk===null?' (local test mode)':''}</a></p>`;
+  const savedOk=await save('complete'); finalSaved=savedOk;
+  const dlLink=`<p><a id="dl" download="scenarios_${(D.pid||'test').replace(/[^A-Za-z0-9_-]/g,'')}.json">Download your data file${savedOk===null?' (local test mode)':''}</a></p>`;
   const dl=savedOk===true?'':(savedOk===false?`<p class="err"><b>We could not confirm that your answers were saved.</b> Please try again; if it still fails, download this file and send it to the researcher through a Prolific message, then continue.</p><p><button class="next" type="button" id="retrySave">Try saving again</button> <span id="retryMsg" class="small"></span></p>`+dlLink:dlLink);
-  await show(`<h2>Thank you!</h2><p>The situations you read were fictional. This study looks at how people respond to two kinds of social feedback: how much a group values what they do, and how much it wants them around, and at how people interpret situations in which one of these is left unclear.</p><p>If any of the situations brought up difficult feelings, please know that they were invented for this study and say nothing about you. Questions, or a request to remove your data: ${CONFIG.contactEmail}.</p>${dl}${CONFIG.completionUrl?'<p>Press the button to return to Prolific.</p>':''}`,
+  await show(`<h2>Thank you!</h2><p>The situations you read were fictional. This study looks at how people respond to two kinds of social feedback: how much a group values what they do, and how much it wants them around, and at how people interpret situations in which one of these is left unclear.</p><p>If any of the situations brought up difficult feelings, please know that they were invented for this study and say nothing about you. Questions, or a request to remove your data: ${CONFIG.contactEmail}.</p>${dl}<p>Press Next to see the completion page.</p>`,
     {title:'debrief',minSeconds:AUTO?2/CONFIG.timeScale:0,setup:()=>{const a=document.getElementById('dl'); if(a) a.href=URL.createObjectURL(new Blob([JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v,1)],{type:'application/json'})); wireRetry();}});
-  if(CONFIG.completionUrl) location.href=CONFIG.completionUrl; else await show('<h2>You may now close this window.</h2>',{noNext:true,title:'end'});
+  await show(`<h2>Study complete</h2><p>${finalSaved===true?'Your responses have been saved. Thank you for taking part.':'Thank you for taking part.'}</p>${finalSaved===true?'':dl}<div id="prolificCompletion"></div>`,{noNext:true,title:'end',setup:()=>{
+    const a=document.getElementById('dl'); if(a) a.href=URL.createObjectURL(new Blob([D._finalBody||JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v)],{type:'application/json'}));
+    wireRetry(); ISFProlific.renderCompletion(document.getElementById('prolificCompletion'),CONFIG,finalSaved);
+  }});
 }
 main().catch(e=>{ $app.innerHTML=`<div class="screen"><p>Something went wrong: ${esc(e.message)}. Please contact ${CONFIG.contactEmail}.</p></div>`; console.error(e); });
 })();
