@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-09-30i';
+const VERSION='cyberstatus_v3_pilot_2026-10-01j';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -74,10 +74,18 @@ const sec=t=>+((Date.now()-t)/1000).toFixed(1);
 let t0=Date.now();
 function mark(k){D.timings[k]=(D.timings[k]||0)+(Date.now()-t0)/1000;t0=Date.now();}
 const payload=()=>JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v); // temporary '_' keys are never sent
-async function save(stage){
+async function save(stage){ // 1.10: POST with a readable reply (CORS) and retries → true = stored and verified by the receiver, false = not confirmed, null = no endpoint
   D.stage=stage; D.lastSave=new Date().toISOString();
-  if(!CONFIG.endpoint) return;
-  try{ await fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:payload()}); }catch(e){ D.log.push('save-fail:'+stage); }
+  if(!CONFIG.endpoint) return null;
+  const body=payload(); const waits=stage==='complete'?[0,2000,5000,10000]:[0,2000];
+  for(let i=0;i<waits.length;i++){
+    if(waits[i]) await new Promise(r=>setTimeout(r,waits[i]));
+    try{ const r=await fetch(CONFIG.endpoint,{method:'POST',mode:'cors',cache:'no-store',headers:{'Content-Type':'text/plain'},body}); const t=(await r.text()).trim();
+         if(r.ok&&/^ok/.test(t)){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-reply:'+stage+':'+t.slice(0,60)); }
+    catch(e){ D.log.push('save-fail:'+stage+':'+(i+1)); }
+  }
+  try{ await fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body}); }catch(e){}
+  return false;
 }
 // ---------- generic screen: resolves when Next is clicked and validate() returns null, or when opts.timer (ms) runs out ----------
 let screenNo=0, firstInteract=null; const T0=Date.now();
@@ -339,7 +347,7 @@ async function connectionsRound(r){
   const connOpts=shuffle(BOTS); R.connOrder=connOpts.slice(); const c=choiceList('_conn',connOpts,{multi:true,max:2,cards:true,desc,figs:true}); D._conn=null; D._auto=false;
   await show(`<h2>Connections – round ${r}</h2><p>Choose <b>two</b> members you would like to be connected with during the mission. Everyone chooses at the same time; the connections are then shown to the whole team.</p>`+mustChoose.replace('taking part in the ranking','taking part in the connections')+c.html,
     {timer:CHOICE_SEC*1000,setup:c.setup,validate:()=>{const e=c.validate(); if(e) return e; if(D._conn.length!==2) return 'Please choose exactly two members.'; return null;},
-     onTimeout:()=>{ const sel=[...document.querySelectorAll('.card.sel')].map(e=>BOTS[+e.dataset.i]); const rest=shuffle(BOTS.filter(b=>!sel.includes(b))); D._conn=sel.concat(rest).slice(0,2); D._auto=true; }});
+     onTimeout:()=>{ const sel=[...document.querySelectorAll('.card.sel')].map(e=>connOpts[+e.dataset.i]); const rest=shuffle(BOTS.filter(b=>!sel.includes(b))); D._conn=sel.concat(rest).slice(0,2); D._auto=true; }});
   R.connPicks=D._conn.slice(); R.connMs=lastMs(); R.connAuto=D._auto;
   if(R.connAuto) await timed(redCard(R.connPicks.join(' and '),' as your connections').replace('the team cannot rank without your choice, and it counts as not taking part in the ranking','the team cannot form its connections without your choice, and it counts as not taking part'),6000);
   await timed(spinner('Waiting for the other members to make their choices…'),5000);
@@ -449,8 +457,9 @@ async function main(){
     {setup:()=>{ const el=document.getElementById('pol'); const t=()=>{el.dataset.touched='1';}; ['input','change','pointerdown','keydown'].forEach(ev=>el.addEventListener(ev,t)); },
      validate:()=>{const g=id=>document.getElementById(id).value.trim(); if(!g('gender')||!g('age')||!g('marital')||!g('attn')) return 'Please complete the required fields (gender, age, marital status, attention check).'; const pol=document.getElementById('pol'); if(pol.dataset.touched!=='1') return 'Please click or move the politics slider.'; D.demog={gender:g('gender'),age:g('age'),edu:g('edu'),marital:g('marital'),children:g('children'),nChildren:g('nchild'),attract:g('attract'),nationality:g('nat'),politics:+pol.value,attention:g('attn')}; if(!D.pid) D.pid=g('pidm'); return null;}});
   await show(`<h2>About the other members</h2>${D.botOrder.map(b=>mc('aw_'+b,`According to your understanding, ${b} was a`,['Man','Woman','Computer','AI'])).join('')}<p><b>Any comments on the study?</b></p><textarea id="cmt" rows="3"></textarea>`,{validate:()=>{D.awareness={}; for(const b of BOTS){const v=document.getElementById('aw_'+b).value; if(!v) return 'Please answer for every member.'; D.awareness[b]=v;} D.comments=document.getElementById('cmt').value; return null;}});
-  D.end=new Date().toISOString(); mark('post3'); prog(100); await save('complete');
-  const dl=CONFIG.endpoint?'':`<p><a id="dl" download="cyberstatus_${(D.pid||'test').replace(/[^A-Za-z0-9_-]/g,'')}.json">Download your data file (local test mode)</a></p>`;
+  D.end=new Date().toISOString(); mark('post3'); prog(100); const savedOk=await save('complete');
+  const dlLink=`<p><a id="dl" download="cyberstatus_${(D.pid||'test').replace(/[^A-Za-z0-9_-]/g,'')}.json">Download your data file${savedOk===null?' (local test mode)':''}</a></p>`;
+  const dl=savedOk===true?'':(savedOk===false?`<p class="err"><b>We could not confirm that your answers were saved.</b> Please download this file and send it to the researcher through a Prolific message, then continue.</p>`+dlLink:dlLink);
   await show(`<h2>Thank you!</h2><p><b>There is no mission.</b></p><p>This study looks at how people respond to where they are ranked, and to being chosen or not chosen, in a group task.</p><p>The four other members were not real: they were controlled by the computer. Your rankings, the connections you received, the positions the others asked for, and everything they "wrote" or "chose" were set in advance and assigned at random. They say nothing about you or about how you come across to others.</p><p>Thank you for taking part. Questions, or a request to remove your data: ${CONFIG.contactEmail}.</p>${dl}${CONFIG.completionUrl?'<p>Press the button to return to Prolific.</p>':''}`,
     {setup:()=>{const a=document.getElementById('dl'); if(a) a.href=URL.createObjectURL(new Blob([JSON.stringify(JSON.parse(payload()),null,1)],{type:'application/json'}));}});
   if(CONFIG.completionUrl) location.href=CONFIG.completionUrl; else await show('<h2>You may now close this window.</h2>',{noNext:true});
