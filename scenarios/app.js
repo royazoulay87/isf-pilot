@@ -3,7 +3,7 @@
    Counterbalancing: half (X: H1 clear / H2 ambiguous; Y: the reverse), order 0–3 (version Latin square), amb 0|1 (which settings get variant A), lvl 0|1 (level pattern). */
 (function(){
 'use strict';
-const VERSION='scenarios_v4_2026-10-01c';
+const VERSION='scenarios_v6_2026-10-01';
 const $app=document.getElementById('app'); let screenN=0;
 const q=new URLSearchParams(location.search);
 const DEBUG=q.get('debug')==='1';
@@ -54,12 +54,19 @@ async function postOnce(body){ const ctl=new AbortController(); const t=setTimeo
   catch(e){ return 'fail:'+String(e&&e.name||e).slice(0,40); } finally{ clearTimeout(t); } }
 async function sendWithRetries(stage,body,waits){ // → true = the receiver stored and verified the record; false = not confirmed (a last no-cors copy is still sent)
   for(let i=0;i<waits.length;i++){ if(waits[i]) await new Promise(r=>setTimeout(r,waits[i])); const res=await postOnce(body); if(res==='ok'){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-'+stage+':'+(i+1)+':'+res); }
-  try{ fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body,keepalive:body.length<60000}).catch(()=>{}); }catch(e){}
+  try{ const c2=new AbortController(); setTimeout(()=>c2.abort(),SAVE_TIMEOUT_MS); fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body,keepalive:body.length<60000,signal:c2.signal}).catch(()=>{}); }catch(e){}
   return false; }
+function pendingKey(){ return 'isf_pending_'+D.task+'_'+(D.pid||'nopid'); }
+function resendPending(){ // at start: any final record still waiting in this browser is sent again (the receiver ignores a copy it already stored)
+  if(!CONFIG.endpoint) return; let keys=[]; try{ keys=Object.keys(localStorage).filter(k=>k.startsWith('isf_pending_')); }catch(e){ return; }
+  keys.forEach(async k=>{ try{ const body=localStorage.getItem(k); if(!body) return; const res=await postOnce(body); if(res==='ok') localStorage.removeItem(k); }catch(e){} }); }
+function wireRetry(){ // the thank-you page: "Try saving again" when the final save was not confirmed
+  const b=document.getElementById('retrySave'), m=document.getElementById('retryMsg'); if(!b) return;
+  b.onclick=async()=>{ b.disabled=true; m.textContent='Saving…'; const ok=await save('complete'); m.textContent=ok?'Saved. Thank you!':'Still not confirmed. Please download the file and send it to the researcher.'; if(!ok) b.disabled=false; }; }
 function save(stage){ // returns a promise: resolved at once for checkpoints (the send continues in the background), the real result for 'complete'; null = no endpoint
   D.stage=stage; D.lastSave=new Date().toISOString(); if(!CONFIG.endpoint) return Promise.resolve(null);
   const body=JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v);
-  if(stage==='complete') return sendWithRetries(stage,body,[0,2000,5000]);
+  if(stage==='complete'){ if(!D._finalBody) D._finalBody=body; const fb=D._finalBody; try{ localStorage.setItem(pendingKey(),fb); }catch(e){} return sendWithRetries(stage,fb,[0,2000,5000]).then(ok=>{ if(ok){ try{ localStorage.removeItem(pendingKey()); }catch(e){} } return ok; }); }
   sendWithRetries(stage,body,[0,3000]).catch(()=>{}); return Promise.resolve(undefined); }
 function show(html,opts={}){
   return new Promise(res=>{
@@ -75,7 +82,7 @@ function show(html,opts={}){
       let left=Math.ceil(minMs/1000); const tick=()=>{ note.textContent=left>0?`Next in ${left} s`:''; }; tick();
       const iv=setInterval(()=>{ left--; tick(); if(left<=0){ clearInterval(iv); btn.disabled=false; } },Math.min(1000,minMs)); }
     btn.onclick=()=>{ if(btn.disabled) return; const e=opts.validate?opts.validate():null; if(e){document.getElementById('err').textContent=e;return;} D.screens.push({n:screenN,title:opts.title||'',ms:Date.now()-shown}); res(); };
-    if(AUTO){ setTimeout(()=>{ autofill(); setTimeout(()=>btn.click(),Math.max(60,minMs+80)); },120); }
+    if(AUTO){ setTimeout(()=>{ autofill(); const ivA=setInterval(()=>{ if(!btn.disabled){ clearInterval(ivA); btn.click(); } },100); },120); } // testing only: click as soon as the countdown releases the button
   });
 }
 function autofill(){ // testing only: answers every input at random (attention check answered correctly)
@@ -133,7 +140,7 @@ async function clearScene(plan,pos,total){
   const s=BY[plan.id]; const text=sceneText(s,plan.version); const P='c'+pos;
   const lik=s.block.likelihood.map(([k,t])=>({k,text:t})); const stay=s.block.react.slice(0,3).map(([k,t])=>({k,text:t})); const re=s.block.react.slice(3).map(([k,t])=>({k,text:t}));
   const html=`<div class="progress">Situation ${pos} of ${total}</div><div class="scene">${esc(text)}</div><p class="small">Imagine yourself in this situation and answer the questions below.</p>
-    <div class="qtitle">How likely is it that…</div>${ratingTable(P,lik,'Not at all likely','Very likely')}
+    <div class="qtitle">How much would you feel…</div>${ratingTable(P,lik,'Not at all','Very much')}
     <div class="qtitle">Choose one of these three options:</div>${choiceBoxes(P,stay)}
     <div class="qtitle">How likely is it that you would react this way?</div>${ratingTable(P,re,'Not at all likely','Very likely')}`;
   const shown=Date.now(); let rec=null;
@@ -146,7 +153,7 @@ async function ambScene(plan,pos,total){
   const short=s.block.likelihood.map(([k,t])=>({k,text:t})); const stay=s.block.react.slice(0,3).map(([k,t])=>({k,text:t}));
   const html=`<div class="progress">Situation ${pos} of ${total}</div><div class="scene">${esc(text)}</div><p class="small">Imagine yourself in this situation and answer the questions below.</p>
     <div class="qtitle">How likely is it that…</div>${ratingTable(P,cogItems,'Not at all likely','Very likely')}
-    <div class="qtitle">And in this situation, how likely is it that…</div>${ratingTable(P,short,'Not at all likely','Very likely')}
+    <div class="qtitle">And in this situation, how much would you feel…</div>${ratingTable(P,short,'Not at all','Very much')}
     <div class="qtitle">Choose one of these three options:</div>${choiceBoxes(P,stay)}`;
   const shown=Date.now(); let rec=null;
   await show(html,{title:'amb:'+plan.id,setup:()=>{cellClicks();choiceSetup();},minSeconds:CONFIG.minReadSeconds,validate:()=>{const c=collect(P,['cog1','cog2','cog3']); const b=collect(P,short.map(x=>x.k)); const st=choiceValue(P); if(!c||!b||st===undefined) return 'Please answer every question.'; rec={pos,id:plan.id,settingType:plan.settingType,variant:plan.variant,level:plan.level,text,cog:[c.cog1,c.cog2,c.cog3],block:b,stay:st,ms:Date.now()-shown}; return null;}});
@@ -155,6 +162,7 @@ async function ambScene(plan,pos,total){
 // ---------- main flow ----------
 const mc=(id,label,opts)=>`<p><b>${label}</b></p><select id="${id}"><option value="">–</option>${opts.map(o=>`<option>${esc(o)}</option>`).join('')}</select>`;
 async function main(){
+  resendPending();
   await show(`<h2>Welcome</h2><p>Thank you for choosing our study! This study combines questionnaires and short descriptions of everyday situations. We aim to understand the way people experience various social events in their lives.</p><p>First you will complete four short questionnaires about yourself. Then you will read a series of short descriptions of everyday situations and answer a few questions after each one. At the end there are three more short questionnaires. The study takes approximately 45 minutes and must be completed in one sitting.</p><p>Participation is voluntary; if you choose to stop, close the browser window. Some situations describe unpleasant social events.</p><p>Confidentiality: all your data are anonymous and confidential. Questions: ${CONFIG.contactEmail}</p><p><b>By pressing the button I declare that I have read and understood the consent form and provide my free and informed consent to participate.</b></p>`,{title:'consent'});
   D.consent=new Date().toISOString(); await save('consent');
   await runTraits(CONFIG.traitsBefore||[]); await save('traits');
@@ -172,9 +180,9 @@ async function main(){
   $app.innerHTML='<div class="screen"><h2>Saving your answers…</h2><p>Please keep this window open. This takes a few seconds.</p></div>';
   const savedOk=await save('complete');
   const dlLink=`<p><a id="dl" download="scenarios_${D.pid||'test'}.json">Download your data file${savedOk===null?' (local test mode)':''}</a></p>`;
-  const dl=savedOk===true?'':(savedOk===false?`<p class="err"><b>We could not confirm that your answers were saved.</b> Please download this file and send it to the researcher through a Prolific message, then continue.</p>`+dlLink:dlLink);
+  const dl=savedOk===true?'':(savedOk===false?`<p class="err"><b>We could not confirm that your answers were saved.</b> Please try again; if it still fails, download this file and send it to the researcher through a Prolific message, then continue.</p><p><button class="next" type="button" id="retrySave">Try saving again</button> <span id="retryMsg" class="small"></span></p>`+dlLink:dlLink);
   await show(`<h2>Thank you!</h2><p>The situations you read were fictional. This study looks at how people respond to two kinds of social feedback: how much a group values what they do, and how much it wants them around, and at how people interpret situations in which one of these is left unclear.</p><p>If any of the situations brought up difficult feelings, please know that they were invented for this study and say nothing about you. Questions, or a request to remove your data: ${CONFIG.contactEmail}.</p>${dl}${CONFIG.completionUrl?'<p>Press the button to return to Prolific.</p>':''}`,
-    {title:'debrief',minSeconds:AUTO?2/CONFIG.timeScale:0,setup:()=>{const a=document.getElementById('dl'); if(a) a.href=URL.createObjectURL(new Blob([JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v,1)],{type:'application/json'}));}});
+    {title:'debrief',minSeconds:AUTO?2/CONFIG.timeScale:0,setup:()=>{const a=document.getElementById('dl'); if(a) a.href=URL.createObjectURL(new Blob([JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v,1)],{type:'application/json'})); wireRetry();}});
   if(CONFIG.completionUrl) location.href=CONFIG.completionUrl; else await show('<h2>You may now close this window.</h2>',{noNext:true,title:'end'});
 }
 main().catch(e=>{ $app.innerHTML=`<div class="screen"><p>Something went wrong: ${esc(e.message)}. Please contact ${CONFIG.contactEmail}.</p></div>`; console.error(e); });

@@ -1,7 +1,7 @@
 {
   "task": "scenarios",
   "title": "Run C — matched social scenarios (ISF 2026 pilot)",
-  "version": "scenarios_v4_2026-09-30",
+  "version": "scenarios_v6_2026-10-01",
   "built": "2026-09-30",
   "entry": "index.html",
   "files": [
@@ -105,13 +105,13 @@
     },
     "block": {
       "clear": [
-        "stressed, valued, wanted (1-7)",
+        "stressed, appreciated, liked (How much would you feel…, 1-7, Not at all / Very much)",
         "stay: one of three boxes (stay & persist / wait and see / leave)",
-        "submission, status enhancement, belittling, approach (How likely is it that you would react this way? 1-7)"
+        "submission, status enhancement, belittling, approach-invite (reach out and invite), approach-help (do something nice / help) (How likely is it that you would react this way? 1-7)"
       ],
       "ambiguous": [
         "3 statements (1-7)",
-        "stressed, valued, wanted",
+        "stressed, appreciated, liked (How much would you feel…, 1-7)",
         "stay: one of three boxes"
       ]
     }
@@ -159,8 +159,8 @@
     "npi16 (16 keyed) + npi16_raw",
     "soas (14)",
     "lsas_fear (24)",
-    "amb[16 or 8]: cog[3], block{stress,valued,wanted}, stay (choice), ms",
-    "clear[16 or 8]: block{stress,valued,wanted}, stay (choice), react{submit,status_up,belittle,approach}, ms",
+    "amb[16 or 8]: cog[3], block{stress,appreciated,liked}, stay (choice), ms",
+    "clear[16 or 8]: block{stress,appreciated,liked}, stay (choice), react{submit,status_up,belittle,approach_invite,approach_help}, ms",
     "demog",
     "attention",
     "realism",

@@ -1,5 +1,5 @@
 // Run C — matched social scenarios (ISF 2026 pilot). Questionnaire items copied from CyberStatus_v2/web/items.js (SPIN, FPES, PHQ-9)
-// and CyberStatus_v2/pilot_2026-09-27/items.js (NPI-16, BDI-II, B-PNI, LSAS, SoAS); scenario texts generated from settings_v15_2026-09-30.json (settings v15, 2026-09-30).
+// and CyberStatus_v2/pilot_2026-09-27/items.js (NPI-16, BDI-II, B-PNI, LSAS, SoAS); scenario texts generated from settings_v17_2026-10-01.json (settings v17, 2026-10-01).
 const ITEMS = {
   spin: { title: 'Please indicate how much the following problems have bothered you during the past week.',
     scale: ['Not at all','A little bit','Somewhat','Very much','Extremely'], values: [0,1,2,3,4],
@@ -100,7 +100,7 @@ const DESIGN = {
   ]
  },
  "blockOrder": "traits -> ambiguous block (8) -> clear block (8) -> demographics/attention/debrief",
- "textVersion": "v15"
+ "textVersion": "v17"
 };
 const SCENARIOS = [
  {
@@ -153,15 +153,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this team?"
+     "appreciated",
+     "…appreciated by the team?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this team?"
+     "liked",
+     "…liked by the team?"
     ]
    ],
    "react": [
@@ -190,8 +190,12 @@ const SCENARIOS = [
      "I would make sure the team sees where the others fall short, so they learn a lesson."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to the other members, for example by joining them for lunch."
+     "approach_invite",
+     "I would reach out to the other members of the team and invite them to join me for lunch."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for the other members, for example by offering to help one of them with a task that is piling up."
     ]
    ]
   }
@@ -246,15 +250,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that the lecturer values your work?"
+     "appreciated",
+     "…appreciated by the lecturer?"
     ],
     [
-     "wanted",
-     "How likely is it that the lecturer wants you in the seminar?"
+     "liked",
+     "…liked by the lecturer?"
     ]
    ],
    "react": [
@@ -283,8 +287,12 @@ const SCENARIOS = [
      "I would point out flaws in the lecturer's arguments in front of the group, so that he understands who he is dealing with."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to the lecturer, for example by starting an informal conversation with him after the seminar."
+     "approach_invite",
+     "I would approach the lecturer after the seminar and ask whether we could meet to talk about my work."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for the lecturer, for example by offering to help prepare materials for the next session."
     ]
    ]
   }
@@ -339,15 +347,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this volunteer group?"
+     "appreciated",
+     "…appreciated by the other volunteers?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this volunteer group?"
+     "liked",
+     "…liked by the other volunteers?"
     ]
    ],
    "react": [
@@ -376,8 +384,12 @@ const SCENARIOS = [
      "I would let the coordinator know where the other volunteers fall short, so that they understand that they are the problem, not me."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to the other volunteers, for example by asking whether anyone needs a hand."
+     "approach_invite",
+     "I would reach out to the other volunteers and invite them for a coffee after a shift."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for the other volunteers, for example by asking whether anyone needs a hand with their tasks."
     ]
    ]
   }
@@ -432,15 +444,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this residents' group?"
+     "appreciated",
+     "…appreciated by the residents' group?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this residents' group?"
+     "liked",
+     "…liked by the residents' group?"
     ]
    ],
    "react": [
@@ -469,8 +481,12 @@ const SCENARIOS = [
      "I would show the group how little the others have actually done, so they understand who they are dealing with."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to the other residents, for example by striking up a friendly chat with a few of them."
+     "approach_invite",
+     "I would reach out to the other residents and invite a few of them over for coffee."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for the other residents, for example by offering to help someone with their part of the preparations."
     ]
    ]
   }
@@ -525,15 +541,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this team?"
+     "appreciated",
+     "…appreciated by the team?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this team?"
+     "liked",
+     "…liked by the team?"
     ]
    ],
    "react": [
@@ -562,8 +578,12 @@ const SCENARIOS = [
      "I would make sure everyone notices the other players' mistakes, because what they did to me was not fair."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to the other players, for example by helping one of them train on something he is working on."
+     "approach_invite",
+     "I would reach out to the other players and invite them to go out together after the next game."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for the other players, for example by helping one of them train on something he is working on."
     ]
    ]
   }
@@ -618,15 +638,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this class?"
+     "appreciated",
+     "…appreciated by the class?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this class?"
+     "liked",
+     "…liked by the class?"
     ]
    ],
    "react": [
@@ -655,8 +675,12 @@ const SCENARIOS = [
      "I would point out what is wrong with those classmates' dishes, so that they understand exactly where they stand."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to the other participants, for example by suggesting that we sit down and talk during the break."
+     "approach_invite",
+     "I would reach out to the other participants and invite them for a drink after the class."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for the other participants, for example by helping someone who is struggling with their dish."
     ]
    ]
   }
@@ -711,15 +735,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this choir?"
+     "appreciated",
+     "…appreciated by the choir?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this choir?"
+     "liked",
+     "…liked by the choir?"
     ]
    ],
    "react": [
@@ -748,8 +772,12 @@ const SCENARIOS = [
      "The next time someone sings off key, I would make sure everyone notices it."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to the other singers, for example by seeing whether anyone needs help with one of their parts."
+     "approach_invite",
+     "I would reach out to the other singers and invite them for a drink after rehearsal."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for the other singers, for example by seeing whether anyone needs help with one of their parts."
     ]
    ]
   }
@@ -804,15 +832,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this running group?"
+     "appreciated",
+     "…appreciated by the running group?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this running group?"
+     "liked",
+     "…liked by the running group?"
     ]
    ],
    "react": [
@@ -841,8 +869,12 @@ const SCENARIOS = [
      "I would make sure the group notices how slow some of the others are, so they understand who they are dealing with."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to the other runners, for example by suggesting coffee after a run."
+     "approach_invite",
+     "I would reach out to the other runners and invite them for coffee after a run."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for the other runners, for example by offering to help organise the group's next long run."
     ]
    ]
   }
@@ -897,15 +929,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this workplace?"
+     "appreciated",
+     "…appreciated by your colleagues?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this workplace?"
+     "liked",
+     "…liked by your colleagues?"
     ]
    ],
    "react": [
@@ -934,8 +966,12 @@ const SCENARIOS = [
      "I would make sure everyone hears where my colleagues fall short, so that they do not think they can treat me like that."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to my colleagues, for example by joining them at lunch."
+     "approach_invite",
+     "I would reach out to my colleagues and invite them to join me for lunch."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for my colleagues, for example by offering to help with the preparations for the party."
     ]
    ]
   }
@@ -990,15 +1026,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this workplace?"
+     "appreciated",
+     "…appreciated by your colleagues?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this workplace?"
+     "liked",
+     "…liked by your colleagues?"
     ]
    ],
    "react": [
@@ -1027,8 +1063,12 @@ const SCENARIOS = [
      "I would make sure everyone sees where my colleagues fall short, so they understand who they are dealing with."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to my colleagues, for example by suggesting we go out together after work."
+     "approach_invite",
+     "I would reach out to my colleagues and suggest that we go out together after work."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for my colleagues, for example by offering to help someone who is behind with their work."
     ]
    ]
   }
@@ -1083,15 +1123,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that this friend values your judgement?"
+     "appreciated",
+     "…appreciated by this friend?"
     ],
     [
-     "wanted",
-     "How likely is it that this friend wants to include you socially?"
+     "liked",
+     "…liked by this friend?"
     ]
    ],
    "react": [
@@ -1120,8 +1160,12 @@ const SCENARIOS = [
      "I would bring up poor decisions she has made in the past in front of the others, so that she understands who she is dealing with."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to her, for example by suggesting that we meet up soon."
+     "approach_invite",
+     "I would reach out to her and suggest that we meet up soon, just the two of us."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for her, for example by offering my help with something she needs."
     ]
    ]
   }
@@ -1176,15 +1220,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this project group?"
+     "appreciated",
+     "…appreciated by your project group?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this project group?"
+     "liked",
+     "…liked by your project group?"
     ]
    ],
    "react": [
@@ -1213,8 +1257,12 @@ const SCENARIOS = [
      "I would tell the lecturer where the others fell short in this assignment, so they learn a lesson."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to the others in my group, for example by suggesting that we meet socially again."
+     "approach_invite",
+     "I would reach out to the others in my group and suggest that we meet socially again."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for the others in my group, for example by offering to help one of them with the next assignment."
     ]
    ]
   }
@@ -1269,15 +1317,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued by these colleagues?"
+     "appreciated",
+     "…appreciated by these colleagues?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted by these colleagues?"
+     "liked",
+     "…liked by these colleagues?"
     ]
    ],
    "react": [
@@ -1306,8 +1354,12 @@ const SCENARIOS = [
      "I would let people know, before I go, where some of these colleagues fall short, so that they understand where they went wrong."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to these colleagues, for example by starting a personal conversation with each of them during the evening."
+     "approach_invite",
+     "I would reach out to these colleagues and suggest that we meet up after I have moved."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for these colleagues, for example by offering to help whoever takes over my work with the handover."
     ]
    ]
   }
@@ -1362,15 +1414,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued by these acquaintances?"
+     "appreciated",
+     "…appreciated by these acquaintances?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted by these acquaintances?"
+     "liked",
+     "…liked by these acquaintances?"
     ]
    ],
    "react": [
@@ -1399,8 +1451,12 @@ const SCENARIOS = [
      "I would remind these acquaintances how helpless some of them would be, so they understand that the problem is with them."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to these acquaintances, for example by suggesting that we meet again."
+     "approach_invite",
+     "I would reach out to these acquaintances and suggest that we meet again soon."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for these acquaintances, for example by offering to help one of them with something they mentioned during the evening."
     ]
    ]
   }
@@ -1455,15 +1511,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued by these friends?"
+     "appreciated",
+     "…appreciated by these friends?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted by these friends?"
+     "liked",
+     "…liked by these friends?"
     ]
    ],
    "react": [
@@ -1492,8 +1548,12 @@ const SCENARIOS = [
      "I would remind these friends of their own failures, so they learn a lesson."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to these friends, for example by taking a real interest in how one of them is doing."
+     "approach_invite",
+     "I would reach out to these friends and invite them over for dinner soon."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for these friends, for example by offering to help one of them with something they are dealing with."
     ]
    ]
   }
@@ -1548,15 +1608,15 @@ const SCENARIOS = [
    "likelihood": [
     [
      "stress",
-     "How likely is it that you would feel stressed in this situation?"
+     "…stressed?"
     ],
     [
-     "valued",
-     "How likely is it that you are valued in this office?"
+     "appreciated",
+     "…appreciated by your colleagues?"
     ],
     [
-     "wanted",
-     "How likely is it that you are wanted in this office?"
+     "liked",
+     "…liked by your colleagues?"
     ]
    ],
    "react": [
@@ -1585,8 +1645,12 @@ const SCENARIOS = [
      "I would make sure the manager hears where my colleagues fall short, so they understand who they are dealing with."
     ],
     [
-     "approach",
-     "I would make an effort to get closer to my colleagues, for example by spending time with them on the main floor."
+     "approach_invite",
+     "I would reach out to my colleagues and invite them for lunch on the main floor."
+    ],
+    [
+     "approach_help",
+     "I would do something nice for my colleagues, for example by offering to help someone with the move into the new building."
     ]
    ]
   }
