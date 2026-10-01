@@ -648,6 +648,7 @@ table.ans{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:12px}
 <div id="condTag" class="cond-tag hidden"></div>
 </div></div>
 
+<script src="../save.js?v=20261001v10"></script>
 <script src="avatar.js"></script>
 <script src="avatar_cb.js"></script>
 <script>
@@ -668,7 +669,7 @@ const CONFIG={
   pageTimers:{distress:20000,panas:40000,status:45000,belonging:50000,participation:20000,range_choice:20000,range_adjust:20000,passes:30000,wish_rank:20000,others_wish:20000,lookback:30000,color:20000,rep_sentence:20000,avatar:30000,sentences_show:20000,text:20000,traits_intro:20000}, // time limits between the games (Roy, 30.9): at zero the page moves on; text = the "Questions for the whole group" page
   transitionTimerMs:15000,         // (Roy, 30.9) the "Game 1" / "Game 2" screens continue by themselves after this long
   forceCondition:null,             // 'A' (status increased) | 'B' (affiliation increased) | null = random. ?cond=A|B overrides.
-  version:'fix29d_2026-10-01'
+  version:'fix30_2026-10-01'
 };
 const q=new URLSearchParams(location.search);
 if(q.get('fast')){const f=Number(q.get('fast'));CONFIG.timeScale=(f>0&&f<1)?f:0.15}
@@ -831,8 +832,13 @@ const state={
   pageShownAt:null,pageLog:[],turnShownAt:null,holdStartedAt:null,gameStartedAt:null,progress:0,queueTotal:0,queueProg:null,
   repSentence:{},idleTimer:null,autoCount:0,pageTimer:null,traits:{},demog:null,avatar:{}
 };
-(function resendPending(){if(!CONFIG.endpoint)return;let keys=[];try{keys=Object.keys(localStorage).filter(k=>k.startsWith("isf_pending_"))}catch(_){return}
-  keys.forEach(async k=>{try{const b=localStorage.getItem(k);if(!b)return;const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),12000);const r=await fetch(CONFIG.endpoint,{method:"POST",mode:"cors",cache:"no-store",headers:{"Content-Type":"text/plain"},body:b,signal:ctl.signal});clearTimeout(tm);const t=(await r.text()).trim();if(r.ok&&/^ok/.test(t))localStorage.removeItem(k)}catch(_){}})})();
+const saver=ISFSave(CONFIG.endpoint);
+const saveIdentity=stage=>['cyberball',META.pid,META.session,META.start,stage].join('|');
+let consented=false;
+function saveProgress(urgent=false){
+  if(!consented||state.phase==='complete'||!CONFIG.endpoint)return;
+  saver.enqueue(makeJSON('progress'),saveIdentity('progress'),urgent?0:20000);
+}
 if(DEBUG){window.S=state;window.META=META;window.CONDITIONS=CONDITIONS;$("condTag").classList.remove("hidden");$("condTag").textContent="cond "+COND+" · "+CONFIG.version}
 
 function $(id){return document.getElementById(id)}
@@ -863,12 +869,12 @@ async function animatePracticeThrow(){setPracticeSprite("throw1");await wait(84)
 function animateCatch(player){setSprite(player,"catch");setTimeout(()=>setSprite(player,state.holder===player?"active":"idle"),300)}
 
 /* ================= logging ================= */
-function logRow(obj){const onPage=state.current&&!$("measureScreen").classList.contains("hidden")&&state.pageShownAt!==null;const row={timestamp:nowISO(),ms_since_start:Math.round(performance.now()-T0),condition:COND,condition_label:CONDITIONS[COND].label,pid:META.pid,participant_name:state.name,participant_color:state.playerColor.name,...obj};if(onPage&&row.page_ms===undefined)row.page_ms=Math.round(performance.now()-state.pageShownAt);state.logs.push(row);$("downloadBtn").disabled=false;$("jsonBtn").disabled=false}
+function logRow(obj){const onPage=state.current&&!$("measureScreen").classList.contains("hidden")&&state.pageShownAt!==null;const row={timestamp:nowISO(),ms_since_start:Math.round(performance.now()-T0),condition:COND,condition_label:CONDITIONS[COND].label,pid:META.pid,participant_name:state.name,participant_color:state.playerColor.name,...obj};if(onPage&&row.page_ms===undefined)row.page_ms=Math.round(performance.now()-state.pageShownAt);state.logs.push(row);$("downloadBtn").disabled=false;$("jsonBtn").disabled=false;if(obj.event==="consent")consented=true;saveProgress(obj.event==="consent"||obj.event==="game_end")}
 const T0=performance.now();
 document.addEventListener("visibilitychange",()=>logRow({phase:"system",event:"visibility",state:document.visibilityState,screen:qa("section").filter(s=>!s.classList.contains("hidden")).map(s=>s.id).join("|"),page_type:state.current?state.current.type:""}));
 function makeCSV(){const cols=[...new Set(state.logs.flatMap(r=>Object.keys(r)))],e=v=>`"${String(v??"").replace(/"/g,'""')}"`;return [cols.join(","),...state.logs.map(r=>cols.map(c=>e(r[c])).join(","))].join("\n")}
 const TRAIT_TITLE={spin:"Social Anxiety Questionnaire",bdi:"Mood Questionnaire",bpni:"Relationships Questionnaire",fpes:"Fear of Positive Evaluation Questionnaire",npi16:"Social Behaviour Questionnaire",soas:"Feelings in the World Questionnaire",lsas:"Social Situations Questionnaire"}; // participant-facing titles (Roy, 30.9); the LSAS title is a draft — Roy gave none
-function makeJSON(){return JSON.stringify({meta:META,config:{timeScale:CONFIG.timeScale,panasOrder:state.panasOrder,idleMs:CONFIG.idleMs,pageTimers:CONFIG.pageTimers,transitionTimerMs:CONFIG.transitionTimerMs,botPositions:BOT_POS,othersWishRank:OTHERS_WISH_RANK,hideUnchangedBoardInGame2:CONFIG.hideUnchangedBoardInGame2,traitsPre:CONFIG.traitsPre,traitsPost:CONFIG.traitsPost,idleMs:CONFIG.idleMs,sentenceTimerMs:CONFIG.sentenceTimerMs,adj:ADJ,games:CONDITIONS[COND].games,feedback:FEEDBACK,othersPassWish:OTHERS_PASS_WISH,othersSelfSkill:OTHERS_SELF_SKILL},participant:{name:state.name,finalColor:state.playerColor.name,avatar:state.avatar,sentences:state.sentences,repSentence:state.repSentence,adjustments:state.adjust,passesWish:state.passesWish,selfSkill:state.selfSkill,autoPasses:state.autoCount,demog:state.demog},traits:state.traits,pages:state.pageLog,rows:state.logs},null,1)}
+function makeJSON(stage=state.phase==="complete"?"complete":"progress"){return JSON.stringify({task:"cyberball",stage,meta:META,config:{timeScale:CONFIG.timeScale,panasOrder:state.panasOrder,idleMs:CONFIG.idleMs,pageTimers:CONFIG.pageTimers,transitionTimerMs:CONFIG.transitionTimerMs,botPositions:BOT_POS,othersWishRank:OTHERS_WISH_RANK,hideUnchangedBoardInGame2:CONFIG.hideUnchangedBoardInGame2,traitsPre:CONFIG.traitsPre,traitsPost:CONFIG.traitsPost,idleMs:CONFIG.idleMs,sentenceTimerMs:CONFIG.sentenceTimerMs,adj:ADJ,games:CONDITIONS[COND].games,feedback:FEEDBACK,othersPassWish:OTHERS_PASS_WISH,othersSelfSkill:OTHERS_SELF_SKILL},participant:{name:state.name,finalColor:state.playerColor.name,avatar:state.avatar,sentences:state.sentences,repSentence:state.repSentence,adjustments:state.adjust,passesWish:state.passesWish,selfSkill:state.selfSkill,autoPasses:state.autoCount,demog:state.demog},traits:state.traits,pages:state.pageLog,rows:state.logs},null,1)}
 function download(text,type,name){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
 const fileStem=()=>`throw_catch_${COND}_${META.pid||"test"}`;
 $("downloadBtn").addEventListener("click",()=>download(makeCSV(),"text/csv;charset=utf-8",fileStem()+".csv"));
@@ -882,7 +888,7 @@ function setProgress(pct){state.progress=Math.max(state.progress||0,Math.min(100
 function runQueue(pages,onDone,prog){state.queue=pages.slice();state.queueTotal=pages.length;state.queueProg=prog||null;state.onQueueDone=onDone;showScreen("measureScreen");nextPage()}
 function clearPageTimer(){if(state.pageTimer){clearInterval(state.pageTimer.iv);clearTimeout(state.pageTimer.to);state.pageTimer=null}}
 function startPageTimer(ms,onTimeout){clearPageTimer();const pill=document.createElement("div");pill.className="timer-pill";pill.id="pageTimerPill";$("measureBody").prepend(pill);const total=T(ms),t0=performance.now();const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");const tick=()=>{const left=Math.max(0,Math.ceil((total-(performance.now()-t0))/1000));pill.textContent="Time left "+fmt(left);pill.classList.toggle("warn",left<=10)};tick();const iv=setInterval(tick,250);const to=setTimeout(()=>{clearPageTimer();onTimeout()},total);state.pageTimer={iv,to}}
-function nextPage(){clearPageTimer();if(state.waitTimer){clearTimeout(state.waitTimer);state.waitTimer=null}if(state.current&&state.pageShownAt!==null)state.pageLog.push({type:state.current.type,timepoint:state.ctx.timepoint,title:$("measureTitle").textContent,ms:Math.round(performance.now()-state.pageShownAt)});if(!state.queue.length){const f=state.onQueueDone;state.onQueueDone=null;state.current=null;if(f)f();return}state.current=state.queue.shift();state.pageShownAt=performance.now();if(state.queueProg){const [a,b]=state.queueProg,idx=state.queueTotal-state.queue.length-1;setProgress(a+(b-a)*idx/Math.max(1,state.queueTotal))}if(DEBUG)window.__page=state.current;renderPage(state.current);armPageTimer(state.current)}
+function nextPage(){clearPageTimer();if(state.waitTimer){clearTimeout(state.waitTimer);state.waitTimer=null}if(state.current&&state.pageShownAt!==null)state.pageLog.push({type:state.current.type,timepoint:state.ctx.timepoint,title:$("measureTitle").textContent,ms:Math.round(performance.now()-state.pageShownAt)});saveProgress();if(!state.queue.length){const f=state.onQueueDone;state.onQueueDone=null;state.current=null;if(f)f();return}state.current=state.queue.shift();state.pageShownAt=performance.now();if(state.queueProg){const [a,b]=state.queueProg,idx=state.queueTotal-state.queue.length-1;setProgress(a+(b-a)*idx/Math.max(1,state.queueTotal))}if(DEBUG)window.__page=state.current;renderPage(state.current);armPageTimer(state.current)}
 function armPageTimer(p){if(!p||!p.timed||state.pageTimer)return;const key=p.type==="matrix"?p.def.key:p.type,ms=CONFIG.pageTimers[key];if(!ms)return;startPageTimer(ms,()=>{const ok=p.validate?p.validate()===null:true;if(ok){if(p.commit)p.commit()}else if(p.commitPartial){p.commitPartial()}logRow({phase:"measurement",event:"page_timeout",...tp({page_type:p.type,page_key:key,title:$("measureTitle").textContent,answered:ok})});nextPage()})}
 function header(title,sub,opts={}){$("measureScreen").classList.remove("wide");$("measureKicker").textContent=opts.kicker!==undefined?opts.kicker:state.ctx.kicker;$("measureTitle").textContent=title;$("measureSub").textContent=sub||"";{const mb=$("measureBody"),fresh=mb.cloneNode(false);mb.parentNode.replaceChild(fresh,mb)}$("pageErr").textContent="";const b=$("measureContinueBtn");b.classList.toggle("hidden",!!opts.noContinue);b.disabled=!!opts.disabled;window.scrollTo(0,0)}
 $("measureContinueBtn").addEventListener("click",()=>{const p=state.current;if(!p)return;const err=p.validate?p.validate():null;if(err){$("pageErr").textContent=err;return}$("pageErr").textContent="";if(p.commit)p.commit();nextPage()});
@@ -1294,18 +1300,7 @@ function stairsSVG(perStep,o={}){ // perStep: array of 4 arrays of player keys (
 function buildDots(){$("dots").innerHTML="";for(let i=0;i<60;i++){const d=document.createElement("span");d.className="dot"+(i<state.throwNo?" done":"");$("dots").appendChild(d)}}
 function updateCounter(){/* HUD "n / 60" counter removed (Roy, 30.9); the left board shows "Throws: n of 60" */}
 /* ================= end ================= */
-async function postWithAck(body){ // fix29: POST with a readable reply (CORS), 12-s timeout per attempt, retries; "ok" = the receiver stored and verified the record
-  const waits=[0,2000,5000];state.saveLog=[];
-  for(let i=0;i<waits.length;i++){
-    if(waits[i])await new Promise(r=>setTimeout(r,waits[i]));
-    const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),12000);
-    try{const r=await fetch(CONFIG.endpoint,{method:"POST",mode:"cors",cache:"no-store",headers:{"Content-Type":"text/plain"},body,signal:ctl.signal});const t=(await r.text()).trim();state.saveLog.push({attempt:i+1,status:r.status,reply:t.slice(0,80)});if(r.ok&&/^ok/.test(t))return "ok"}
-    catch(e){state.saveLog.push({attempt:i+1,error:String(e&&e.name||e).slice(0,120)})}
-    finally{clearTimeout(tm)}
-  }
-  try{const c2=new AbortController();setTimeout(()=>c2.abort(),12000);fetch(CONFIG.endpoint,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body,signal:c2.signal}).catch(()=>{})}catch(_){}   // last blind copy, not awaited, not treated as a confirmation
-  return "failed"
-}
+async function postWithAck(body){return await saver.complete(body,saveIdentity('complete'))?'ok':'failed'}
 async function finishStudy(){
   state.phase="complete";setProgress(100);logRow({phase:"end",event:"study_complete",duration_min:Math.round((Date.now()-new Date(META.start).getTime())/600)/100});
   showScreen("completeStudyScreen");
@@ -1314,13 +1309,13 @@ async function finishStudy(){
   let saved="none";
   if(CONFIG.endpoint){
     txt.textContent="Saving your responses… please keep this window open.";info.textContent="";
-    const body=makeJSON(),pkey="isf_pending_cyberball_"+(META.pid||"nopid");try{localStorage.setItem(pkey,body)}catch(_){}
-    saved=await postWithAck(body);state.saved=saved;if(saved==="ok"){try{localStorage.removeItem(pkey)}catch(_){}}
+    const body=makeJSON();
+    saved=await postWithAck(body);state.saved=saved;
     if(saved==="ok"){txt.textContent="You have completed the study.";info.textContent="Your responses and game events have been recorded."}
     else{txt.textContent="You have completed the study.";info.innerHTML="<b>We could not confirm that your responses were saved.</b> Please press \"Try saving again\"; if it still fails, download the JSON file below and send it to the researcher through a Prolific message"+(CONFIG.completionUrl?", then return to Prolific with the button.":", then close this window.");
       const rb=document.createElement("button");rb.className="primary";rb.textContent="Try saving again";
       rb.addEventListener("click",async()=>{rb.disabled=true;txt.textContent="Saving your responses… please keep this window open.";const again=await postWithAck(body);state.saved=again;
-        if(again==="ok"){try{localStorage.removeItem(pkey)}catch(_){};txt.textContent="You have completed the study.";info.textContent="Your responses and game events have been recorded.";rb.remove();if(CONFIG.completionUrl){txt.textContent="Redirecting you to Prolific…";setTimeout(()=>location.href=CONFIG.completionUrl,1200)}}
+        if(again==="ok"){txt.textContent="You have completed the study.";info.textContent="Your responses and game events have been recorded.";rb.remove();if(CONFIG.completionUrl){txt.textContent="Redirecting you to Prolific…";setTimeout(()=>location.href=CONFIG.completionUrl,1200)}}
         else{rb.disabled=false;txt.textContent="You have completed the study."}});
       document.querySelector("#completeStudyScreen .actions").appendChild(rb)}
   }

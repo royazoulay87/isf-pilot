@@ -3,7 +3,7 @@
    Counterbalancing: half (X: H1 clear / H2 ambiguous; Y: the reverse), order 0–3 (version Latin square), amb 0|1 (which settings get variant A), lvl 0|1 (level pattern). */
 (function(){
 'use strict';
-const VERSION='scenarios_v6_2026-10-01';
+const VERSION='scenarios_v7_2026-10-01';
 const $app=document.getElementById('app'); let screenN=0;
 const q=new URLSearchParams(location.search);
 const DEBUG=q.get('debug')==='1';
@@ -15,7 +15,7 @@ if(DEBUG){
   if(q.get('half')) CONFIG.force.half=q.get('half');
   ['order','amb','lvl'].forEach(k=>{ if(q.get(k)!==null) CONFIG.force[k]=+q.get(k); });
   if(q.get('full')!==null) CONFIG.allSettings=q.get('full')==='1';
-  if(q.get('seq')==='1') CONFIG.fixedOrder=true; // review: settings in their fixed numbers 1-16, no shuffle (same sequence in both copies)
+  if(q.get('seq')==='1'||(q.has('half')&&!q.has('seq'))) { CONFIG.fixedOrder=true; ['order','amb','lvl'].forEach(k=>{if(!q.has(k)) CONFIG.force[k]=0;}); } // review: settings in their fixed numbers 1-16, no shuffle (same sequence in both copies)
   if(q.get('altset')) CONFIG.altSet=q.get('altset'); // all-16 mode, second part: 'story' (parallel story, default) or 'mild' (same base, slightly different details)
 }
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -47,27 +47,24 @@ D.cond.clearPlan=clearPlan.map(x=>x.id+':'+x.version); D.cond.ambPlan=ambPlan.ma
 if(DEBUG&&q.get('banner')==='1'){ const lbl=(DESIGN.textVersion||'').startsWith('prenotes')?'PRE-NOTES TEXTS (Word v32)':'CURRENT TEXTS (settings '+DESIGN.textVersion+')'; const b=document.createElement('div'); b.id='verbanner'; b.textContent=lbl+' · mode: '+(FULL?'all 16 ambiguous, then all 16 clear':'8 + 8')+(CONFIG.fixedOrder?' · fixed order 1–16':'')+(FULL?' · second part: '+(CONFIG.altSet==='mild'?'MILD changes':'PARALLEL STORY'):'')+' · port '+location.port; document.body.prepend(b); }
 // ---------- helpers ----------
 let t0=Date.now(); function mark(k){D.timings[k]=(D.timings[k]||0)+(Date.now()-t0)/1000;t0=Date.now();}
-// ---------- saving (1.10 b): checkpoint saves run in the background and never hold up the screen; only save('complete') is awaited ----------
-const SAVE_TIMEOUT_MS=12000;
-async function postOnce(body){ const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),SAVE_TIMEOUT_MS);
-  try{ const r=await fetch(CONFIG.endpoint,{method:'POST',mode:'cors',cache:'no-store',headers:{'Content-Type':'text/plain'},body,signal:ctl.signal}); const txt=(await r.text()).trim(); return (r.ok&&/^ok/.test(txt))?'ok':'reply:'+txt.slice(0,60); }
-  catch(e){ return 'fail:'+String(e&&e.name||e).slice(0,40); } finally{ clearTimeout(t); } }
-async function sendWithRetries(stage,body,waits){ // → true = the receiver stored and verified the record; false = not confirmed (a last no-cors copy is still sent)
-  for(let i=0;i<waits.length;i++){ if(waits[i]) await new Promise(r=>setTimeout(r,waits[i])); const res=await postOnce(body); if(res==='ok'){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-'+stage+':'+(i+1)+':'+res); }
-  try{ const c2=new AbortController(); setTimeout(()=>c2.abort(),SAVE_TIMEOUT_MS); fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body,keepalive:body.length<60000,signal:c2.signal}).catch(()=>{}); }catch(e){}
-  return false; }
-function pendingKey(){ return 'isf_pending_'+D.task+'_'+(D.pid||'nopid'); }
-function resendPending(){ // at start: any final record still waiting in this browser is sent again (the receiver ignores a copy it already stored)
-  if(!CONFIG.endpoint) return; let keys=[]; try{ keys=Object.keys(localStorage).filter(k=>k.startsWith('isf_pending_')); }catch(e){ return; }
-  keys.forEach(async k=>{ try{ const body=localStorage.getItem(k); if(!body) return; const res=await postOnce(body); if(res==='ok') localStorage.removeItem(k); }catch(e){} }); }
+// Checkpoints are durable before navigation; only completion waits for acknowledgement.
+const saver=ISFSave(CONFIG.endpoint);
+const saveIdentity=stage=>[D.task,D.pid,D.session,D.start,stage].join('|');
+function resendPending(){ saver.flush(); }
 function wireRetry(){ // the thank-you page: "Try saving again" when the final save was not confirmed
   const b=document.getElementById('retrySave'), m=document.getElementById('retryMsg'); if(!b) return;
   b.onclick=async()=>{ b.disabled=true; m.textContent='Saving…'; const ok=await save('complete'); m.textContent=ok?'Saved. Thank you!':'Still not confirmed. Please download the file and send it to the researcher.'; if(!ok) b.disabled=false; }; }
-function save(stage){ // returns a promise: resolved at once for checkpoints (the send continues in the background), the real result for 'complete'; null = no endpoint
-  D.stage=stage; D.lastSave=new Date().toISOString(); if(!CONFIG.endpoint) return Promise.resolve(null);
+function save(stage){
+  D.stage=stage; D.lastSave=new Date().toISOString();
+  if(!CONFIG.endpoint) return Promise.resolve(null);
   const body=JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v);
-  if(stage==='complete'){ if(!D._finalBody) D._finalBody=body; const fb=D._finalBody; try{ localStorage.setItem(pendingKey(),fb); }catch(e){} return sendWithRetries(stage,fb,[0,2000,5000]).then(ok=>{ if(ok){ try{ localStorage.removeItem(pendingKey()); }catch(e){} } return ok; }); }
-  sendWithRetries(stage,body,[0,3000]).catch(()=>{}); return Promise.resolve(undefined); }
+  if(stage==='complete'){
+    if(!D._finalBody) D._finalBody=body;
+    return saver.complete(D._finalBody,saveIdentity(stage));
+  }
+  saver.enqueue(body,saveIdentity(stage));
+  return Promise.resolve(undefined);
+}
 function show(html,opts={}){
   return new Promise(res=>{
     screenN++; const shown=Date.now();

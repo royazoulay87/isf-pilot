@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-10-01s';
+const VERSION='cyberstatus_v4_pilot_2026-10-01';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -75,28 +75,23 @@ const sec=t=>+((Date.now()-t)/1000).toFixed(1);
 let t0=Date.now();
 function mark(k){D.timings[k]=(D.timings[k]||0)+(Date.now()-t0)/1000;t0=Date.now();}
 const payload=()=>JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v); // temporary '_' keys are never sent
-// ---------- saving (1.10 b): checkpoint saves run in the background and never hold up the screen; only save('complete') is awaited ----------
-const SAVE_TIMEOUT_MS=12000;
-async function postOnce(body){ const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),SAVE_TIMEOUT_MS);
-  try{ const r=await fetch(CONFIG.endpoint,{method:'POST',mode:'cors',cache:'no-store',headers:{'Content-Type':'text/plain'},body,signal:ctl.signal}); const txt=(await r.text()).trim(); return (r.ok&&/^ok/.test(txt))?'ok':'reply:'+txt.slice(0,60); }
-  catch(e){ return 'fail:'+String(e&&e.name||e).slice(0,40); } finally{ clearTimeout(t); } }
-async function sendWithRetries(stage,body,waits){ // → true = the receiver stored and verified the record; false = not confirmed (a last no-cors copy is still sent)
-  for(let i=0;i<waits.length;i++){ if(waits[i]) await new Promise(r=>setTimeout(r,waits[i])); const res=await postOnce(body); if(res==='ok'){ D.saved=D.saved||{}; D.saved[stage]=i+1; return true; } D.log.push('save-'+stage+':'+(i+1)+':'+res); }
-  try{ const c2=new AbortController(); setTimeout(()=>c2.abort(),SAVE_TIMEOUT_MS); fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body,keepalive:body.length<60000,signal:c2.signal}).catch(()=>{}); }catch(e){}
-  return false; }
-function pendingKey(){ return 'isf_pending_'+D.task+'_'+(D.pid||'nopid'); }
-function resendPending(){ // at start: any final record still waiting in this browser is sent again (the receiver ignores a copy it already stored)
-  if(!CONFIG.endpoint) return; let keys=[]; try{ keys=Object.keys(localStorage).filter(k=>k.startsWith('isf_pending_')); }catch(e){ return; }
-  keys.forEach(async k=>{ try{ const body=localStorage.getItem(k); if(!body) return; const res=await postOnce(body); if(res==='ok') localStorage.removeItem(k); }catch(e){} }); }
+// Checkpoints are durable before navigation; only completion waits for acknowledgement.
+const saver=ISFSave(CONFIG.endpoint);
+const saveIdentity=stage=>[D.task,D.pid,D.session,D.start,stage].join('|');
+function resendPending(){ saver.flush(); }
 function wireRetry(){ // the thank-you page: "Try saving again" when the final save was not confirmed
   const b=document.getElementById('retrySave'), m=document.getElementById('retryMsg'); if(!b) return;
   b.onclick=async()=>{ b.disabled=true; m.textContent='Saving…'; const ok=await save('complete'); m.textContent=ok?'Saved. Thank you!':'Still not confirmed. Please download the file and send it to the researcher.'; if(!ok) b.disabled=false; }; }
-function save(stage){ // returns a promise: resolved at once for checkpoints (the send continues in the background), the real result for 'complete'; null = no endpoint
+function save(stage){
   D.stage=stage; D.lastSave=new Date().toISOString();
   if(!CONFIG.endpoint) return Promise.resolve(null);
-  const body=payload();
-  if(stage==='complete'){ if(!D._finalBody) D._finalBody=body; const fb=D._finalBody; try{ localStorage.setItem(pendingKey(),fb); }catch(e){} return sendWithRetries(stage,fb,[0,2000,5000]).then(ok=>{ if(ok){ try{ localStorage.removeItem(pendingKey()); }catch(e){} } return ok; }); }
-  sendWithRetries(stage,body,[0,3000]).catch(()=>{}); return Promise.resolve(undefined);
+  const body=JSON.stringify(D,(k,v)=>k.startsWith('_')?undefined:v);
+  if(stage==='complete'){
+    if(!D._finalBody) D._finalBody=body;
+    return saver.complete(D._finalBody,saveIdentity(stage));
+  }
+  saver.enqueue(body,saveIdentity(stage));
+  return Promise.resolve(undefined);
 }
 // ---------- generic screen: resolves when Next is clicked and validate() returns null, or when opts.timer (ms) runs out ----------
 let screenNo=0, firstInteract=null; const T0=Date.now();
