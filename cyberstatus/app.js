@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v3_pilot_2026-10-01p';
+const VERSION='cyberstatus_v3_pilot_2026-10-01q';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -20,7 +20,7 @@ const BOT_INTRO={ // approved by Roy, 29.9.2026 (typed feel: small typos and str
   Pixel:"Whats the most useless skill you have? Mine is planning road trips I never take, complete with playlists and where to stop for lunch. Graphic designer, still living next to my parents (sunday dinner is not optional), podcast addict. Im the one who packs too much and then lends everyone stuff. Pixel (yes thats what everyone calls me, long story)"};
 const ROLES=['Leader','First Deputy','Second Deputy','Support','Second Support'];
 const CHOICE_SEC=CONFIG.rankChoiceSeconds||10;
-const GT=Object.assign({read:20,result:15,outcome:25,state:60,wish:20,distress:20,emotions:40,slider:20,avatar:20,rankInfo:60,connInfo:45},CONFIG.gameTimers||{}); // seconds; every screen of the task continues by itself (Roy, 30.9); round result 15 s and the six pages before round 1 timed (Roy, 1.10)
+const GT=Object.assign({read:20,result:15,outcome:25,state:60,wish:20,distress:20,emotions:40,slider:20,avatar:40,rankInfo:60,connInfo:45},CONFIG.gameTimers||{}); // seconds; every screen of the task continues by itself (Roy, 30.9); round result 15 s and the six pages before round 1 timed (Roy, 1.10)
 const autoNote=sec=>`<p class="small autonote">This screen continues automatically after ${sec} seconds.</p>`; // ranking choices (vote, staircase picks) must be made within this time; otherwise the system chooses (Roy, 29.9)
 const mustChoose=`<p class="small">You must choose within ${CHOICE_SEC} seconds. If you do not, the system will choose for you, and this counts as not taking part in the ranking.</p>`;
 const ORDN=n=>n===2?'second':n===3?'third':n===4?'fourth':n+'th';

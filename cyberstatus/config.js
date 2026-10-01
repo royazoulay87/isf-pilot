@@ -19,6 +19,6 @@ const CONFIG = {
   // read = round result, connections reveal, team's choices; outcome = overall ranking and connections outcome; state = the 6-item
   // check (partial answers saved); wish = desired position; distress = the slider after the outcome; emotions = the 13-item list after
   // the outcome (partial answers saved); slider = the participation slider before the mission.
-  gameTimers: { read: 20, result: 15, outcome: 25, state: 60, wish: 20, distress: 20, emotions: 40, slider: 20, avatar: 20, rankInfo: 60, connInfo: 45 },
+  gameTimers: { read: 20, result: 15, outcome: 25, state: 60, wish: 20, distress: 20, emotions: 40, slider: 20, avatar: 40, rankInfo: 60, connInfo: 45 },
   contactEmail: 'Cyberstatusegs@gmail.com'
 };
