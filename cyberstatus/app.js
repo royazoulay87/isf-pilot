@@ -2,7 +2,7 @@
    Vanilla JS, no dependencies. Based on the 15.9.2026 standalone build; every change is listed in README.md. */
 (function(){
 'use strict';
-const VERSION='cyberstatus_v5_pilot_2026-10-01';
+const VERSION='cyberstatus_v6_pilot_2026-10-02';
 const $app=document.getElementById('app');
 const BOTS=['Emma','Tom','Taylor','Pixel'];
 // Bots' "I am" descriptions shown on the voting cards (set = round index mod 3)
@@ -19,13 +19,12 @@ const BOT_INTRO={ // approved by Roy, 29.9.2026 (typed feel: small typos and str
   Taylor:"hi all, Taylor here, I teach middle school science and every spring I take 30 kids on a field trip which is why I now have a first aid certificate and strong opinions about how much water people bring, otherwise I watch too many films, hike when the weather allows and i tend to listen more than i talk",
   Pixel:"Whats the most useless skill you have? Mine is planning road trips I never take, complete with playlists and where to stop for lunch. Graphic designer, still living next to my parents (sunday dinner is not optional), podcast addict. Im the one who packs too much and then lends everyone stuff. Pixel (yes thats what everyone calls me, long story)"};
 const ROLES=['Leader','First Deputy','Second Deputy','Support','Second Support'];
-const CHOICE_SEC=CONFIG.rankChoiceSeconds||10;
-const CONN_SEC=CONFIG.connChoiceSeconds||20; // Roy 1.10
-const GT=Object.assign({read:20,result:15,outcome:25,state:60,wish:20,distress:20,emotions:40,slider:20,avatar:40,rankInfo:60,connInfo:45},CONFIG.gameTimers||{}); // seconds; every screen of the task continues by itself (Roy, 30.9); round result 15 s and the six pages before round 1 timed (Roy, 1.10)
+const CHOICE_SEC=CONFIG.rankChoiceSeconds||30;
+const CONN_SEC=CONFIG.connChoiceSeconds||30;
+const GT=Object.assign({read:20,result:15,outcome:25,wish:20,slider:20,avatar:40,rankInfo:60,connInfo:45},CONFIG.gameTimers||{}); // task screens only; response questionnaires are participant-paced
 const autoNote=sec=>`<p class="small autonote">This screen continues automatically after ${sec} seconds.</p>`; // ranking choices (vote, staircase picks) must be made within this time; otherwise the system chooses (Roy, 29.9)
-const mustChoose=`<p class="small">You must choose within ${CHOICE_SEC} seconds. If you do not, the system will choose for you, and this counts as not taking part in the ranking.</p>`;
-const ORDN=n=>n===2?'second':n===3?'third':n===4?'fourth':n+'th';
-const redCard=(who,ctx)=>{ D.autoCount++; const again=D.autoCount>1?` This is the <b>${ORDN(D.autoCount)} time</b> you did not choose in time.`:''; return `<div class="redcard"><div class="card-shape"></div><div class="rc-text"><h2>Red card</h2><p><b>You did not choose in time.</b> The system chose <b>${esc(who)}</b> for you${ctx||''}.${again}</p><p>Not choosing is a serious problem: the team cannot rank without your choice, and it counts as not taking part in the ranking.</p></div></div>`; };
+const mustChoose=`<p class="small">You have ${CHOICE_SEC} seconds to choose. If time runs out, the system will complete the choice for you.</p>`;
+const automaticChoiceNotice=(who,ctx)=>{ D.autoCount++; return `<h2>Choice completed</h2><p>The time for this choice has ended. The system selected <b>${esc(who)}</b> for you${ctx||''}.</p><p>The task will now continue.</p>`; };
 const ORD=['first','second','third','fourth','last'];
 // Ranking scripts (five rounds): chain = final order of the five players, 'ME' at the participant's position. When it is ME's turn
 // to choose, the chosen member takes the next step and the remaining others follow in chain order. Participant's rank per round:
@@ -263,19 +262,19 @@ function emotionsMatrix(key){
   const m=matrix('_pan',def); const store=()=>{ const out=[]; D.panasOrder.forEach((orig,k)=>out[orig]=D._pan[k]); D[key]=out; };
   return {html:m.html,validate:()=>{ const e=m.validate(); if(e) return e; store(); D[key+'Timeout']=false; return null; },partial:()=>{ m.partial(); store(); D[key+'Timeout']=true; }};
 }
-// ---------- state check (6 items, order randomized once per participant; stored in canonical order) ----------
+// ---------- state check (original 6 items + 2 additions, stored in canonical order) ----------
 function stateCheck(key){
-  if(!D.stateOrder) D.stateOrder=shuffle([0,1,2,3,4,5]);
+  if(!D.stateOrder) D.stateOrder=shuffle([0,1,2,3,4,5]).concat([6,7]);
   const def=Object.assign({},ITEMS.state,{items:D.stateOrder.map(i=>ITEMS.state.items[i])});
   const m=matrix('_st',def); const store=()=>{ const out=[]; D.stateOrder.forEach((orig,k)=>out[orig]=D._st[k]); D[key]=out; };
-  return {html:m.html+autoNote(GT.state),timer:GT.state*1000,validate:()=>{ const e=m.validate(); if(e) return e; store(); D[key+'Timeout']=false; return null; },onTimeout:()=>{ m.partial(); store(); D[key+'Timeout']=true; }};
+  return {html:m.html,validate:()=>{ const e=m.validate(); if(e) return e; store(); D[key+'Timeout']=false; return null; }};
 }
 // ---------- single distress slider with a face that changes ----------
 function distressSlider(key){
   const face=v=>v<=20?'😀':v<=40?'🙂':v<=60?'😐':v<=80?'😟':'😫';
   const html=`<h2>Right now, how much distress do you feel?</h2><div class="emoji" id="${key}face">😐</div><div class="slider" data-i="0"><input type="range" min="0" max="100" value="50" id="${key}s"><div class="ends"><span>Not distressed at all</span><span>Very distressed</span></div></div><p class="small">Please click or move the slider.</p>`;
   const setup=()=>{ const el=document.getElementById(key+'s'); const t=()=>{el.dataset.touched='1'; document.getElementById(key+'face').textContent=face(+el.value);}; ['input','change','pointerdown','keydown'].forEach(ev=>el.addEventListener(ev,t)); };
-  return {html:html+autoNote(GT.distress),setup,timer:GT.distress*1000,validate:()=>{ const el=document.getElementById(key+'s'); if(el.dataset.touched!=='1') return 'Please click or move the slider.'; D[key]=+el.value; D[key+'Timeout']=false; return null; },onTimeout:()=>{ const el=document.getElementById(key+'s'); D[key]=el.dataset.touched==='1'?+el.value:null; D[key+'Timeout']=true; }};
+  return {html,setup,validate:()=>{ const el=document.getElementById(key+'s'); if(el.dataset.touched!=='1') return 'Please click or move the slider.'; D[key]=+el.value; D[key+'Timeout']=false; return null; }};
 }
 // ---------- avatar self-placement (avatar.js; texts are DRAFTS pending Roy's approval) ----------
 async function avatarScreen(key,phase){
@@ -311,7 +310,7 @@ async function rankingRound(r){
     {timer:CHOICE_SEC*1000,setup:c2.setup,validate:()=>{const e=c2.validate(); if(e) return e; if(D._vote===D.name) return 'You cannot choose yourself.'; return null;},
      onTimeout:()=>{ const sel=document.querySelector('.card.sel'); const v=sel?everyone[+sel.dataset.i]:null; D._vote=(v&&v!==D.name)?v:rnd(BOTS); D._auto=true; }});
   R.vote=D._vote; R.voteMs=lastMs(); R.voteAuto=D._auto;
-  if(R.voteAuto) await timed(redCard(R.vote,' as your vote'),6000);
+  if(R.voteAuto) await timed(automaticChoiceNotice(R.vote,' as your vote'),6000);
   await timed(spinner('Waiting for the other members to vote…'),5000);
   // 3. sequential placement on the staircase
   const assign=[null,null,null,null,null]; const label=n=>n==='ME'?D.name:n;
@@ -330,7 +329,7 @@ async function rankingRound(r){
       await view(`<p><b>${head}</b></p><p>Choose a team member to be ranked beneath you (step ${pos+1}, ${ROLES[pos]}).</p>`+mustChoose+cc.html,
         {timer:CHOICE_SEC*1000,setup:cc.setup,validate:cc.validate,onTimeout:()=>{ const sel=document.querySelector('.card.sel'); D._pick=sel?opts[+sel.dataset.i]:rnd(opts); D._auto=true; }});
       const picked=D._pick; R['pick'+pos]=picked; R['pick'+pos+'Ms']=lastMs(); R['pick'+pos+'Auto']=D._auto; place(pos,picked);
-      if(D._auto) await timed(redCard(picked,' for the step beneath you'),6000); order=[picked].concat(order.filter(x=>x!==picked));
+      if(D._auto) await timed(automaticChoiceNotice(picked,' for the step beneath you'),6000); order=[picked].concat(order.filter(x=>x!==picked));
       await viewTimed(`<p><b>You chose ${esc(picked)}.</b></p><p>${pos===4?esc(picked)+' was ranked at the bottom.':'Please wait for '+esc(picked)+"'s decision."}</p>`,pos===4?4000:5000);
       chooser=picked;
     } else {
@@ -357,7 +356,7 @@ async function connectionsRound(r){
     {timer:CONN_SEC*1000,setup:c.setup,validate:()=>{const e=c.validate(); if(e) return e; if(D._conn.length!==2) return 'Please choose exactly two members.'; return null;},
      onTimeout:()=>{ const sel=[...document.querySelectorAll('.card.sel')].map(e=>connOpts[+e.dataset.i]); const rest=shuffle(BOTS.filter(b=>!sel.includes(b))); D._conn=sel.concat(rest).slice(0,2); D._auto=true; }});
   R.connPicks=D._conn.slice(); R.connMs=lastMs(); R.connAuto=D._auto;
-  if(R.connAuto) await timed(redCard(R.connPicks.join(' and '),' as your connections').replace('the team cannot rank without your choice, and it counts as not taking part in the ranking','the team cannot form its connections without your choice, and it counts as not taking part'),6000);
+  if(R.connAuto) await timed(automaticChoiceNotice(R.connPicks.join(' and '),' as your connections'),6000);
   await timed(spinner('Waiting for the other members to make their choices…'),5000);
   const inc=S.in[r-1];
   await show(`<h2>Connections – round ${r}</h2>${circle(S.web[r-1],inc,R.connPicks,D.name)}<p class="legend"><span style="color:#1a6fbf;font-weight:bold">thick blue = chose you</span> &nbsp; light grey dashed = your choices &nbsp; grey = the others' choices (↔ chose each other)</p><p><b>You were chosen by:</b> ${inc.length?inc.join(', '):'no one'}.<br><b>You chose:</b> ${R.connPicks.join(', ')}</p>${autoNote(GT.read)}`,{timer:GT.read*1000});
@@ -412,8 +411,8 @@ async function main(){
   mark('instructions');
   { const pw=oneSlider('participation_pre','How much would you like to take part in the ranking rounds with these members?',['Not at all','Very much']); await show(pw.html+autoNote(GT.slider),{setup:pw.setup,timer:GT.slider*1000,validate:pw.validate,onTimeout:()=>{ const el=document.getElementById('participation_pres'); D.participation_pre=el&&el.dataset.touched==='1'?+el.value:null; D.participation_preTimeout=true; }}); mark('participation_pre'); }
   prog(15);
-  // baseline emotions + distress right before the first round, after everything else (Roy, 29.9 night); timed like the task since 1.10
-  { const e1=emotionsMatrix('panas_pre'); await show(e1.html+autoNote(GT.emotions),{timer:GT.emotions*1000,validate:e1.validate,onTimeout:e1.partial}); mark('panas_pre'); }
+  // Baseline and post-task emotion/distress measurements are both participant-paced.
+  { const e1=emotionsMatrix('panas_pre'); await show(e1.html,e1); mark('panas_pre'); }
   { const ds=distressSlider('distress_pre'); await show(ds.html,ds); mark('distress_pre'); }
   for(let r=1;r<=5;r++){
     await rankingRound(r); await connectionsRound(r);
@@ -431,7 +430,7 @@ async function main(){
   // right after the outcome is announced (Roy, 30.9): distress → state check → emotions
   { const ds=distressSlider('distress_post'); await show(ds.html,ds); mark('distress_post'); }
   { const st=stateCheck('state5'); await show(st.html,st); D.rounds[4].state=(D.state5||[]).slice(); mark('state5'); }
-  { const e2=emotionsMatrix('panas_post'); await show(e2.html+autoNote(GT.emotions),{timer:GT.emotions*1000,validate:e2.validate,onTimeout:e2.partial}); mark('panas_post'); }
+  { const e2=emotionsMatrix('panas_post'); await show(e2.html,e2); mark('panas_post'); }
   await wishScreen('final');
   await avatarScreen('avatar_post','post');   // Roy 1.10: the second avatar choice comes right after the final place-on-the-stairs declaration
   { const pm=oneSlider('participation_mission','How much would you like to take part in the mission with this team?',['Not at all','Very much']); await show(pm.html+autoNote(GT.slider),{setup:pm.setup,timer:GT.slider*1000,validate:pm.validate,onTimeout:()=>{ const el=document.getElementById('participation_missions'); D.participation_mission=el&&el.dataset.touched==='1'?+el.value:null; D.participation_missionTimeout=true; }}); mark('participation_mission'); }

@@ -36,6 +36,16 @@ function harness() {
 const study=(pid,stage='complete')=>({task:'cyberstatus',stage,pid,start:'2026-10-01T13:00:00Z',session:'00123',answer:'=SUM(1,2)',zero:'00001',truth:'TRUE',apostrophe:"'quoted",rating:4,accepted:false});
 const ball=(stage='complete')=>({task:'cyberball',stage,meta:{pid:'TEST_UNIT_CB',condition:'A',start:'2026-10-01T13:00:00Z'},traits:{spin:[1,2,3]},rows:Array.from({length:120},(_,i)=>({event:'throw',round:1+Math.floor(i/60),throw_number:i%60+1,sender:'QA',receiver:'Blue',success:i%2===0,source:'participant',turn_ms:301}))});
 const tests={
+ 'new response checks retain old columns and both administrations'(){
+  const h=harness();
+  const sc={task:'scenarios',stage:'complete',pid:'TEST_CHECKS_SC',start:'2026-10-02T12:00:00Z',amb:[{block:{appreciated:3,liked:4,stress:5,competent_capable:6,accepted_part_of_group:7}}],clear:[{block:{appreciated:2,liked:3,stress:4,competent_capable:5,accepted_part_of_group:6}}]};
+  assert.match(h.post(sc),/^ok/);const sw=h.rows('scenarios_wide')[0];
+  assert.equal(sw.amb1_block_appreciated,3);assert.equal(sw.amb1_block_competent_capable,6);assert.equal(sw.amb1_block_accepted_part_of_group,7);assert.equal(sw.clear1_block_competent_capable,5);assert.equal(sw.clear1_block_accepted_part_of_group,6);
+  const cs={...study('TEST_CHECKS_CS'),state1:[1,2,3,4,5,6,7,1],state5:[7,6,5,4,3,2,1,7]};
+  assert.match(h.post(cs),/^ok/);const cw=h.rows('cyberstatus_wide')[0];assert.equal(cw.state1_1,1);assert.equal(cw.state1_6,6);assert.equal(cw.state1_7,7);assert.equal(cw.state1_8,1);assert.equal(cw.state5_7,1);assert.equal(cw.state5_8,7);
+  const cb=ball();cb.rows.push(...[1,2].map(round=>({event:'state_check',round,timepoint:'post_game'+round,state_check_1:round+3,state_check_2:round+4,items:'I feel competent/capable|I feel accepted/part of the group'})));
+  assert.match(h.post(cb),/^ok/);const bw=h.rows('cyberball_wide')[0];assert.equal(bw.state_check_post_game1_1,4);assert.equal(bw.state_check_post_game1_2,5);assert.equal(bw.state_check_post_game2_1,5);assert.equal(bw.state_check_post_game2_2,6);assert.equal(bw.n_throws,120);
+ },
  'all checkpoints verified and deduplicated beyond 60 newer records'(){const h=harness(),body=study('TEST_OLD','consent');assert.match(h.post(body),/^ok/);for(let i=0;i<65;i++)assert.match(h.post(study('TEST_'+i,'consent')),/^ok/);assert.match(h.post(body),/^ok/);assert.equal(h.rows('cyberstatus').length,66);assert.ok(h.rows('cyberstatus').every(r=>r.ok===true));},
  'lock failure writes nothing'(){const h=harness();h.busy(true);assert.match(h.post(study('TEST_LOCK','consent')),/busy/);assert.equal(Object.keys(h.sheets).length,0);},
  'partial readable write followed by retry is idempotent'(){const h=harness();let once=true;h.fail(r=>{if(once&&r.sh.name==='cyberball_wide'&&r.r>1){once=false;throw Error('lost response after wide write');}});assert.match(h.post(ball()),/^error/);assert.match(h.post(ball()),/^ok/);assert.equal(h.rows('cyberball').length,1);assert.equal(h.rows('cyberball_wide').length,1);assert.equal(h.rows('cyberball_throws').length,120);assert.ok(h.rows('cyberball')[0].wide);},

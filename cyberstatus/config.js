@@ -15,12 +15,10 @@ const CONFIG = {
   // Force a cell for testing (null = random 50/50 on each factor): standing 'high'|'low', acc 1|0
   force: { standing: null, acc: null },
   // Seconds allowed for each ranking choice (vote for the top, staircase picks); afterwards the system chooses and the choice is flagged.
-  rankChoiceSeconds: 14,
-  connChoiceSeconds: 20,   // Roy 1.10: the connections choice gets 20 s in every round and every cell (votes and picks stay at rankChoiceSeconds)
-  // Seconds before the other screens of the task continue by themselves (Roy, 30.9: a running clock, nothing waits for the participant):
-  // read = round result, connections reveal, team's choices; outcome = overall ranking and connections outcome; state = the 6-item
-  // check (partial answers saved); wish = desired position; distress = the slider after the outcome; emotions = the 13-item list after
-  // the outcome (partial answers saved); slider = the participation slider before the mission.
-  gameTimers: { read: 20, result: 15, outcome: 25, state: 60, wish: 20, distress: 20, emotions: 40, slider: 20, avatar: 40, rankInfo: 60, connInfo: 45 },
+  rankChoiceSeconds: 30,
+  connChoiceSeconds: 30,   // Extended choice windows, Roy 2.10.2026.
+  // Automatic transitions for task/instruction screens. State, emotion and distress
+  // questionnaires are participant-paced at every administration (Roy, 2.10.2026).
+  gameTimers: { read: 20, result: 15, outcome: 25, wish: 20, slider: 20, avatar: 40, rankInfo: 60, connInfo: 45 },
   contactEmail: 'Cyberstatusegs@gmail.com'
 };

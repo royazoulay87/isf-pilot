@@ -3,7 +3,7 @@
    Counterbalancing: half (X: H1 clear / H2 ambiguous; Y: the reverse), order 0–3 (version Latin square), amb 0|1 (which settings get variant A), lvl 0|1 (level pattern). */
 (function(){
 'use strict';
-const VERSION='scenarios_v8_2026-10-01';
+const VERSION='scenarios_v9_2026-10-02';
 const $app=document.getElementById('app'); let screenN=0;
 const q=new URLSearchParams(location.search);
 const DEBUG=q.get('debug')==='1';
@@ -134,9 +134,12 @@ function choiceSetup(){ document.querySelectorAll('.choice').forEach(g=>g.queryS
 function choiceValue(prefix){ const g=document.querySelector(`.choice[data-c="${prefix}"]`); const o=g&&g.querySelector('.opt.sel'); if(!o){ g&&g.classList.add('missing'); return CONFIG.requireAnswers===false?null:undefined; } return o.dataset.k; }
 function sceneText(s,version){ const ALT=CONFIG.altSet==='mild'?s.alt_mild:s.alt; const T=(FULL&&ALT)?ALT:s; const st=version[0]==='H'?T.sH:T.sL, ac=version[1]==='H'?T.aH:T.aL; const su=FULL?(T.setup||s.setup2||s.setup):s.setup; return s.acceptFirst?`${su} ${ac} ${st}`:`${su} ${st} ${ac}`; } // all-16 mode: the clear part uses the parallel story (alt: same structure, different details)
 // ---------- the two kinds of pages ----------
+// Two additional items, each with one response; existing items and keys are unchanged.
+const additionalFeelings=[{k:'competent_capable',text:'…competent/capable?'},{k:'accepted_part_of_group',text:'…accepted/part of the group?'}];
+const sceneFeelings=s=>s.block.likelihood.map(([k,t])=>({k,text:t})).concat(additionalFeelings);
 async function clearScene(plan,pos,total){
   const s=BY[plan.id]; const text=sceneText(s,plan.version); const P='c'+pos;
-  const lik=s.block.likelihood.map(([k,t])=>({k,text:t})); const stay=s.block.react.slice(0,3).map(([k,t])=>({k,text:t})); const re=s.block.react.slice(3).map(([k,t])=>({k,text:t}));
+  const lik=sceneFeelings(s); const stay=s.block.react.slice(0,3).map(([k,t])=>({k,text:t})); const re=s.block.react.slice(3).map(([k,t])=>({k,text:t}));
   const html=`<div class="progress">Situation ${pos} of ${total}</div><div class="scene">${esc(text)}</div><p class="small">Imagine yourself in this situation and answer the questions below.</p>
     <div class="qtitle">How much would you feel…</div>${ratingTable(P,lik,'Not at all','Very much')}
     <div class="qtitle">Choose one of these three options:</div>${choiceBoxes(P,stay)}
@@ -148,7 +151,7 @@ async function clearScene(plan,pos,total){
 async function ambScene(plan,pos,total){
   const s=BY[plan.id]; const text=s.amb[plan.variant][plan.level]; const cogs=plan.variant==='A'?s.cogA:s.cogB; const P='a'+pos;
   const cogItems=cogs.map((t,i)=>({k:'cog'+(i+1),text:'…'+t}));
-  const short=s.block.likelihood.map(([k,t])=>({k,text:t})); const stay=s.block.react.slice(0,3).map(([k,t])=>({k,text:t}));
+  const short=sceneFeelings(s); const stay=s.block.react.slice(0,3).map(([k,t])=>({k,text:t}));
   const html=`<div class="progress">Situation ${pos} of ${total}</div><div class="scene">${esc(text)}</div><p class="small">Imagine yourself in this situation and answer the questions below.</p>
     <div class="qtitle">How likely is it that…</div>${ratingTable(P,cogItems,'Not at all likely','Very likely')}
     <div class="qtitle">And in this situation, how much would you feel…</div>${ratingTable(P,short,'Not at all','Very much')}

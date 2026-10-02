@@ -64,9 +64,10 @@ const ITEMS = {
   // The lab's 13-emotion list from CyberStatus Study 1 — kept for reference, not administered (replaced by the PANAS-24 above).
   emotions: { title: 'Right now, I feel...', scale: ['Not at all 1','2','3','4','5','6','Very much 7'], values: [1,2,3,4,5,6,7],
     items: ['Enthusiastic','Sad','Happy','Angry','Strong','Anxious','Proud','Lonely','Calm','Distressed','Ashamed','Humiliated','Embarrassed'] },
-  // State check after rounds 1 and 5 (order randomized per participant; stored in the order below): items 1–3 = perceived standing (respect, value, influence), items 4–6 = perceived acceptance (wanted, included, welcomed)
+  // State check after rounds 1 and 5. Original items 1–6 keep their indices and randomized display order;
+  // added items 7–8 are shown last, each as one slash-separated item (Roy, 2.10.2026).
   state: { title: 'Right now, how much do you feel…', scale: ['Not at all 1','2','3','4','5','6','Very much 7'], values: [1,2,3,4,5,6,7],
-    items: ['…respected by the team','…valued by the team','…influential in the team','…wanted by the team','…included in the team','…welcomed by the team'] },
+    items: ['…respected by the team','…valued by the team','…influential in the team','…wanted by the team','…included in the team','…welcomed by the team','…competent/capable','…accepted/part of the group'] },
   // pstatus = the status questionnaire, administered right before the inclusion (belonging) questionnaire (Roy, 29.9.2026)
   pstatus: { title: 'For each statement, please indicate how much you agree, thinking about the other members of the team:',
     scale: ['Strongly disagree 1','2','3','4','Strongly agree 5'], values: [1,2,3,4,5],

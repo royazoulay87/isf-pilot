@@ -670,10 +670,10 @@ const CONFIG={
   traitsPost:['npi16','soas','lsas'],       // at the END: NPI-16, sense of absence (Efrati & Potenza 2026), LSAS (fear only); items identical to CyberStatus v3
   idleMs:10000,                    // (Roy, 30.9: 10 s) a turn without a pass after this many ms is passed automatically and counted as unsuccessful
   sentenceTimerMs:60000,           // time limit for the three sentences before Games 2 and 3 (none before Game 1)
-  pageTimers:{distress:20000,panas:40000,status:45000,belonging:50000,participation:20000,range_choice:20000,range_adjust:20000,passes:30000,wish_rank:20000,others_wish:20000,lookback:30000,color:20000,rep_sentence:20000,avatar:30000,sentences_show:20000,text:20000,traits_intro:20000}, // time limits between the games (Roy, 30.9): at zero the page moves on; text = the "Questions for the whole group" page
+  pageTimers:{state_check:0,distress:0,panas:0,status:0,belonging:0,participation:20000,range_choice:20000,range_adjust:20000,passes:30000,wish_rank:20000,others_wish:20000,lookback:30000,color:20000,rep_sentence:20000,avatar:30000,sentences_show:20000,text:20000,traits_intro:20000}, // 0 = participant-paced response questionnaires (Roy, 2.10.2026); other task timers unchanged
   transitionTimerMs:15000,         // (Roy, 30.9) the "Game 1" / "Game 2" screens continue by themselves after this long
   forceCondition:null,             // 'A' (status increased) | 'B' (affiliation increased) | null = random. ?cond=A|B overrides.
-  version:'fix33_2026-10-01'
+  version:'fix34_2026-10-02'
 };
 const q=new URLSearchParams(location.search);
 if(q.get('fast')){const f=Number(q.get('fast'));CONFIG.timeScale=(f>0&&f<1)?f:0.15}
@@ -734,6 +734,9 @@ const ZONE={best:"#181c24",mid:"#8a94a6",outer:"#d9dee6"};
 const READ_GATE_MS=10000;
 
 /* ================= questionnaires ================= */
+const STATE_CHECK={key:"state_check",title:"How do you feel right now?",sub:"Please indicate how much you feel each of the following right now.",
+  scale:["Not at all","","","","","","Very much"],
+  items:["I feel competent/capable","I feel accepted/part of the group"]};
 const PANAS={key:"panas",title:"How do you feel right now?",sub:"This scale consists of a number of words that describe different feelings and emotions. Read each item and indicate to what extent you feel this way right now, at the present moment.",
   scale:["Very slightly or not at all","A little","Moderately","Quite a bit","Extremely"],
   items:["Upset","Strong","Guilty","Proud","Ashamed","Active","Attentive","Afraid","Happy","Humiliated","Angry","Lonely","Sad"]}; // Roy's list (29.9): eight PANAS items + happy, humiliated, angry, lonely, sad
@@ -828,6 +831,7 @@ const GREEN=[0.63,0.68], ORANGE1=[0.58,0.63], ORANGE2=[0.68,0.73];
 
 const state={
   name:"",playerColor:COLORS[0],sentences:{},phase:"setup",round:0,holder:null,throwNo:0,gameActive:false,
+  throwInFlight:false,turnReady:false,gameToken:0,postGameTimer:null,
   stats:{},practice:{attempts:0,max:7,active:false,started:0,raf:null,pointerId:null},
   hold:{active:false,target:null,started:0,raf:null,pointerId:null},
   logs:[],queue:[],onQueueDone:null,current:null,ctx:{timepoint:"setup",kicker:""},
@@ -1151,7 +1155,8 @@ function configureParticipantUI(){
 function postQueue(round){
   const next=round+1,T=o=>Object.assign(o,{timed:true});
   return [
-    T({type:"text",title:"Questions for the whole group",text:"All players now answer the same questions. Each page has a time limit, shown at the top, so that the group can continue together. If time runs out, the page moves on.",kicker:"After Game "+round}),
+    {type:"matrix",def:STATE_CHECK,kicker:"After Game "+round},
+    T({type:"text",title:"Questions for the whole group",text:"All players now answer the same questions. Please complete each questionnaire and press Continue. Some later task pages have a time limit shown at the top; those pages move on when time runs out.",kicker:"After Game "+round}),
     T({type:"distress"}),
     T({type:"matrix",def:PANAS}),T({type:"matrix",def:STATUS}),T({type:"matrix",def:BELONG}),
     T({type:"participation",game:next,kicker:"Before Game "+next}),
@@ -1223,6 +1228,9 @@ function applyAdjustments(round){
   state.gameBag=bag;state.gameSlots=slots;return applied;
 }
 function startGame(round){
+  clearGameTimers();clearTimeout(state.postGameTimer);state.postGameTimer=null;state.gameToken++;
+  clearHold();state.hold.active=false;state.hold.target=null;state.hold.pointerId=null;
+  state.throwInFlight=false;state.turnReady=false;
   state.round=round;state.phase=`game_${round}`;state.gameActive=true;state.throwNo=0;state.userReceiveIndex=0;state.stats=initStats();
   state.gameStartedAt=performance.now();state.autoCountGame=0;const applied=applyAdjustments(round);state.successBags={you:makeParticipantBag()};BOTS.forEach(p=>state.successBags[p]=makeSuccessBag(state.botRate[p]));
   configureParticipantUI();
@@ -1230,10 +1238,18 @@ function startGame(round){
   showScreen("gameScreen");$("roundBanner").textContent=`Game ${round} of 3`;$("inclusionPanel").classList.toggle("hidden-panel",!showIncl);$("successPanel").classList.toggle("hidden-panel",!showSucc);
   buildDots();updateCounter();updateStats();$("turnTitle").textContent="Game starting…";$("turnSub").textContent="";ALL.forEach(p=>setSprite(p,"idle"));state.holder=pick(BOTS);setHolder(state.holder);positionBall(state.holder,false);
   logRow({phase:"game",event:"game_start",round,condition_code:g.code,scheduled_receive_slots:state.gameSlots.join("|"),scheduled_success_bag:state.gameBag.map(x=>x?1:0).join(""),bot_success_rates:BOTS.map(p=>`${NAME[p]}=${state.botRate[p]}`).join("|"),adjustments_applied:applied.join("|"),arena_sentences:BOTS.map(b=>`${NAME[b]}: ${state.botRep[round][b]}`).join(" | "),inclusion_board_shown:showIncl,success_board_shown:showSucc});
-  setTimeout(beginTurn,T(700))
+  scheduleGame(beginTurn,T(700))
+}
+// One active turn/throw at a time. All scheduled turn callbacks belong to one game.
+const gameTimers=new Set();
+function clearGameTimers(){gameTimers.forEach(clearTimeout);gameTimers.clear();clearTimeout(state.idleTimer);state.idleTimer=null;}
+function scheduleGame(fn,ms){const token=state.gameToken;const id=setTimeout(()=>{gameTimers.delete(id);if(state.gameActive&&state.gameToken===token)fn();},ms);gameTimers.add(id);return id;}
+function claimThrow(sender){
+  if(!state.gameActive||state.throwInFlight||!state.turnReady||state.holder!==sender||state.throwNo>=60)return false;
+  state.throwInFlight=true;state.turnReady=false;clearGameTimers();enableTargets(false);return true;
 }
 function setHolder(p){state.holder=p;qa(".player-wrap").forEach(w=>w.classList.toggle("holder",w.dataset.player===p));ALL.forEach(k=>setSprite(k,k===p?"active":"idle"))}
-function beginTurn(){if(!state.gameActive)return;if(state.throwNo>=60){finishGame();return}if(state.holder==="you"){state.turnShownAt=performance.now();state.holdStartedAt=null;enableTargets(true);$("turnTitle").textContent=`Your turn`;$("turnSub").textContent="Press and hold a player, then release using the timing you learned.";clearTimeout(state.idleTimer);state.idleTimer=setTimeout(autoPass,T(CONFIG.idleMs))}else{enableTargets(false);$("turnTitle").textContent=`${LABEL[state.holder]}'s turn`;$("turnSub").textContent="Waiting for the next throw…";setTimeout(computerThrow,T(800+Math.random()*850))}}
+function beginTurn(){if(!state.gameActive||state.throwInFlight||state.turnReady)return;if(state.throwNo>=60){finishGame();return}state.turnReady=true;if(state.holder==="you"){state.turnShownAt=performance.now();state.holdStartedAt=null;enableTargets(true);$("turnTitle").textContent=`Your turn`;$("turnSub").textContent="Press and hold a player, then release using the timing you learned.";state.idleTimer=scheduleGame(autoPass,T(CONFIG.idleMs))}else{enableTargets(false);$("turnTitle").textContent=`${LABEL[state.holder]}'s turn`;$("turnSub").textContent="Waiting for the next throw…";scheduleGame(computerThrow,T(800+Math.random()*850))}}
 function enableTargets(on){qa(".target-btn").forEach(b=>b.disabled=!on)}
 function chooseComputerReceiver(sender){
   const nextThrow=state.throwNo+1,slots=state.gameSlots;
@@ -1241,47 +1257,50 @@ function chooseComputerReceiver(sender){
   const eligible=BOTS.filter(p=>p!==sender);return [...eligible].sort((a,b)=>(state.stats[a].received-state.closeBias[a])-(state.stats[b].received-state.closeBias[b]))[0]
 }
 async function computerThrow(){
-  if(!state.gameActive||state.holder==="you")return;const sender=state.holder,receiver=chooseComputerReceiver(sender),success=nextControlledSuccess(sender);state.stats[sender].attempts++;if(success)state.stats[sender].successes++;await resolveThrow(sender,receiver,success,"computer")
+  const sender=state.holder;if(sender==="you"||!claimThrow(sender))return;const receiver=chooseComputerReceiver(sender),success=nextControlledSuccess(sender);state.stats[sender].attempts++;if(success)state.stats[sender].successes++;await resolveThrow(sender,receiver,success,"computer")
 }
 qa(".target-btn").forEach(btn=>{
-  btn.addEventListener("pointerdown",e=>{if(!state.gameActive||state.holder!=="you"||state.hold.active)return;e.preventDefault();state.hold.active=true;state.hold.target=btn.dataset.target;state.hold.started=performance.now();state.holdStartedAt=state.hold.started;state.hold.pointerId=e.pointerId;const wrap=document.querySelector(`.player-wrap[data-player="${state.hold.target}"]`);wrap.classList.add("holding");wrap.querySelector(".hold-ring").style.setProperty("--p",0);try{btn.setPointerCapture(e.pointerId)}catch(_){};const step=now=>{if(!state.hold.active)return;const elapsed=now-state.hold.started,p=Math.min(1,elapsed/SWEEP_MS);wrap.querySelector(".hold-ring").style.setProperty("--p",p.toFixed(4));if(p>=1){releaseHold(true);return}state.hold.raf=requestAnimationFrame(step)};state.hold.raf=requestAnimationFrame(step)});
+  btn.addEventListener("pointerdown",e=>{if(!state.gameActive||state.throwInFlight||!state.turnReady||state.holder!=="you"||state.hold.active)return;e.preventDefault();state.hold.active=true;state.hold.target=btn.dataset.target;state.hold.started=performance.now();state.holdStartedAt=state.hold.started;state.hold.pointerId=e.pointerId;const wrap=document.querySelector(`.player-wrap[data-player="${state.hold.target}"]`);wrap.classList.add("holding");wrap.querySelector(".hold-ring").style.setProperty("--p",0);try{btn.setPointerCapture(e.pointerId)}catch(_){};const step=now=>{if(!state.hold.active)return;const elapsed=now-state.hold.started,p=Math.min(1,elapsed/SWEEP_MS);wrap.querySelector(".hold-ring").style.setProperty("--p",p.toFixed(4));if(p>=1){releaseHold(true);return}state.hold.raf=requestAnimationFrame(step)};state.hold.raf=requestAnimationFrame(step)});
   btn.addEventListener("pointerup",e=>{if(state.hold.active&&state.hold.pointerId===e.pointerId)releaseHold(false)});
   btn.addEventListener("pointercancel",e=>{if(state.hold.active&&state.hold.pointerId===e.pointerId)releaseHold(true)});
 });
 function clearHold(){if(state.hold.raf)cancelAnimationFrame(state.hold.raf);if(state.hold.target){const w=document.querySelector(`.player-wrap[data-player="${state.hold.target}"]`);if(w){w.classList.remove("holding");w.querySelector(".hold-ring").style.setProperty("--p",0)}}}
 async function releaseHold(forced){
-  if(!state.hold.active)return;clearTimeout(state.idleTimer);state.idleTimer=null;const target=state.hold.target,elapsed=forced?SWEEP_MS:performance.now()-state.hold.started,zone=practiceZone(elapsed);clearHold();state.hold.active=false;state.hold.target=null;state.hold.pointerId=null;enableTargets(false);state.stats.you.attempts++;
+  if(!state.hold.active||!claimThrow("you"))return;const target=state.hold.target,elapsed=forced?SWEEP_MS:performance.now()-state.hold.started,zone=practiceZone(elapsed);clearHold();state.hold.active=false;state.hold.target=null;state.hold.pointerId=null;state.stats.you.attempts++;
   const success=nextControlledSuccess("you");if(success)state.stats.you.successes++;
   const sched=state.gameBag.filter(Boolean).length/state.gameBag.length;
   const now=performance.now();state.lastTiming={elapsed_ms:Math.round(elapsed),timing_zone:zone.name,practice_zone_probability:zone.prob,forced_release:forced,manipulated_success_probability:Math.round(sched*100)/100,throw_success:success,react_ms:state.turnShownAt?Math.round((state.holdStartedAt||now)-state.turnShownAt):"",turn_ms:state.turnShownAt?Math.round(now-state.turnShownAt):""};
   await resolveThrow("you",target,success,"participant")
 }
 async function resolveThrow(sender,receiver,success,source){
+  const token=state.gameToken,active=()=>state.gameActive&&state.gameToken===token;
   await animateThrow(sender);
+  if(!active())return;
   if(success){
-    await animateBall(sender,receiver);showOutcome(sender,true);
+    await animateBall(sender,receiver);if(!active())return;showOutcome(sender,true);
   }else{
-    await animateBallToCenter();showOutcome(sender,false);await wait(260);
+    await animateBallToCenter();if(!active())return;showOutcome(sender,false);await wait(260);if(!active())return;
     await animateBallFromCenter(receiver);
   }
+  if(!active())return;
   state.throwNo++;state.stats[receiver].received++;setHolder(receiver);animateCatch(receiver);if(receiver==="you"&&sender!=="you")showHeart(sender);
   const t=sender==="you"&&state.lastTiming?state.lastTiming:{};
   logRow({phase:"game",event:"throw",round:state.round,condition_code:G(state.round).code,throw_number:state.throwNo,sender:LABEL[sender],receiver:LABEL[receiver],source,success,participant_inclusion_received:state.stats.you.received,participant_inclusion_percent:pct(state.stats.you.received,state.throwNo),participant_successes:state.stats.you.successes,participant_attempts:state.stats.you.attempts,participant_success_percent:pct(state.stats.you.successes,state.stats.you.attempts),timing_elapsed_ms:t.elapsed_ms??"",timing_zone:t.timing_zone??"",practice_zone_probability:t.practice_zone_probability??"",forced_release:t.forced_release??"",manipulated_success_probability:t.manipulated_success_probability??"",react_ms:t.react_ms??"",turn_ms:t.turn_ms??""});
-  if(sender==="you")state.lastTiming=null;updateCounter();updateStats();buildDots();setProgress((state.round===1?21:50)+12*state.throwNo/60);setTimeout(()=>state.throwNo>=60?finishGame():beginTurn(),T(source==="computer"?620:900))
+  if(sender==="you")state.lastTiming=null;updateCounter();updateStats();buildDots();setProgress((state.round===1?21:50)+12*state.throwNo/60);state.throwInFlight=false;scheduleGame(()=>state.throwNo>=60?finishGame():beginTurn(),T(source==="computer"?620:900))
 }
 function showOutcome(sender,success){const e=$("outcomeBig");$("outcomeThumb").textContent=success?"👍":"👎";$("outcomeTxt").textContent=`${sender==="you"?"You":LABEL[sender]}: ${success?"successful pass":"unsuccessful pass"}`;e.classList.remove("ok","bad");e.classList.add(success?"ok":"bad");e.classList.add("show");clearTimeout(state.outcomeTimer);state.outcomeTimer=setTimeout(()=>e.classList.remove("show"),Math.max(350,T(900)))}
 function showWarning(text,ms){const w=$("warnBanner");w.textContent=text;w.classList.remove("hidden");clearTimeout(state.warnTimer);state.warnTimer=setTimeout(()=>w.classList.add("hidden"),ms)}
 async function autoPass(){
-  if(!state.gameActive||state.holder!=="you"||state.hold.active)return;
+  if(state.hold.active||!claimThrow("you"))return;
   enableTargets(false);state.autoCount++;state.autoCountGame++;const target=pick(BOTS);state.stats.you.attempts++;
   const nth=state.autoCount;const secs=CONFIG.idleMs/1000,msg=nth===1?`You did not pass within ${secs} seconds, so the ball was passed for you and counted as an unsuccessful pass. Please stay focused: pass within ${secs} seconds.`:`This is the ${nth===2?"second":nth===3?"third":nth+"th"} time you did not pass in time. The ball was passed for you and counted as an unsuccessful pass. Please stay focused.`;
   showWarning(msg,T(6000));$("turnTitle").textContent="You did not pass in time";$("turnSub").textContent="The ball was passed for you.";
   logRow({phase:"game",event:"auto_pass",round:state.round,throw_number:state.throwNo+1,target:LABEL[target],auto_pass_count_total:nth,auto_pass_count_game:state.autoCountGame,idle_ms:CONFIG.idleMs});
   state.lastTiming={elapsed_ms:"",timing_zone:"none",practice_zone_probability:"",forced_release:"",manipulated_success_probability:"",throw_success:false,react_ms:"",turn_ms:Math.round(performance.now()-(state.turnShownAt||performance.now()))};
-  await wait(T(1200));await resolveThrow("you",target,false,"auto");
+  const token=state.gameToken;await wait(T(1200));if(!state.gameActive||token!==state.gameToken)return;await resolveThrow("you",target,false,"auto");
 }
 function showHeart(sender){const h=$("heartPop");h.textContent="♥";h.style.color=HEX[sender];h.classList.remove("show");void h.offsetWidth;h.classList.add("show")}
-function finishGame(){state.gameActive=false;enableTargets(false);clearTimeout(state.idleTimer);state.idleTimer=null;state.lastStats={round:state.round,throws:state.throwNo,received:Object.fromEntries(ALL.map(p=>[p,pct(state.stats[p].received,state.throwNo)])),success:Object.fromEntries(ALL.map(p=>[p,pct(state.stats[p].successes,state.stats[p].attempts)]))};$("turnTitle").textContent=`Game ${state.round} complete`;$("turnSub").textContent="60 throws completed.";logRow({phase:"game",event:"game_end",round:state.round,condition_code:G(state.round).code,final_inclusion_percent:pct(state.stats.you.received,state.throwNo),final_success_percent:pct(state.stats.you.successes,state.stats.you.attempts),final_received:state.stats.you.received,final_attempts:state.stats.you.attempts,final_successes:state.stats.you.successes,group_successes:ALL.reduce((a,p)=>a+state.stats[p].successes,0),game_ms:Math.round(performance.now()-(state.gameStartedAt||performance.now())),bot_final:BOTS.map(p=>`${NAME[p]}:rec${state.stats[p].received}/succ${state.stats[p].successes}of${state.stats[p].attempts}`).join("|")});setTimeout(()=>startPost(state.round),T(700))}
+function finishGame(){if(!state.gameActive||state.throwInFlight||state.throwNo!==60)return;state.gameActive=false;state.turnReady=false;clearGameTimers();clearHold();state.hold.active=false;enableTargets(false);state.lastStats={round:state.round,throws:state.throwNo,received:Object.fromEntries(ALL.map(p=>[p,pct(state.stats[p].received,state.throwNo)])),success:Object.fromEntries(ALL.map(p=>[p,pct(state.stats[p].successes,state.stats[p].attempts)]))};$("turnTitle").textContent=`Game ${state.round} complete`;$("turnSub").textContent="60 throws completed.";logRow({phase:"game",event:"game_end",round:state.round,condition_code:G(state.round).code,final_inclusion_percent:pct(state.stats.you.received,state.throwNo),final_success_percent:pct(state.stats.you.successes,state.stats.you.attempts),final_received:state.stats.you.received,final_attempts:state.stats.you.attempts,final_successes:state.stats.you.successes,group_successes:ALL.reduce((a,p)=>a+state.stats[p].successes,0),game_ms:Math.round(performance.now()-(state.gameStartedAt||performance.now())),bot_final:BOTS.map(p=>`${NAME[p]}:rec${state.stats[p].received}/succ${state.stats[p].successes}of${state.stats[p].attempts}`).join("|")});const round=state.round,token=state.gameToken;state.postGameTimer=setTimeout(()=>{state.postGameTimer=null;if(state.gameToken===token&&!state.gameActive)startPost(round);},T(700))}
 
 /* ================= motion + displays (Dan) ================= */
 function centerOf(p){const ar=$("arena").getBoundingClientRect(),r=document.querySelector(`.player-wrap[data-player="${p}"] .sprite-shell`).getBoundingClientRect();return{x:r.left-ar.left+r.width/2,y:r.top-ar.top+r.height/2}}
