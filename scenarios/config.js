@@ -4,7 +4,7 @@ const CONFIG = {
   endpoint: 'https://script.google.com/macros/s/AKfycbzA9xE25wi0LRvcUIWVWDrB_oZoxA_QqXt_KDwNGB_xEyrEVTBspEBf2s_cjrVCJtI6/exec',
   // Prolific completion settings. Empty values leave the return button disabled.
   completionUrl: '',
-  completionCode: '', // Add the Prolific code here (or through deploy_config.json).
+  completionCode: 'C1PI6LAQ', // Add the Prolific code here (or through deploy_config.json).
   // Trait questionnaires, Cyberball structure (Roy, 30.9): four BEFORE the situations, three AFTER them (before the demographics).
   // Available: spin, bdi (BDI-II, 20 groups), bpni, fpes, phq9, npi16, soas (Sense of Absence Scale), lsas (fear matrix only).
   traitsBefore: ['spin','bdi','bpni','fpes'],
