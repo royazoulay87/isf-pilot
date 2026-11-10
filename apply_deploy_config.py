@@ -2,7 +2,7 @@
 """Inject endpoint + Prolific completion settings from deploy_config.json into the published app copies (run by deploy.sh after the sync)."""
 import json, re, os, sys, glob
 here=os.path.dirname(os.path.abspath(__file__)); cfg=json.load(open(os.path.join(here,'deploy_config.json')))
-targets={'scenarios':['scenarios/config.js'],'cyberstatus':['cyberstatus/config.js'],'cyberball':glob.glob(os.path.join(here,'cyberball','ThrowCatch_*.html'))}
+targets={'scenarios':['scenarios/config.js'],'cyberstatus':['cyberstatus/config.js'],'dotprobe':['dotprobe/config.js'],'cyberball':glob.glob(os.path.join(here,'cyberball','ThrowCatch_*.html'))}
 for task,files in targets.items():
     for f in files:
         p=f if os.path.isabs(f) else os.path.join(here,f)
