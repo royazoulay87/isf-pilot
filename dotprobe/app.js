@@ -67,13 +67,13 @@ function screenIntro() {
     const s = show(`
       <h1>הדגמת dot-probe</h1>
       <p class="muted">סמינר חרדה חברתית, טראומה חברתית ו-EMA · ד"ר רועי אזולאי · אוניברסיטת בר-אילן</p>
-      <p>זוהי המשימה הקלאסית למדידת <b>הטיות קשב</b> (MacLeod, Mathews &amp; Tata, 1986). היא לוקחת כחמש דקות: תרגול קצר ואז 64 ניסויים קצרים, עם הפסקה באמצע. בסוף תראי את התוצאה שלך, עם הסבר מה היא אומרת ומה היא לא יכולה לומר.</p>
-      <p>התוצאות נשמרות <b>באופן אנונימי</b> (קוד בן ארבע ספרות שאת בוחרת) לדיון בכיתה בלבד. אין כאן מדידה אבחנתית ואין "ציון טוב" או "רע".</p>
+      <p>זו המשימה הקלאסית שבה מודדים <b>הטיות קשב</b> (MacLeod, Mathews &amp; Tata, 1986). היא נמשכת כחמש דקות: תרגול קצר, ואחריו 64 ניסויים קצרים עם הפסקה באמצע. בסוף מוצגת התוצאה שלך, עם הסבר מה אפשר ללמוד ממנה ומה לא.</p>
+      <p>התוצאה נשמרת <b>באופן אנונימי</b>, תחת קוד בן ארבע ספרות שאת בוחרת, ומשמשת לדיון בכיתה בלבד. זו לא בדיקה אבחנתית, ואין בה תוצאה "טובה" או "רעה".</p>
       <label for="code">בחרי קוד בן ארבע ספרות (וזכרי אותו, כדי לזהות את התוצאה שלך בכיתה)</label>
       <input type="text" id="code" inputmode="numeric" maxlength="4" placeholder="1234" autocomplete="off">
       <label for="spin">רשות: ציון ה-SPIN מהשאלון של השבוע שעבר (0 עד 68), אם את זוכרת אותו</label>
       <input type="number" id="spin" min="0" max="68" placeholder="">
-      <p class="small" style="margin-top:14px">עדיף במחשב עם מקלדת (מקשי החיצים). בטלפון אפשר גם, עם שני הכפתורים שיופיעו על המסך. ${isTouch ? 'זוהה מסך מגע.' : 'זוהתה מקלדת.'}</p>
+      <p class="small" style="margin-top:14px">הכי נוח במחשב, עם מקשי החיצים. בטלפון זה עובד גם, עם שני כפתורים שיופיעו על המסך. ${isTouch ? 'זוהה כאן מסך מגע.' : 'זוהתה כאן מקלדת.'}</p>
       <div class="err" id="err"></div>
       <div class="btnrow"><button class="next" id="go">להמשיך</button></div>`);
     s.querySelector('#go').onclick = () => {
@@ -87,18 +87,24 @@ function screenIntro() {
 }
 function screenInstructions() {
   return new Promise(resolve => {
-    const keys = isTouch ? 'לחצי על הכפתור <b>◀</b> או <b>▶</b> לפי החץ שהופיע.' : 'לחצי על מקש החץ <span class="kbd">←</span> אם הופיע ◀, ועל <span class="kbd">→</span> אם הופיע ▶. (אפשר גם ללחוץ על הכפתורים.)';
+    const keys = isTouch
+      ? 'בטלפון: לוחצים על הכפתור שעליו מצויר אותו חץ.'
+      : 'חץ שמאלה ◀ = המקש <span class="kbd">←</span> במקלדת. חץ ימינה ▶ = המקש <span class="kbd">→</span>. (אפשר גם ללחוץ על הכפתורים שעל המסך.)';
     const s = show(`
-      <h2>איך זה עובד</h2>
-      <p>בכל ניסוי: קודם צלב במרכז המסך. אחר כך מופיעות <b>שתי מילים</b>, אחת למעלה ואחת למטה, לחצי שנייה. ואז המילים נעלמות ובמקום אחת מהן מופיע <b>חץ</b>: ◀ או ▶.</p>
-      <p>המשימה שלך: להגיב <b>מהר ככל האפשר, בלי לטעות</b>, לכיוון החץ. ${keys}</p>
+      <h2>מה רואים, ומה עושים</h2>
+      <ol style="padding-right:22px;margin:0 0 14px">
+        <li>במרכז המסך מופיע צלב <b>+</b>. מסתכלים עליו.</li>
+        <li>אחריו מופיעות לרגע <b>שתי מילים</b>: אחת מעל הצלב ואחת מתחתיו.</li>
+        <li>המילים נעלמות, ובמקום אחת מהן מופיע <b>חץ</b>: ◀ או ▶.</li>
+        <li><b>התפקיד שלך:</b> להגיב לחץ מהר ככל האפשר, בלי לטעות. ${keys}</li>
+      </ol>
       <div class="demo">
-        <div class="box"><span class="m">+</span><em>1. צלב</em></div>
-        <div class="box"><span class="t">בושה</span><span class="b">חלון</span><em>2. שתי מילים</em></div>
-        <div class="box"><span class="pr">▶</span><em>3. חץ במקום אחת המילים</em></div>
+        <div class="box"><span class="m">+</span><em>שלב 1: צלב</em></div>
+        <div class="box"><span class="t">בושה</span><span class="b">חלון</span><em>שלב 2: שתי מילים</em></div>
+        <div class="box"><span class="pr">▶</span><em>שלב 3: חץ במקום אחת המילים</em></div>
       </div>
-      <p style="margin-top:30px">המילים עצמן לא חשובות למשימה, אבל המחקר שואל האם הקשב "נמשך" לאחת מהן יותר מלשנייה. על זה נדבר בכיתה.</p>
-      <p>נתחיל בתרגול קצר של ${CONFIG.practiceTrials} ניסויים עם משוב, ואז המבחן האמיתי בלי משוב.</p>
+      <p style="margin-top:34px">לא צריך לקרוא את המילים ולא לזכור אותן. חשוב רק להגיב לחץ: מהר, ובלי טעויות. למה בכלל יש שם מילים? על זה נדבר בכיתה.</p>
+      <p>קודם תרגול קצר (${CONFIG.practiceTrials} ניסויים) עם משוב אחרי כל תגובה. אחר כך המבחן עצמו (${nTest} ניסויים, עם הפסקה קצרה באמצע), בלי משוב.</p>
       <div class="btnrow"><button class="next" id="go">לתרגול</button></div>`);
     s.querySelector('#go').onclick = () => { logEv('instructions_done'); resolve(); };
   });
@@ -228,12 +234,12 @@ async function screenResults() {
     logEv('practice_start');
     await runTrials(practice, true, 0, total);
     logEv('practice_done');
-    await screenMessage('סוף התרגול', 'עכשיו ' + test.length + ' ניסויים אמיתיים, בלי משוב, עם הפסקה קצרה באמצע. נסי להגיב מהר ובלי לטעות.', 'להתחיל');
+    await screenMessage('התרגול הסתיים', 'עכשיו המבחן עצמו: ' + test.length + ' ניסויים, בלי משוב, עם הפסקה קצרה באמצע. להגיב לחץ מהר ככל האפשר, בלי לטעות.', 'להתחיל');
     const brk = Math.min(CONFIG.breakAfter, test.length);
     await runTrials(test.slice(0, brk), false, practice.length, total);
     if (test.length > brk) {
       logEv('break'); checkpoint('half');
-      await screenMessage('הפסקה קצרה', 'חצי הדרך. כשאת מוכנה, ממשיכים לחצי השני.', 'להמשיך');
+      await screenMessage('הפסקה קצרה', 'עברת חצי מהניסויים. אפשר לנוח רגע. כשאת מוכנה, ממשיכים לחצי השני.', 'להמשיך');
       await runTrials(test.slice(brk), false, practice.length + brk, total);
     }
     logEv('test_done');

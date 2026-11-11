@@ -4,7 +4,7 @@ const CONFIG = {
   // ריק = בלי שליחה; בסוף מוצעת הורדת JSON (בדיקות מקומיות).
   endpoint: 'https://script.google.com/macros/s/AKfycbzA9xE25wi0LRvcUIWVWDrB_oZoxA_QqXt_KDwNGB_xEyrEVTBspEBf2s_cjrVCJtI6/exec',
   study: 'seminar_sad_2026',
-  version: 'dotprobe_he_words_v1_2026-11-10',
+  version: 'dotprobe_he_words_v1b_2026-11-11',
   cond: 'words_he_v1',
   // תזמון (אלפיות שנייה), לפי הפרוטוקול המקובל: צלב 500, זוג מילים 500, חץ עד תגובה.
   fixationMs: 500, wordsMs: 500, maxRtMs: 3000, itiMs: 500, feedbackMs: 500,
