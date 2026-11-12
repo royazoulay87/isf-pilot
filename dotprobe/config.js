@@ -4,8 +4,14 @@ const CONFIG = {
   // ריק = בלי שליחה; בסוף מוצעת הורדת JSON (בדיקות מקומיות).
   endpoint: 'https://script.google.com/macros/s/AKfycbzA9xE25wi0LRvcUIWVWDrB_oZoxA_QqXt_KDwNGB_xEyrEVTBspEBf2s_cjrVCJtI6/exec',
   study: 'seminar_sad_2026',
-  version: 'dotprobe_he_words_v1b_2026-11-11',
+  version: 'dotprobe_v2_2026-11-12',
+  // 'images' = סצנות בגוף ראשון (מעמד/שייכות) מול ניטרלי; 'words' = גרסת המילים (גיבוי). ?debug=1&mode=words עוקף.
+  stimuli: 'images',
+  imageDir: 'stimuli/',
   cond: 'words_he_v1',
+  condImages: 'images_fp_v1',
+  // LSAS-SR (24 פריטים) אחרי המבחן ולפני התוצאה; אפשר לדלג. ?debug=1&lsas=0 מדלג.
+  lsas: true,
   // תזמון (אלפיות שנייה), לפי הפרוטוקול המקובל: צלב 500, זוג מילים 500, חץ עד תגובה.
   fixationMs: 500, wordsMs: 500, maxRtMs: 3000, itiMs: 500, feedbackMs: 500,
   practiceTrials: 8, testTrials: 64, breakAfter: 32,

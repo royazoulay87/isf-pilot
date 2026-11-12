@@ -14,7 +14,7 @@ for t in "${TASKS[@]}"; do
       rsync -a --exclude '*.md' --exclude '*.py' --exclude 'data*' --exclude 'test_runs' --exclude '.DS_Store' "$src/" "./cyberball/"; echo "synced cyberball from $src"
     else echo "skip cyberball (cyberball/SOURCE missing)"; fi
   elif [ -f "$SRC/$t/index.html" ]; then
-    rsync -a --delete --exclude '.git' --exclude 'node_modules' --exclude '*.md' --exclude '*.py' --exclude 'data*' --exclude 'test_runs' --exclude '.claude_launch_note.txt' --exclude 'TEXTS_FOR_APPROVAL*' --exclude '.DS_Store' "$SRC/$t/" "./$t/"
+    rsync -a --delete --exclude '.git' --exclude 'node_modules' --exclude '*.md' --exclude '*.py' --exclude 'data*' --exclude 'test_runs' --exclude 'stimuli_draft' --exclude '.claude_launch_note.txt' --exclude 'TEXTS_FOR_APPROVAL*' --exclude '.DS_Store' "$SRC/$t/" "./$t/"
     echo "synced $t"
   else
     echo "skip $t (no index.html yet)"

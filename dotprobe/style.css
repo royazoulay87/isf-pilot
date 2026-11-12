@@ -49,3 +49,19 @@ input[type=text],input[type=number]{width:100%;max-width:260px;padding:9px;font-
 .status.ok{background:#eafaf1;color:#1e8449;border:1px solid #bfe8cf}
 .status.bad{background:#fdecea;color:#a93226;border:1px solid #f5c6c2}
 @media (max-width:520px){.arena{height:300px}.arena .top{top:30px}.arena .mid{top:130px}.arena .bottom{top:230px}.arena .slot{font-size:34px}.resp button{height:68px}}
+/* v2: תמונות ו-LSAS */
+.arena.imgs{height:auto;min-height:0;padding:8px 0}
+.arena.imgs .slot{position:static;display:flex;justify-content:center;align-items:center;min-height:60px}
+.arena.imgs .top,.arena.imgs .bottom{height:240px}
+.arena.imgs .mid{height:56px;font-size:44px}
+.arena.imgs .stim{width:360px;height:240px;object-fit:cover;border-radius:6px;display:block}
+.arena.imgs .probe{font-size:46px}
+@media (max-width:520px){.arena.imgs .top,.arena.imgs .bottom{height:180px}.arena.imgs .stim{width:270px;height:180px}.arena.imgs .mid{height:44px;font-size:36px}}
+table.lsas{width:100%;border-collapse:collapse;font-size:15px;margin:10px 0}
+table.lsas th{font-weight:normal;font-size:13px;color:#555;padding:6px 4px;text-align:right}
+table.lsas td{padding:6px 4px;border-top:1px solid #eee;vertical-align:middle}
+table.lsas td.stem{width:52%}
+table.lsas select{width:100%;padding:6px;font-size:14px;font-family:inherit;border:1px solid #ccc;border-radius:4px;background:#fff}
+table.lsas tr.missing td{background:#fff3f3}
+table.cats{border-collapse:collapse;margin:8px 0 0;font-size:15px}
+table.cats td{padding:4px 10px 4px 0}
