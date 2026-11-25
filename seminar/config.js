@@ -7,7 +7,7 @@ const CONFIG = {
   // (הטאב של הסמינר), ומזוהה לפי version ו-cond. כל התשובות נמצאות תחת rows, שאינו נפרש לעמודות.
   task: 'dotprobe',
   study: 'seminar_sad_2026',
-  version: 'seminarq_v1_2026-11-25',
+  version: 'seminarq_v2_2026-11-25',
   cond: 'seminar_q',
   contactEmail: 'royazoulaypsy@gmail.com'
 };

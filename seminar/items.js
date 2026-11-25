@@ -6,7 +6,9 @@
    - חלק 2 (תפיסת עצמי): השלמות "אני..." (Azoulay et al., 2022) ודירוג תכונות של מעמד ושל חום ביחס לאחרים (Gilboa-Schechtman et al., 2017).
    - חלק 3 (סיכוי ומחיר): תרחישי ההשפלה וההדרה של Azoulay & Gilboa-Schechtman (2024), בנוסח העברי של המעבדה (Qualtrics, "Senarios_humiliation_exclusion_heb"),
      ושני אירועים שליליים לא חברתיים להשוואה (ההיגיון של Foa et al., 1996).
-   - חלק 4 (פרצופים): פרצופים סכמטיים (בסגנון Lundqvist, Esteves & Öhman, 1999) על רצף מכעס לשמחה, ועוד שלושה פרצופים מעורבים. m = פה (-1 זועף, +1 מחייך), b = גבות (-1 כועסות, +1 רפויות). */
+   - חלק 4 (פרצופים): מגרסה v2 (25.11.2026 ערב) תצלומים שנוצרו ב-ChatGPT (דמויות בדויות): שבע הבעות של אותה אישה על רצף מכעס לשמחה (f_m3..f_p3),
+     ושלוש הבעות מעורבות של אותו גבר: f_mixA חיוך עם גבות כועסות, f_mixB פה ניטרלי עם גבות מכווצות, f_mixC חיוך מנומס עם עיניים קרות.
+     בגרסה v1 היו פרצופים סכמטיים מצוירים (m = פה, b = גבות); הפרמטרים נשארו כגיבוי, וב-v1 f_mixC היה פה זועף עם גבות רפויות. */
 const ITEMS = {
   interp: [
     { id: 'i_talk', dom: 'rank', text: 'באמצע מצגת שאת מעבירה בכיתה, שתיים מהסטודנטיות מתלחשות ומחייכות.',
@@ -53,15 +55,15 @@ const ITEMS = {
     { id: 'e_bus', type: 'non', text: 'האוטובוס או הרכב מתקלקל בדרך, ואת נתקעת שעה בכביש.' }
   ],
   faces: [
-    { id: 'f_m3', kind: 'line', level: -3, m: -1.00, b: -1.00 },
-    { id: 'f_m2', kind: 'line', level: -2, m: -0.66, b: -0.66 },
-    { id: 'f_m1', kind: 'line', level: -1, m: -0.33, b: -0.33 },
-    { id: 'f_0',  kind: 'line', level: 0,  m: 0.00,  b: 0.00 },
-    { id: 'f_p1', kind: 'line', level: 1,  m: 0.33,  b: 0.33 },
-    { id: 'f_p2', kind: 'line', level: 2,  m: 0.66,  b: 0.66 },
-    { id: 'f_p3', kind: 'line', level: 3,  m: 1.00,  b: 1.00 },
-    { id: 'f_mixA', kind: 'mixed', level: null, m: 0.70,  b: -0.90 },
-    { id: 'f_mixB', kind: 'mixed', level: null, m: 0.00,  b: -0.70 },
-    { id: 'f_mixC', kind: 'mixed', level: null, m: -0.45, b: 0.60 }
+    { id: 'f_m3', img: 'f_m3.jpg', kind: 'line', level: -3, m: -1.00, b: -1.00 },
+    { id: 'f_m2', img: 'f_m2.jpg', kind: 'line', level: -2, m: -0.66, b: -0.66 },
+    { id: 'f_m1', img: 'f_m1.jpg', kind: 'line', level: -1, m: -0.33, b: -0.33 },
+    { id: 'f_0', img: 'f_0.jpg', kind: 'line', level: 0,  m: 0.00,  b: 0.00 },
+    { id: 'f_p1', img: 'f_p1.jpg', kind: 'line', level: 1,  m: 0.33,  b: 0.33 },
+    { id: 'f_p2', img: 'f_p2.jpg', kind: 'line', level: 2,  m: 0.66,  b: 0.66 },
+    { id: 'f_p3', img: 'f_p3.jpg', kind: 'line', level: 3,  m: 1.00,  b: 1.00 },
+    { id: 'f_mixA', img: 'f_mixA.jpg', kind: 'mixed', level: null, m: 0.70,  b: -0.90 },
+    { id: 'f_mixB', img: 'f_mixB.jpg', kind: 'mixed', level: null, m: 0.00,  b: -0.70 },
+    { id: 'f_mixC', img: 'f_mixC.jpg', kind: 'mixed', level: null, m: -0.45, b: 0.60 }
   ]
 };

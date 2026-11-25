@@ -37,6 +37,8 @@ input.code{max-width:200px;direction:ltr;text-align:center;font-size:20px;letter
 .slider.untouched input[type=range]{opacity:.4}
 .facebox{display:flex;justify-content:center;margin:4px 0 8px}
 .facebox svg{width:210px;height:250px;display:block}
+.facebox img.faceimg{width:230px;height:auto;display:block;border-radius:10px}
+.facegrid img.faceimg{width:72px;height:auto;border-radius:6px}
 .card{border:1px solid #dfe5df;border-radius:10px;padding:14px 16px;margin:12px 0;background:#f8faf8}
 .card h3{margin:0 0 8px;font-size:17px;color:#14432a}
 .bars{margin:6px 0 2px}

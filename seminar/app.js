@@ -124,6 +124,8 @@ function faceSVG(m, b) {
     '</g></svg>';
 }
 if (debug) window.faceSVG = faceSVG;
+function faceHTML(f) { return f.img ? '<img class="faceimg" src="stimuli/' + f.img + '" alt="פרצוף">' : faceSVG(f.m, f.b); }
+ITEMS.faces.forEach(f => { if (f.img) { const im = new Image(); im.src = 'stimuli/' + f.img; } });
 
 /* ---------- פתיחה ---------- */
 function screenIntro() {
@@ -240,15 +242,16 @@ async function part3() {
 async function part4() {
   await page('p4_intro', `
     <div class="part">חלק 4 מתוך 4</div><h2>פרצופים</h2>
-    <p>יוצגו עשרה פרצופים מצוירים, אחד בכל מסך. לכל פרצוף יש שתי שאלות: כמה הוא נראה <b>כועס</b>, וכמה הוא נראה <b>שמח</b>.</p>
+    <p>יוצגו עשרה תצלומים של פרצופים, אחד בכל מסך. לכל פרצוף יש שתי שאלות: כמה הוא נראה <b>כועס</b>, וכמה הוא נראה <b>שמח</b>.</p>
     <p>עני לפי הרושם הראשון, בלי להתעכב. אותו פרצוף יכול לקבל ציון גבוה או נמוך בשתי השאלות.</p>`, []);
   const fs = shuffle(ITEMS.faces.slice());
   META.order_faces = fs.map(x => x.id).join(',');
+  META.faceset = ITEMS.faces[0].img ? 'photos_v2' : 'drawn_v1';
   for (let i = 0; i < fs.length; i++) {
     const f = fs[i];
     await page('face_' + f.id, `
       <div class="part">חלק 4 · פרצוף ${i + 1} מתוך ${fs.length}</div>
-      <div class="facebox">${faceSVG(f.m, f.b)}</div>
+      <div class="facebox">${faceHTML(f)}</div>
       <div class="item"><p class="stmt"><b>כמה הפרצוף הזה כועס?</b></p>${scaleHTML('face|' + f.id + '|angry', 'כלל לא', 'מאוד')}</div>
       <div class="item"><p class="stmt"><b>כמה הפרצוף הזה שמח?</b></p>${scaleHTML('face|' + f.id + '|happy', 'כלל לא', 'מאוד')}</div>`,
       ['face|' + f.id + '|angry', 'face|' + f.id + '|happy']);
@@ -284,7 +287,7 @@ async function screenResults() {
   D.qsum = summarize(); const S = D.qsum;
   stepNo = stepTotal;
   const line = ITEMS.faces.filter(f => f.kind === 'line'), mixed = ITEMS.faces.filter(f => f.kind === 'mixed');
-  const fc = f => '<div class="fc">' + faceSVG(f.m, f.b) + '<br>כעס ' + (getA('face', f.id, 'angry') || '–') + ' · שמחה ' + (getA('face', f.id, 'happy') || '–') + '</div>';
+  const fc = f => '<div class="fc">' + faceHTML(f) + '<br>כעס ' + (getA('face', f.id, 'angry') || '–') + ' · שמחה ' + (getA('face', f.id, 'happy') || '–') + '</div>';
   const s = show(`
     <h1>הסיכום האישי שלך</h1>
     <p>תודה. אלה הממוצעים של התשובות שלך בכל אחד מארבעת החלקים. הם לא ציון ולא אבחנה: הם נועדו כדי שתוכלי להשוות בשיעור בין מה שעלה אצלך לבין מה שמוצאים במחקר. הקוד שלך: <b>${esc(D.code)}</b>.</p>
@@ -302,7 +305,7 @@ async function screenResults() {
       ${bar('לא חברתי: סיכוי', S.prob_non, 100)}${bar('לא חברתי: מחיר', S.cost_non, 100, 'alt')}</div></div>
     <div class="card"><h3>4. פרצופים: הדירוגים שלך (1 עד 7)</h3>
       <p class="small">שבעת הפרצופים שעל הרצף, מהכועס ביותר ועד השמח ביותר:</p><div class="facegrid">${line.map(fc).join('')}</div>
-      <p class="small">שלושת הפרצופים המעורבים (למשל פה מחייך עם גבות כועסות):</p><div class="facegrid">${mixed.map(fc).join('')}</div></div>
+      <p class="small">שלושת הפרצופים שההבעה שלהם מעורבת:</p><div class="facegrid">${mixed.map(fc).join('')}</div></div>
     <p>בשיעור נעבור על כל אחד מהחלקים: מה המשימה מודדת, מה מוצאים בה אצל אנשים עם חרדה חברתית, ואיפה הממצאים חלוקים. כדאי לצלם את המסך הזה או לזכור את הקוד.</p>
     <div class="status" id="st">שומר את התשובות…</div>
     <div class="btnrow" id="dl" style="display:none"><button class="ghost" id="dlb">להוריד את התשובות כקובץ</button></div>`);
