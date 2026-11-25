@@ -1,0 +1,56 @@
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;font-size:17px;line-height:1.55;color:#1f2d27;background:#efede6;direction:rtl}
+#app{max-width:720px;margin:0 auto;padding:18px 14px 60px}
+.screen{position:relative;background:#fff;border:1px solid #dfe5df;border-radius:12px;padding:22px 22px 26px;min-height:300px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+h1{font-size:24px;margin:0 0 6px;color:#14432a}
+h2{font-size:20px;margin:0 0 10px;color:#14432a}
+p{margin:0 0 12px}
+.small{font-size:14px;color:#5a665f}
+.muted{color:#5a665f}
+.err{color:#b23b22;font-size:15px;margin:8px 0;min-height:20px}
+.btnrow{display:flex;justify-content:flex-start;gap:10px;margin-top:20px;flex-wrap:wrap}
+button{font-family:inherit;touch-action:manipulation}
+button.next{background:#14432a;color:#fff;border:0;border-radius:8px;padding:12px 28px;font-size:17px;cursor:pointer;min-width:84px}
+button.next:disabled{background:#a9bcb1;cursor:default}
+button.ghost{background:#fff;color:#14432a;border:1px solid #14432a;border-radius:8px;padding:10px 20px;font-size:16px;cursor:pointer}
+label{display:block;margin:10px 0 4px;font-weight:bold}
+input[type=text]{width:100%;padding:10px;font-size:17px;border:1px solid #c5cdc7;border-radius:6px;font-family:inherit}
+input.code{max-width:200px;direction:ltr;text-align:center;font-size:20px;letter-spacing:3px}
+.progress{height:6px;background:#e3eae4;border-radius:3px;margin:0 0 14px;overflow:hidden}
+.progress i{display:block;height:100%;background:#3e7a5c;width:0;transition:width .2s}
+.part{font-size:14px;color:#3e7a5c;font-weight:bold;margin:0 0 6px}
+.scenario{background:#e3eae4;border-radius:10px;padding:14px 16px;font-size:18px;margin:6px 0 14px}
+.q{margin:14px 0 4px;font-weight:bold}
+.item{border-top:1px solid #e6ebe7;padding:12px 0 6px}
+.item:first-of-type{border-top:0}
+.item.missing{background:#fdf1ec;border-radius:8px;padding-right:8px;padding-left:8px}
+.stmt{margin:0 0 8px}
+.scale{display:flex;gap:6px;direction:rtl}
+.scale button{flex:1 1 0;height:46px;border:1px solid #b9c6bd;background:#f7f9f7;border-radius:8px;font-size:17px;cursor:pointer;color:#1f2d27;padding:0}
+.scale button.on{background:#14432a;color:#fff;border-color:#14432a;font-weight:bold}
+.ends{display:flex;justify-content:space-between;font-size:13px;color:#5a665f;margin:4px 2px 0}
+.slider{margin:6px 0 2px}
+.slider input[type=range]{width:100%;height:36px;margin:0;accent-color:#14432a}
+.slider .val{display:inline-block;min-width:54px;font-weight:bold;font-size:18px;color:#14432a;direction:ltr;text-align:center}
+.slider.untouched .val{color:#9aa69f;font-weight:normal;font-size:14px}
+.slider.untouched input[type=range]{opacity:.4}
+.facebox{display:flex;justify-content:center;margin:4px 0 8px}
+.facebox svg{width:210px;height:250px;display:block}
+.card{border:1px solid #dfe5df;border-radius:10px;padding:14px 16px;margin:12px 0;background:#f8faf8}
+.card h3{margin:0 0 8px;font-size:17px;color:#14432a}
+.bars{margin:6px 0 2px}
+.brow{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:15px}
+.brow .lab{flex:0 0 42%;line-height:1.3}
+.brow .track{flex:1 1 auto;height:18px;background:#e3eae4;border-radius:9px;overflow:hidden;direction:ltr;transform:scaleX(-1)}
+.brow .track i{display:block;height:100%;background:#3e7a5c;border-radius:9px}
+.brow.alt .track i{background:#c4623d}
+.brow.blue .track i{background:#4f6d7a}
+.brow .num{flex:0 0 44px;text-align:left;direction:ltr;font-weight:bold}
+.status{padding:10px 12px;border-radius:8px;margin-top:14px;font-size:15px}
+.status.ok{background:#e6f3ea;color:#14432a;border:1px solid #bcd9c6}
+.status.bad{background:#fbeae4;color:#8e3118;border:1px solid #efc3b4}
+.facegrid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.facegrid .fc{width:86px;text-align:center;font-size:12px;color:#5a665f;line-height:1.3}
+.facegrid svg{width:70px;height:84px}
+@media (max-width:480px){.screen{padding:18px 14px 22px}.scale button{height:44px;font-size:16px}.scenario{font-size:17px}.brow .lab{flex-basis:46%}}
