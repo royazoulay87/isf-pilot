@@ -1,0 +1,41 @@
+/* תוספות ל-../style.css עבור משימת ה-IAT */
+.choice{display:flex;gap:10px;margin:6px 0 4px}
+.choice button{flex:1 1 0;height:46px;border:1px solid #b9c6bd;background:#f7f9f7;border-radius:8px;font-size:17px;cursor:pointer;color:#1f2d27}
+.choice button.on{background:#14432a;color:#fff;border-color:#14432a;font-weight:bold}
+.cats{width:100%;border-collapse:collapse;margin:8px 0 12px;font-size:16px}
+.cats th{text-align:right;white-space:nowrap;padding:8px 0 8px 14px;vertical-align:top;border-top:1px solid #e6ebe7}
+.cats td{padding:8px 0;border-top:1px solid #e6ebe7}
+.cats tr:first-child th,.cats tr:first-child td{border-top:0}
+.tgt{color:#1d5a8c}
+.att{color:#1f2d27}
+/* מפת המקשים במסך ההוראות ובזמן המשימה: הכיוון תמיד משמאל לימין, כדי ש"שמאל" יהיה בשמאל המסך */
+.map{display:flex;direction:ltr;justify-content:space-between;gap:12px;margin:12px 0}
+.map .side{flex:1 1 0;border:2px solid #cfd8d1;border-radius:10px;padding:10px 8px;text-align:center;background:#f8faf8}
+.map .side .where{font-size:13px;color:#5a665f;margin-bottom:4px}
+.lab{font-size:22px;font-weight:bold;line-height:1.25}
+.or{display:block;font-size:13px;font-weight:normal;color:#5a665f}
+.arena{direction:ltr;display:flex;flex-direction:column;min-height:calc(100vh - 120px);min-height:calc(100dvh - 120px);user-select:none;-webkit-user-select:none}
+.arena .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.arena .top .lab{flex:0 1 46%}
+.arena .top .lab.l{text-align:left}
+.arena .top .lab.r{text-align:right}
+.arena .mid{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:150px}
+.arena .word{font-size:40px;font-weight:bold;direction:rtl;min-height:56px;line-height:56px}
+.arena .x{font-size:34px;color:#c0281c;font-weight:bold;height:40px;line-height:40px;visibility:hidden}
+.arena .x.show{visibility:visible}
+.arena .fix{font-size:13px;color:#8e3118;min-height:20px;direction:rtl;visibility:hidden}
+.arena .fix.show{visibility:visible}
+.arena .resp{display:flex;gap:12px}
+.arena .resp button{flex:1 1 0;height:110px;font-weight:bold;border:2px solid #b9c6bd;background:#f1f5f2;border-radius:14px;font-size:18px;color:#1f2d27;cursor:pointer;direction:rtl;-webkit-tap-highlight-color:transparent}
+.arena .resp button:active{background:#dfe9e2}
+.arena .hint{text-align:center;font-size:13px;color:#5a665f;margin-top:8px;direction:rtl}
+.big{font-size:44px;font-weight:bold;color:#14432a;direction:ltr;text-align:center;margin:6px 0 0}
+.verdict{font-size:20px;font-weight:bold;text-align:center;margin:2px 0 10px;color:#14432a}
+.axis{position:relative;height:46px;margin:10px 6px 22px;direction:ltr}
+.axis .line{position:absolute;top:22px;left:0;right:0;height:4px;background:#cfd8d1;border-radius:2px}
+.axis .zero{position:absolute;top:12px;left:50%;width:2px;height:24px;background:#5a665f}
+.axis .dot{position:absolute;top:13px;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:#14432a;border:2px solid #fff;box-shadow:0 0 0 1px #14432a}
+.axis .end{position:absolute;top:44px;font-size:13px;color:#5a665f;direction:rtl;max-width:46%;white-space:nowrap}
+.axis .end.l{left:0;text-align:left}
+.axis .end.r{right:0;text-align:right}
+@media (max-width:480px){.arena .word{font-size:36px}.lab{font-size:20px}.arena .resp button{height:120px}}
